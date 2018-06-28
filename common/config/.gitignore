@@ -1,3 +1,6 @@
 main-local.php
 params-local.php
 test-local.php
+!/params-local.php
+!/main-local.php
+!/test-local.php
