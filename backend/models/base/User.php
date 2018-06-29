@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace backend\models\base;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -24,7 +24,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+    const STATUS_ACTIVE = 1;
 
 
     /**
@@ -80,7 +80,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+           
+        return static::find()->where(['email' => $username, 'status' => self::STATUS_ACTIVE])->one();
     }
 
     /**
@@ -149,8 +150,15 @@ class User extends ActiveRecord implements IdentityInterface
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    {   
+
+        // d($password);
+        if(md5($password) == $this->password){
+            return true;
+        }
+
+        return false;
+        // return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**
