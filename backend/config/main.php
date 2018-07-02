@@ -1,9 +1,7 @@
 <?php
+
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+        require __DIR__ . '/../../common/config/params.php', require __DIR__ . '/../../common/config/params-local.php', require __DIR__ . '/params.php', require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -12,10 +10,10 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'defaultRoute' => 'site/index',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
-            
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -29,7 +27,7 @@ return [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                    [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
@@ -43,7 +41,15 @@ return [
             'showScriptName' => false,
             'rules' => [
             ],
-        ],        
+        ],
+//        'cache' => [
+//            'class' => 'yii\redis\Cache',
+//            'redis' => [
+//                'hostname' => 'localhost',
+//                'port' => 6379,
+//                'database' => 0,
+//            ]
+//        ],
     ],
     'params' => $params,
 ];

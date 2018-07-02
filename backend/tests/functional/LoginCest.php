@@ -41,4 +41,8 @@ class LoginCest
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
     }
+    
+//    public function authUser(FunctionalTester $I){
+//        
+//    }
 }
