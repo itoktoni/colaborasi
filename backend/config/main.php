@@ -4,6 +4,8 @@ $params = array_merge(
         require __DIR__ . '/../../common/config/params.php', require __DIR__ . '/../../common/config/params-local.php', require __DIR__ . '/params.php', require __DIR__ . '/params-local.php'
 );
 
+$route = require __DIR__ . '/routes.php';
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -16,7 +18,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\base\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -36,20 +38,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+        'cache' => [
+            'class' => 'yii\redis\Cache',
+            'redis' => [
+                'hostname' => 'localhost',
+                'port' => 6379,
+                'database' => 0,
+            ]
         ],
-//        'cache' => [
-//            'class' => 'yii\redis\Cache',
-//            'redis' => [
-//                'hostname' => 'localhost',
-//                'port' => 6379,
-//                'database' => 0,
-//            ]
-//        ],
+        'urlManager' => $route,
     ],
     'params' => $params,
 ];

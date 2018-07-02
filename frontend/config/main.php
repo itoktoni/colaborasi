@@ -6,6 +6,8 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
+$route = require __DIR__ . '/routes.php';
+
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -36,12 +38,7 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
+        'urlManager' => $route, 
     ],
     'params' => $params,
 ];

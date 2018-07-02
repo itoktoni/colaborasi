@@ -5,8 +5,10 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+
 use common\models\LoginForm;
 use backend\components\AuthController;
+use backend\models\form\LoginForm;
 
 /**
  * Site controller
@@ -16,6 +18,25 @@ class SiteController extends AuthController
     /**
      * {@inheritdoc}
      */
+
+    protected function app() {
+        return Yii::$app;
+    }
+
+    protected function request() {
+        return $this->app()->request;
+    }
+
+    protected function session() {
+
+        return $this->app()->session;
+    }
+
+    protected function response() {
+
+        return $this->app()->response;
+    }
+
     public function behaviors()
     {
         return [
@@ -76,7 +97,10 @@ class SiteController extends AuthController
         }
 
         $model = new LoginForm();
+   
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+           //d( Yii::$app->request->post(), $depth = 10, $highlight = true);
             return $this->goBack();
         } else {
             $model->password = '';
@@ -87,6 +111,7 @@ class SiteController extends AuthController
         }
     }
 
+   
     /**
      * Logout action.
      *

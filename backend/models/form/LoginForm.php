@@ -1,9 +1,9 @@
 <?php
-
-namespace common\models;
+namespace backend\models\form;
 
 use Yii;
 use yii\base\Model;
+use backend\models\base\User;
 
 /**
  * Login form
@@ -39,8 +39,14 @@ class LoginForm extends Model {
      */
     public function validatePassword($attribute, $params)
     {
+<<<<<<< HEAD:common/models/LoginForm.php
         if (!$this->hasErrors())
         {
+=======
+
+       
+        if (!$this->hasErrors()) {
+>>>>>>> 3a9c2c813e87f2f07bf7428e0cbe28ad3d4907ff:backend/models/form/LoginForm.php
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password))
             {
@@ -56,11 +62,23 @@ class LoginForm extends Model {
      */
     public function login()
     {
+<<<<<<< HEAD:common/models/LoginForm.php
         if ($this->validate())
         {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
 
+=======
+
+        
+        if ($this->validate()) {
+            
+            // d('test');
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        }
+   
+        
+>>>>>>> 3a9c2c813e87f2f07bf7428e0cbe28ad3d4907ff:backend/models/form/LoginForm.php
         return false;
     }
 
@@ -71,10 +89,16 @@ class LoginForm extends Model {
      */
     protected function getUser()
     {
+<<<<<<< HEAD:common/models/LoginForm.php
         if ($this->_user === null)
         {
+=======
+        
+        if ($this->_user === null) {
+>>>>>>> 3a9c2c813e87f2f07bf7428e0cbe28ad3d4907ff:backend/models/form/LoginForm.php
             $this->_user = User::findByUsername($this->username);
         }
+
 
         return $this->_user;
     }
