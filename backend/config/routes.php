@@ -11,6 +11,8 @@ return [
     'showScriptName' => false,
     'rules' => [
         '/adminlogin' => 'site/login',
+        '/dashboard' => 'dashboard/index',
+        '/logout' => 'site/logout'
         // '/' => 'home/homepage',
         // 'view/<id:[0-9a-zA-Z\-]+>' => 'home/detail',
         // 'cat/<id:[0-9a-zA-Z\-]+>' => 'home/category',

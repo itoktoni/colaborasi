@@ -7,7 +7,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\form\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -15,7 +15,7 @@ use frontend\models\ContactForm;
 use Facebook\Facebook;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
-use frontend\models\User;
+use common\models\base\Member;
 
 /**
  * Site controller
@@ -198,8 +198,6 @@ class SiteController extends Controller
                 ));
         
         $helper = $fb->getRedirectLoginHelper();
-        
-        
         // Get redirect login helper
         $helper = $fb->getRedirectLoginHelper();
         
@@ -239,7 +237,7 @@ class SiteController extends Controller
                         $fbUserProfile = $profileRequest->getGraphNode()->asArray();
                         // Here you can redirect to your Home Page.
 
-                        $getUser = User::find()->where(['email' => $fbUserProfile['email']])->one();
+                        $getUser = Member::find()->where(['email' => $fbUserProfile['email']])->one();
                         if(count($getUser) > 0){
                             
                              echo "<pre/>";
@@ -248,8 +246,7 @@ class SiteController extends Controller
                         }
                         else
                         {
-
-                            $user = new User();
+                            $user = new Member();
                             $user->email = $fbUserProfile['email'];
                             $user->name = $fbUserProfile['first_name'].' '.$fbUserProfile['last_name'];
                             $user->password = md5($fbUserProfile['password']);

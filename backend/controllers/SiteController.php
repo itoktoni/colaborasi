@@ -6,14 +6,13 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-use common\models\LoginForm;
-use backend\components\AuthController;
+//use backend\components\AuthController;
 use backend\models\form\LoginForm;
 
 /**
  * Site controller
  */
-class SiteController extends AuthController
+class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -57,7 +56,6 @@ class SiteController extends AuthController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -82,7 +80,8 @@ class SiteController extends AuthController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $this->redirect('/adminlogin');
+//        return $this->render('index');
     }
 
     /**
@@ -93,7 +92,7 @@ class SiteController extends AuthController
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect('/dashboard');
         }
 
         $model = new LoginForm();
@@ -101,7 +100,8 @@ class SiteController extends AuthController
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
            //d( Yii::$app->request->post(), $depth = 10, $highlight = true);
-            return $this->goBack();
+//            return $this->goBack();
+            $this->redirect('/dashboard');
         } else {
             $model->password = '';
 

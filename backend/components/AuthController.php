@@ -4,7 +4,8 @@ namespace backend\components;
 
 use Yii;
 use yii\web\Controller;
-use common\models\Permission;
+use backend\models\base\Permission;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Site controller
@@ -21,11 +22,10 @@ class AuthController extends Controller {
      */
     public function init()
     {
-        if (!Yii::$app->user->isGuest)
-        {
-
-            return $this->redirect('/login');
-        }
+//        if (!Yii::$app->user->isGuest)
+//        {
+//            return $this->redirect('/dashboard');
+//        }
     }
 
     /**
@@ -38,11 +38,12 @@ class AuthController extends Controller {
      */
     public function beforeAction($action)
     {
+
+
         if (Yii::$app->user->isGuest)
         {
-            return $this->redirect('/login');
+            return $this->redirect('/adminlogin');
         }
-
 
         /*
          * Get current session
@@ -59,21 +60,15 @@ class AuthController extends Controller {
          */
         $exclude = ['dashboard', 'signout'];
 
-        /**
-         * Check if current url is on exclude item array,
-         * If they do, return to action immediately
-         */
-        if (in_array($current, $exclude))
-        {
-            return parent::beforeAction($action);
-        }
-
+        Yii::$app->cache->delete('roles_' . Yii::$app->user->identity->roles);
+//        Yii::$app->cache->flush();
         /**
          * check in cache if this roles exists,
          * this script prevent over query to database
          */
         if (!Yii::$app->cache->exists('roles_' . Yii::$app->user->identity->roles))
         {
+//            echo 'no cache';
             $permission = Permission::find()
                     ->joinWith('feature0', false, 'inner join')
                     ->leftjoin('feature_group', '`feature`.`feature_group` = `feature_group`.`id`')
@@ -82,6 +77,8 @@ class AuthController extends Controller {
                     ->orderBy('feature_group.name', SORT_ASC)
                     ->asArray()
                     ->all();
+
+
             $menu = $group = $list = [];
             foreach ($permission as $item) {
                 if (!isset($group[strtolower($item['feature_group'])]))
@@ -93,27 +90,43 @@ class AuthController extends Controller {
             }
 
             $data = ['group' => $group, 'menu' => $menu, 'list' => $list];
-
             Yii::$app->cache->add('roles_' . Yii::$app->user->identity->roles, $data, 360);
         }
         else
         {
+//            echo 'cache';
             $data = Yii::$app->cache->get('roles_' . Yii::$app->user->identity->roles);
         }
 
 
-
+        /**
+         * Check if current url is on exclude item array,
+         * If they do, return to action immediately
+         */
+        if (in_array($current, $exclude))
+        {
+//            var_dump(in_array($current, $exclude));
+//            die();
+            return parent::beforeAction($action);
+        }
 
         /**
          * Check if current controller is exists on current roles OR
          * cache / database if his access is exists
          * if not, throw a forbidden exception
          */
-        if (!isset($session['menu']['list'][$current]) || !isset($data['menu']['list'][$current]))
+        if (!isset($session['menu']['list'][$current]))
         {
             throw new ForbiddenHttpException;
         }
 
+
+        if (!isset($data['list'][$current]))
+        {
+            Yii::$app->user->logout();
+
+            return $this->redirect('/adminlogin');
+        }
 
         /*
          * check if access 

@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\activerecord;
+namespace backend\models\base;
 
 use Yii;
 
@@ -15,8 +15,12 @@ use Yii;
  * @property Feature $feature0
  * @property Roles $roles0
  */
-class Permission extends \yii\db\ActiveRecord
-{
+class Permission extends \yii\db\ActiveRecord {
+
+    const FULL_ACCESS = 2;
+    const READONLY = 1;
+    const NO_ACCESS = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -31,9 +35,9 @@ class Permission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['roles', 'feature', 'access'], 'integer'],
-            [['feature'], 'exist', 'skipOnError' => true, 'targetClass' => Feature::className(), 'targetAttribute' => ['feature' => 'id']],
-            [['roles'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['roles' => 'id']],
+                [['roles', 'feature', 'access'], 'integer'],
+                [['feature'], 'exist', 'skipOnError' => true, 'targetClass' => Feature::className(), 'targetAttribute' => ['feature' => 'id']],
+                [['roles'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['roles' => 'id']],
         ];
     }
 
@@ -65,4 +69,5 @@ class Permission extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Roles::className(), ['id' => 'roles']);
     }
+
 }

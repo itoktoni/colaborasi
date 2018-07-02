@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\models\base;
 
 use Yii;
@@ -8,31 +9,78 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * User model
+ * This is the model class for table "user".
  *
- * @property integer $id
- * @property string $username
+ * @property int $id
+ * @property string $email
+ * @property string $name
+ * @property string $password
+ * @property string $auth_key
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
+ * @property int $status
+ * @property int $roles
+ * @property string $created_at
+ *
+ * @property Roles $roles0
  */
-class User extends ActiveRecord implements IdentityInterface
-{
+class User extends ActiveRecord implements IdentityInterface {
+
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
-
 
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return 'user';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+                [['email', 'name', 'password', 'auth_key', 'password_hash'], 'required'],
+                [['status', 'roles'], 'integer'],
+                [['created_at'], 'safe'],
+                [['email'], 'string', 'max' => 64],
+                [['name', 'password', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
+                [['auth_key'], 'string', 'max' => 32],
+                [['password_reset_token'], 'unique'],
+                [['roles'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['roles' => 'id']],
+                ['status', 'default', 'value' => self::STATUS_ACTIVE],
+                ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'email' => 'Email',
+            'name' => 'Name',
+            'password' => 'Password',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'status' => 'Status',
+            'roles' => 'Roles',
+            'created_at' => 'Created At',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRoles0()
+    {
+        return $this->hasOne(Roles::className(), ['id' => 'roles']);
     }
 
     /**
@@ -42,17 +90,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -80,7 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-           
+
         return static::find()->where(['email' => $username, 'status' => self::STATUS_ACTIVE])->one();
     }
 
@@ -92,13 +129,14 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByPasswordResetToken($token)
     {
-        if (!static::isPasswordResetTokenValid($token)) {
+        if (!static::isPasswordResetTokenValid($token))
+        {
             return null;
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+                    'password_reset_token' => $token,
+                    'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -110,7 +148,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function isPasswordResetTokenValid($token)
     {
-        if (empty($token)) {
+        if (empty($token))
+        {
             return false;
         }
 
@@ -150,10 +189,11 @@ class User extends ActiveRecord implements IdentityInterface
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password)
-    {   
+    {
 
         // d($password);
-        if(md5($password) == $this->password){
+        if (md5($password) == $this->password)
+        {
             return true;
         }
 
@@ -194,4 +234,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
 }

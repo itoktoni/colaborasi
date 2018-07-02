@@ -1,11 +1,10 @@
 <?php
 
-namespace backend\models\form;
+namespace frontend\models\form;
 
 use Yii;
 use yii\base\Model;
 use backend\models\base\User;
-use backend\models\base\Permission;
 
 /**
  * Login form
@@ -61,31 +60,15 @@ class LoginForm extends Model {
      */
     public function login()
     {
+
+
         if ($this->validate())
         {
-            $permission = Permission::find()
-                    ->joinWith('feature0', false, 'inner join')
-                    ->leftjoin('feature_group', '`feature`.`feature_group` = `feature_group`.`id`')
-                    ->where(['roles' => $this->_user->roles, 'feature_group.status' => 1, 'feature.status' => 1])
-                    ->select(['feature_group.name as feature_group', 'feature_group.icon as feature_group_icon', 'feature_group.slug as feature_group_slug', 'feature' . '.name', 'feature' . '.slug', 'feature' . '.icon', 'permission' . '.access'])
-                    ->orderBy('feature_group.name', SORT_ASC)
-                    ->asArray()
-                    ->all();
-            $menu = $group = $list = [];
-            foreach ($permission as $item) {
-                if (!isset($group[strtolower($item['feature_group'])]))
-                {
-                    $group[strtolower($item['feature_group'])] = ['name' => $item['feature_group'], 'icon' => $item['feature_group_icon'], 'slug' => $item['feature_group_slug']];
-                }
-                $menu[strtolower($item['feature_group'])][] = ['name' => $item['name'], 'slug' => $item['slug'], 'icon' => $item['icon'], 'access' => $item['access']];
-                $list[$item['slug']] = ['name' => $item['name'], 'slug' => $item['slug'], 'icon' => $item['icon'], 'access' => $item['access']];
-            }
 
-            $result = ['group' => $group, 'menu' => $menu, 'list' => $list];
-            $session = Yii::$app->session;
-            $session->set('menu', $result);
+            // d('test');
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
+
 
         return false;
     }
@@ -100,7 +83,7 @@ class LoginForm extends Model {
 
         if ($this->_user === null)
         {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = Member::findByUsername($this->username);
         }
 
 

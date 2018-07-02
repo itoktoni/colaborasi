@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\activerecord;
+namespace backend\models\base;
 
 use Yii;
 
