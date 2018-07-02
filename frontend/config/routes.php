@@ -10,13 +10,13 @@ return [
     'enableStrictParsing' => false,
     'showScriptName' => false,
     'rules' => [
-        '/adminlogin' => 'site/login',
+        '/facebook' => 'site/facebook',
+        '/register' => 'site/signup',
         // '/' => 'home/homepage',
         // 'view/<id:[0-9a-zA-Z\-]+>' => 'home/detail',
         // 'cat/<id:[0-9a-zA-Z\-]+>' => 'home/category',
         // 'subcategory/<id:[0-9a-zA-Z\-]+>' => 'home/subcategory',
         // 'add/<id:\d+>' => 'home/add',
         // '/cart' => 'home/cart',
-        // '/allproduct' => 'home/product',
     ],
 ];
