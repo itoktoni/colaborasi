@@ -18,35 +18,13 @@ class FeatureController extends AuthController
      */
     public function actionIndex()
     {
-        $data = [];
-        $query = Feature::find()->where(['>=', 'status', '-9']);
-        $data['keyword'] = Yii::$app->request->get('keyword');
-        if (Yii::$app->request->get('keyword')) {
-            $query->where(['like', 'name', Yii::$app->request->get('keyword')]);
-        }
 
-        $data['slug'] = Yii::$app->request->get('slug');
-        if (Yii::$app->request->get('slug')) {
-            $query->where(['like', 'slug', Yii::$app->request->get('slug')]);
+        $searchModel = new \backend\models\search\FeatureSearch();
+        $query = $searchModel->search(Yii::$app->request->get());
+        $data['pages'] = $query->getPagination();
+        $data['dataProvider'] = $query->getModels();
 
-        }
-
-        $data['status'] = Yii::$app->request->get('status');
-        if (Yii::$app->request->get('status') != '') {
-            $query->where(['=', 'status', Yii::$app->request->get('status')]);
-
-        }
-
-        $countQuery = clone $query;
-        $pages = new \yii\data\Pagination(['totalCount' => $countQuery->count()]);
-        $models = $query->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
-        $data['pages'] = $pages;
-        $data['dataProvider'] = $models;
-        $data['parent'] = false;
-
-        return $this->render('index', $data);
+        return $this->render('index',$data);
     }
 
     /**

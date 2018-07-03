@@ -1,10 +1,11 @@
 <?php
 
+use backend\components\CMS;
 use backend\components\SearchWidget;
 use backend\components\TableWidget;
 use backend\models\base\Permission;
-use backend\components\CMS;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\activerecord\FeatureSearch */
@@ -25,14 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php endif;
 
 echo SearchWidget::widget(
-    ['field' =>
+    [
+		'action'=> Url::to('/feature'),
+		'field' =>
         ['feature' =>
             [
-                'name' => 'keyword',
-                'value' => $keyword,
+                'name' => 'name',
                 'placeholder' => 'Find Feature',
                 'class' => 'form-control',
-            ], 'slug' => $slug,
+            ],
+            'slug' => [
+				'name' => 'slug','placeholder' => 'Find Slug..','class' => 'form-control'
+			]
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
@@ -44,9 +49,9 @@ echo TableWidget::widget([
     'header' => ['Name', 'Slug', 'Icon', 'Status', 'Action'],
     'field' => ['name' => 'name', 'slug' => 'slug', 'icon' => 'icon',
         'status' =>
-            ['callback' =>
-				['class' => 'backend\components\CMS', 'method' => 'getStatus']
-			]
+        ['callback' =>
+            ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
+        ],
     ]]);
 ?>
 
