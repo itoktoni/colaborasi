@@ -59,16 +59,16 @@ class AuthController extends Controller {
          * excluded query
          */
         $exclude = ['dashboard', 'signout'];
+        
+        // delete cache #uncomment if needed
+        // Yii::$app->cache->delete('roles_' . Yii::$app->user->identity->roles);
 
-        Yii::$app->cache->delete('roles_' . Yii::$app->user->identity->roles);
-//        Yii::$app->cache->flush();
         /**
          * check in cache if this roles exists,
          * this script prevent over query to database
          */
         if (!Yii::$app->cache->exists('roles_' . Yii::$app->user->identity->roles))
         {
-//            echo 'no cache';
             $permission = Permission::find()
                     ->joinWith('feature0', false, 'inner join')
                     ->leftjoin('feature_group', '`feature`.`feature_group` = `feature_group`.`id`')

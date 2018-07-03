@@ -17,6 +17,9 @@ return [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
+        'cms' => [
+            'class' => 'backend\components\cms'
+        ],
         'user' => [
             'identityClass' => 'backend\models\base\User',
             'enableAutoLogin' => true,
