@@ -11,6 +11,8 @@ return [
     'showScriptName' => false,
     'rules' => [
         '/facebook' => 'site/facebook',
+        '/twitter' => 'site/twitter',
+        '/google' => 'site/google',
         '/register' => 'site/signup',
         // '/' => 'home/homepage',
         // 'view/<id:[0-9a-zA-Z\-]+>' => 'home/detail',
