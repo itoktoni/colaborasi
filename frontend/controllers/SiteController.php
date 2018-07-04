@@ -99,6 +99,36 @@ class SiteController extends Controller
 
     }
 
+    public function actionGithub()
+    {
+
+        $facebook = [
+            'callback' => 'https://frontend.dev.co/github',
+            "providers" => [
+                "Github" => [
+                    "enabled" => true,
+                    "keys" => ["id" => "aa30fe86ba12dc029bc1", "secret" => "083ae280e1651db45d2469c9c7084bfcd45a89f7"],
+                    // 'scope' => 'email',
+                    // "trustForwarded" => false,
+                ],
+            ],
+        ];
+        
+        try {
+            
+            $hybridauth = new Hybridauth($facebook);
+            $adapter = $hybridauth->authenticate('Github');
+            $isConnected = $adapter->isConnected();
+            $userProfile = $adapter->getUserProfile();
+            var_dump($userProfile);
+            $adapter->disconnect();
+
+        } catch (\Exception $e) {
+            echo 'Oops, we ran into an issue! ' . $e->getMessage();
+        }
+
+    }
+
     public function actionTwitter()
     {
 

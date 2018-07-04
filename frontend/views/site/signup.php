@@ -28,7 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-success', 'name' => 'signup-button']) ?>
-                    <a class="btn btn-primary" href="<?php echo $facebook_url;?>">Sign With Facebook</a> 
+                    <a class="btn btn-primary" href="/facebook">Sign With Facebook</a> 
+                    <a class="btn btn-info" href="/twitter">Sign With Twitter</a> 
+                    <a class="btn btn-danger" href="/google">Sign With Google</a> 
+                    <a class="btn btn-warning" href="/github">Sign With Github</a> 
                 </div>
 
             <?php ActiveForm::end(); ?>
