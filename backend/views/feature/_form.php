@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropdownList([1 => 'Active', 0 => 'Inactive']) ?>
+    <?= $form->field($model, 'status')->dropdownList(Yii::$app->cms->status()) ?>
 
     <div class="form-group">
         <?= Html::a('Back',Url::to('/feature/'), ['class' => 'btn btn-primary']);?>

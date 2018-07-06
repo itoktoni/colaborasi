@@ -11,37 +11,37 @@ use backend\components\TableWidget;
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Feature Groups';
+$this->title = 'Roles';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="feature-group-index">
+<div class="roles-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create Feature Group', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a('Create Roles', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
     </p>
     <?php endif;
 
     echo SearchWidget::widget(
     [
-		'action'=> Url::to('/feature-group'),
+		'action'=> Url::to('/roles'),
 		'field' =>
-        ['FeatureGroup' =>
+        ['Roles' =>
             [
                 'name' => 'name',
-                'placeholder' => 'Find Feature Group',
+                'placeholder' => 'Find Roles',
                 'class' => 'form-control',
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
 echo TableWidget::widget([
-    'action' => 'Feature Group',
-    'action_url' => 'feature-group',
+    'action' => 'Roles',
+    'action_url' => 'roles',
     'data' => $dataProvider,
-    'header' => ['name','slug','sort','icon',
+    'header' => [    'name','description',
     'Status', 'Action'],
-    'field' => [    'name' => 'name','slug' => 'slug','sort' => 'sort','icon' => 'icon',    'status' =>
+    'field' => [    'name' => 'name','description' => 'description',    'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],

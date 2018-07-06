@@ -26,9 +26,14 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface {
 
-    const STATUS_DELETED = 0;
+    const STATUS_DELETED = -9;
+    const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
+    public $password_repeat;
+    public $updated_at;
+
+    public $roles_name;
     /**
      * {@inheritdoc}
      */
@@ -43,16 +48,17 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules()
     {
         return [
-                [['email', 'name', 'password', 'auth_key', 'password_hash'], 'required'],
+                [['email', 'name', 'password','password_repeat'], 'required'],
                 [['status', 'roles'], 'integer'],
-                [['created_at'], 'safe'],
+                [['created_at', 'auth_key', 'password_hash'], 'safe'],
                 [['email'], 'string', 'max' => 64],
-                [['name', 'password', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
+                [['name', 'password', 'password_hash','password_repeat', 'password_reset_token'], 'string', 'max' => 255],
                 [['auth_key'], 'string', 'max' => 32],
                 [['password_reset_token'], 'unique'],
                 [['roles'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['roles' => 'id']],
                 ['status', 'default', 'value' => self::STATUS_ACTIVE],
                 ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+                ['password_repeat', 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=> "Passwords don't match"],
         ];
     }
 
@@ -70,6 +76,7 @@ class User extends ActiveRecord implements IdentityInterface {
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'status' => 'Status',
+            'password_repeat' => 'Password Repeat',
             'roles' => 'Roles',
             'created_at' => 'Created At',
         ];
@@ -209,6 +216,19 @@ class User extends ActiveRecord implements IdentityInterface {
     public function setPassword($password)
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * 
+     */
+    public function beforeSave($insert){
+        if($insert){
+            $this->created_at = date('Y-m-d H:i:s');
+        }
+
+        $this->password = md5($this->password);
+
+        return parent::beforeSave($insert);
     }
 
     /**

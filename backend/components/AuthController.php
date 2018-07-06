@@ -22,10 +22,6 @@ class AuthController extends Controller {
      */
     public function init()
     {
-//        if (!Yii::$app->user->isGuest)
-//        {
-//            return $this->redirect('/dashboard');
-//        }
     }
 
     /**
@@ -74,6 +70,7 @@ class AuthController extends Controller {
                     ->leftjoin('feature_group', '`feature`.`feature_group` = `feature_group`.`id`')
                     ->where(['roles' => Yii::$app->user->identity->roles, 'feature_group.status' => 1, 'feature.status' => 1])
                     ->select(['feature_group.name as feature_group', 'feature_group.icon as feature_group_icon', 'feature_group.slug as feature_group_slug', 'feature' . '.name', 'feature' . '.slug', 'feature' . '.icon', 'permission' . '.access'])
+                    ->orderBy('feature_group.sort', SORT_ASC)
                     ->orderBy('feature_group.name', SORT_ASC)
                     ->asArray()
                     ->all();

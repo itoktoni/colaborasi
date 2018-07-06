@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Class m180628_023551_backend
  */
-class m180628_023551_backend extends Migration {
+class m180628_023551_backend extends Migration
+{
 
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
@@ -20,7 +22,6 @@ class m180628_023551_backend extends Migration {
             'name' => $this->string(64)->notNull(),
             'description' => $this->string(),
             'status' => $this->tinyInteger(1)->notNull()->defaultValue(1)], $tableOptions);
-
 
         $this->createTable('user', [
             'id' => $this->primaryKey(),
@@ -32,8 +33,9 @@ class m180628_023551_backend extends Migration {
             'password_reset_token' => $this->string()->unique(),
             'status' => $this->tinyInteger(1)->notNull()->defaultValue(1),
             'roles' => $this->integer(),
-            'created_at' => $this->datetime(),
-                ], $tableOptions);
+            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+        ], $tableOptions);
 
         $this->createTable('feature_group', [
             'id' => $this->primaryKey(),
@@ -59,26 +61,26 @@ class m180628_023551_backend extends Migration {
             'access' => $this->integer()->notNull()->defaultValue(1)], $tableOptions);
 
         $this->addForeignKey(
-                'fk-roles-user', 'user', 'roles', 'roles', 'id', 'CASCADE'
+            'fk-roles-user', 'user', 'roles', 'roles', 'id', 'CASCADE'
         );
 
         $this->addForeignKey(
-                'fk-feature-feature-group', 'feature', 'feature_group', 'feature_group', 'id', 'CASCADE'
+            'fk-feature-feature-group', 'feature', 'feature_group', 'feature_group', 'id', 'CASCADE'
         );
 
         $this->addForeignKey(
-                'fk-permission-feature', 'permission', 'feature', 'feature', 'id', 'CASCADE'
+            'fk-permission-feature', 'permission', 'feature', 'feature', 'id', 'CASCADE'
         );
 
         $this->addForeignKey(
-                'fk-permission-roles', 'permission', 'roles', 'roles', 'id', 'CASCADE'
+            'fk-permission-roles', 'permission', 'roles', 'roles', 'id', 'CASCADE'
         );
 
         $this->insert('roles', [
             'id' => 1,
             'name' => 'Super Admin',
             'description' => "Super Admin Don't Delete This",
-            'status' => 1
+            'status' => 1,
         ]);
 
         $this->insert('user', [
@@ -91,43 +93,73 @@ class m180628_023551_backend extends Migration {
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
-        $this->insert('feature_group', [
-            'id' => 1,
-            'name' => 'Setting',
-            'slug' => 'setting',
-            'sort' => 0,
-            'icon' => 'settings',
-            'status' => 1
-        ]);
-        
-        $rows = [[1,'Feature','feature',0,'-',1],[1,'Feature Group','feature_group',1,'-',1],[1,'Roles','roles',2,'-',1],[1,'User','user',3,'-',1],[1,'Permission','permission',4,'-',1]];
-        $this->batchInsert('feature',  ['feature_group', 'name', 'slug', 'sort', 'icon', 'status'], $rows);
-        
-        $rows = [[1,1,2],[1,2,2],[1,1,2],[1,3,2],[1,4,2]];
-        $this->batchInsert('permission',  ['roles', 'feature', 'access'], $rows);
+        $rows = [
+            [1, 'Setting', 'setting', 4, 'settings', 1],
+            [2, 'Product', 'product', 0, 'product', 1],
+            // [3, 'Category', 'category', 0, 'product', 1],
+        ];
+
+        $this->batchInsert('feature_group', [
+            'id',
+            'name',
+            'slug',
+            'sort',
+            'icon',
+            'status'],
+            $rows);
+
+        $rows =
+            [
+            [1, 'Feature', 'feature', 0, '-', 1],
+            [1, 'Feature Group', 'feature-group', 1, '-', 1],
+            [1, 'Roles', 'roles', 2, '-', 1],
+            [1, 'User', 'user', 3, '-', 1],
+            [2, 'Brand', 'brand', 0, '-', 1],
+            [2, 'Product', 'product', 1, '-', 1],
+            [2, 'Category', 'category', 2, '-', 1],
+            [2, 'Sub Category', 'sub-category', 3, '-', 1],
+        ];
+        $this->batchInsert('feature',
+            ['feature_group', 'name', 'slug', 'sort', 'icon', 'status'],
+            $rows);
+
+        $rows = [
+            [1, 1, 2], 
+            [1, 2, 2], 
+            [1, 3, 2], 
+            [1, 4, 2], 
+            [1, 5, 2],
+            [1, 6, 2],
+            [1, 7, 2],
+            [1, 8, 2],
+        ];
+        $this->batchInsert('permission',
+            ['roles', 'feature', 'access'],
+            $rows);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function safeDown() {
+    public function safeDown()
+    {
         echo "m180628_023551_backend cannot be reverted.\n";
 
         return false;
     }
 
     /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
+// Use up()/down() to run migration code without a transaction.
+public function up()
+{
 
-      }
+}
 
-      public function down()
-      {
-      echo "m180628_023551_backend cannot be reverted.\n";
+public function down()
+{
+echo "m180628_023551_backend cannot be reverted.\n";
 
-      return false;
-      }
-     */
+return false;
+}
+ */
 }

@@ -20,6 +20,10 @@ use Yii;
  */
 class Feature extends \yii\db\ActiveRecord
 {
+
+    const STATUS_DELETED = -9;
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
     /**
      * {@inheritdoc}
      */

@@ -33,6 +33,7 @@ use yii\helpers\Url;
 			<?php endif;?>
 			<?php endforeach;?>
 			<td>
+			
 				<?php if (YII::$app->cms->check_permission()): ?>
 				<?php if ($action_edit): ?>
 				<a href="<?php echo Url::to('/' . $action_url . '/update/?id=' . $item->id); ?>" class="btn btn-warning btn-xs btn-round"

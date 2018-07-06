@@ -2,14 +2,15 @@
 
 namespace backend\models\search;
 
-use backend\models\base\Feature;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\models\base\Roles;
 
 /**
- * FeatureSearch represents the model behind the search form of `backend\models\base\Feature`.
+ * RolesSearch represents the model behind the search form of `backend\models\base\Roles`.
  */
-class FeatureSearch extends Feature
+class RolesSearch extends Roles
 {
     /**
      * {@inheritdoc}
@@ -17,8 +18,8 @@ class FeatureSearch extends Feature
     public function rules()
     {
         return [
-            [['id', 'feature_group', 'sort', 'status'], 'integer'],
-            [['name', 'slug', 'icon'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['name', 'description'], 'safe'],
         ];
     }
 
@@ -40,9 +41,8 @@ class FeatureSearch extends Feature
      */
     public function search($params)
     {
-        $query = Feature::find()
+        $query = Roles::find()
         ->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -63,14 +63,11 @@ class FeatureSearch extends Feature
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'feature_group' => $this->feature_group,
-            'sort' => $this->sort,
             'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'icon', $this->icon]);
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

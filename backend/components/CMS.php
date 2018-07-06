@@ -121,9 +121,9 @@ public function paymentBank(){
 
 public function status($deleted = false){
   if($deleted){
-    return [CMS::STATUS_INACTIVE => 'Inactive',CMS::STATUS_ACTIVE => 'Active',CMS::STATUS_DELETED => 'Deleted'];
+    return [CMS::STATUS_ACTIVE => 'Active',CMS::STATUS_INACTIVE => 'Inactive',CMS::STATUS_DELETED => 'Deleted'];
   }
-  return [CMS::STATUS_INACTIVE => 'Inactive',CMS::STATUS_ACTIVE => 'Active'];
+  return [CMS::STATUS_ACTIVE => 'Active',CMS::STATUS_INACTIVE => 'Inactive'];
 }
 
 
@@ -176,7 +176,7 @@ public function getDiscountType($type){
 }
 
 public function getStatus($status){
-  return CMS::status()[$status];
+  return CMS::status(true)[$status];
 }
 
 }

@@ -37,6 +37,7 @@ class FeatureController extends AuthController
         $model = new Feature();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Feature Created');
             return $this->redirect(['/feature/']);
         }
 

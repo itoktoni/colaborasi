@@ -2,14 +2,15 @@
 
 namespace backend\models\search;
 
-use backend\models\base\Feature;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\models\base\FeatureGroup;
 
 /**
- * FeatureSearch represents the model behind the search form of `backend\models\base\Feature`.
+ * FeatureGroupSearch represents the model behind the search form of `backend\models\base\FeatureGroup`.
  */
-class FeatureSearch extends Feature
+class FeatureGroupSearch extends FeatureGroup
 {
     /**
      * {@inheritdoc}
@@ -17,7 +18,7 @@ class FeatureSearch extends Feature
     public function rules()
     {
         return [
-            [['id', 'feature_group', 'sort', 'status'], 'integer'],
+            [['id', 'sort', 'status'], 'integer'],
             [['name', 'slug', 'icon'], 'safe'],
         ];
     }
@@ -40,7 +41,7 @@ class FeatureSearch extends Feature
      */
     public function search($params)
     {
-        $query = Feature::find()
+        $query = FeatureGroup::find()
         ->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
 
         // add conditions that should always apply here
@@ -63,7 +64,6 @@ class FeatureSearch extends Feature
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'feature_group' => $this->feature_group,
             'sort' => $this->sort,
             'status' => $this->status,
         ]);
