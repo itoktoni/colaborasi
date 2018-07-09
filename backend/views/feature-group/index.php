@@ -15,59 +15,75 @@ $this->title = 'Feature Groups';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="feature-group-index">
+<div class="container-fluid">
+    
+    <h2>Feature Group</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <?php
+            echo SearchWidget::widget(
+                [
+                    'action'  => Url::to('/feature-group'),
+                    'field'   => [
+                        'FeatureGroup'      => [
+                            'name'          => 'name',
+                            'placeholder'   => 'Find Feature Group',
+                            'class'         => 'form-control',
+                        ],
+                    ], 
+                    'status' => backend\components\CMS::StatusWidget(),
+                ]
+            );
+            ?>
+        </div>
+    </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php if(YII::$app->cms->check_permission()):?>    
-        <p>
-            <?= Html::a('Create Feature Group', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
-        </p>
-    <?php endif;
-
-    echo SearchWidget::widget(
-        [
-    		'action'  => Url::to('/feature-group'),
-    		'field'   => [
-                'FeatureGroup'      => [
-                    'name'          => 'name',
-                    'placeholder'   => 'Find Feature Group',
-                    'class'         => 'form-control',
-                ],
-            ], 
-            'status' => backend\components\CMS::StatusWidget(),
-        ]
-    );
-
-    echo TableWidget::widget(
-        [
-            'action'        => 'Feature Group',
-            'action_url'    => 'feature-group',
-            'data'          => $dataProvider,
-            'header'        => ['name','slug','sort','icon','Status','Action'],
-            'field'         =>  [
-                'name'      => 'name',
-                'slug'      => 'slug',
-                'sort'      => 'sort',
-                'icon'      => 'icon',    
-                'status'    => [
-                    'callback' => ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
-                ],
-            ]
-        ]
-    );
-
-    ?>
-
-    <?php
-    echo yii\widgets\LinkPager::widget(
-        [
-            'pagination'    => $pages,
-            'options'       => [
-                'class'     => 'pagination pull-right',
-            ],
-        ]
-    );
-    ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-icon" data-background-color="purple">
+                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+                        <a href="/feature-group/create" class="" title="" rel="tooltip" data-original-title="Create Feature Group">
+                            <i class="material-icons">add</i>
+                        </a>
+                    <?php endif; ?>
+                </div>
+                <div class="card-content">
+                    <h4 class="card-title" style="visibility: hidden;">Feature Group</h4>
+                    <div class="table-responsive">
+                        <?php
+                            echo TableWidget::widget(
+                                [
+                                    'action'        => 'Feature Group',
+                                    'action_url'    => 'feature-group',
+                                    'data'          => $dataProvider,
+                                    'header'        => ['Name','Slug','Sort','Icon','Status'],
+                                    'field'         =>  [
+                                        'name'      => 'name',
+                                        'slug'      => 'slug',
+                                        'sort'      => 'sort',
+                                        'icon'      => 'icon',    
+                                        'status'    => [
+                                            'callback' => ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
+                                        ],
+                                    ]
+                                ]
+                            );
+                        ?>
+                    </div>
+                    <?php
+                    echo yii\widgets\LinkPager::widget(
+                        [
+                            'pagination'    => $pages,
+                            'options'       => [
+                                'class'     => 'pagination pull-right',
+                            ],
+                        ]
+                    );
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

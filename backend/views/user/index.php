@@ -10,12 +10,20 @@ $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <h2>Users</h2>
-    <div class="row">
-        <div class="col-md-12">
-        <form action="/user" method="get">
+        <h2>Users</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <form action="/user" method="get">
+
+            <div class="col-md-3">
+                <div class="form-group is-empty">
+                    <input type="text" name="name" class="form-control" placeholder="Find User" value="" id="user">
+                    <span class="material-input"></span>
+                    <span class="material-input"></span>
+                </div>
+            </div>
 
                  <div class="col-md-3">
                      <div class="form-group is-empty">
@@ -36,44 +44,39 @@ $this->params['breadcrumbs'][] = $this->title;
                  </div>
 
                  <div class="clearfix"></div>
-
-                 <div class="col-md-12 text-right">
-                     <a href="/user" class="btn btn-sm btn-default" rel="tooltip" title="" data-original-title="Reset Search"><i class="material-icons">sync</i></a>
-                     <button type="submit" class="btn btn-sm btn-primary" rel="tooltip" title="" data-original-title="Search"><i class="material-icons">search</i></button>
-                 </div>
-
-                 </form>
-<?php
+            </form> -->
+                <?php
 echo SearchWidget::widget(
     [
         'action' => Url::to('/user'),
-        'field' =>
-        ['User' =>
-            [
+        'field' => [
+            'User' => [
                 'name' => 'name',
                 'placeholder' => 'Find User',
                 'class' => 'form-control',
             ],
-        ], 'status' => backend\components\CMS::StatusWidget(),
+        ],
+        'status' => backend\components\CMS::StatusWidget(),
     ]
-); ?>
+);
+?>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header card-header-icon" data-background-color="purple">
-                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-icon" data-background-color="purple">
+                        <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
                         <a href="/user/create" class="" title="" rel="tooltip" data-original-title="Create User">
                             <i class="material-icons">add</i>
                         </a>
-                    <?php endif;?>
-                </div>
-                <div class="card-content">
-                    <h4 class="card-title" style="visibility: hidden;">Users</h4>
-                    <div class="table-responsive">
-                        <?php
+                        <?php endif;?>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title" style="visibility: hidden;">Users</h4>
+                        <div class="table-responsive">
+                            <?php
 echo TableWidget::widget(
     [
         'action' => 'User',
@@ -91,19 +94,8 @@ echo TableWidget::widget(
     ]
 );
 ?>
-                    </div>
-                    <!-- <ul class="pagination" style="float: right;">
-                        <li>
-                            <a href="javascript:void(0);"> prev<div class="ripple-container"></div></a>
-                        </li>
-                        <li class="active">
-                            <a href="javascript:void(0);">1</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">next </a>
-                        </li>
-                    </ul> -->
-                    <?php
+                        </div>
+                        <?php
 echo yii\widgets\LinkPager::widget(
     [
         'pagination' => $pages,
@@ -113,8 +105,8 @@ echo yii\widgets\LinkPager::widget(
     ]
 );
 ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
