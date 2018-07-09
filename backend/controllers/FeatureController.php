@@ -11,7 +11,10 @@ use yii;
  */
 class FeatureController extends AuthController
 {
-
+    public function init(){
+        $this->view->params['menu']     = 'setting';
+        $this->view->params['submenu']  = 'feature';
+    }
     /**
      * Lists all Feature models.
      * @return mixed

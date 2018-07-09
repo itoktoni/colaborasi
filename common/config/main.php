@@ -3,8 +3,8 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-        '@frontend' => 'c:/xampp/htdocs/team/frontend/',
-        '@backend' => 'c:/xampp/htdocs/team/backend/'
+        '@frontend' => 'd:/xampp/htdocs/teamnew/frontend/',
+        '@backend' => 'd:/xampp/htdocs/teamnew/backend/'
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
