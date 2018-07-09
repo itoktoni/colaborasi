@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2>Users</h2>
     <div class="row">
         <div class="col-md-12">
-            <form action="/user" method="get">
+            <!-- <form action="/user" method="get">
                  
             <div class="col-md-3">
                 <div class="form-group is-empty">
@@ -47,7 +47,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 <button type="submit" class="btn btn-sm btn-primary" rel="tooltip" title="" data-original-title="Search"><i class="material-icons">search</i></button>
             </div>
 
-            </form>
+            </form> -->
+            <?php
+            echo SearchWidget::widget(
+                [
+                    'action'  => Url::to('/user'),
+                    'field'   => [
+                        'User'              => [
+                            'name'          => 'name',
+                            'placeholder'   => 'Find User',
+                            'class'         => 'form-control',
+                        ],
+                    ], 
+                    'status'  => backend\components\CMS::StatusWidget(),
+                ]
+            );
+            ?>
         </div>
     </div>
 
