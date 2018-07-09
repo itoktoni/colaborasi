@@ -70,13 +70,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'action'            => 'User',
                                     'action_url'        => 'user',
                                     'data'              => $dataProvider,
-                                    'header'            => ['email','name','password','roles','created At','Status'],
+                                    'header'            => ['Email','Name','Roles','Status'],
                                     'field'             => [    
                                         'email'         => 'email',
                                         'name'          => 'name',
-                                        'password'      => 'password',
-                                        'roles'         => 'roles_name',
-                                        'created_at'    => 'created_at',    
+                                        'roles'         => 'roles_name',  
                                         'status'        => [
                                             'callback'  => ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
                                         ],
@@ -85,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             );
                         ?>
                     </div>
-                    <ul class="pagination" style="float: right;">
+                    <!-- <ul class="pagination" style="float: right;">
                         <li>
                             <a href="javascript:void(0);"> prev<div class="ripple-container"></div></a>
                         </li>
@@ -95,7 +93,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         <li>
                             <a href="javascript:void(0);">next </a>
                         </li>
-                    </ul>
+                    </ul> -->
+                    <?php
+                    echo yii\widgets\LinkPager::widget(
+                        [
+                            'pagination'    => $pages,
+                            'options'       => [
+                                'class'     => 'pagination pull-right',
+                            ],
+                        ]
+                    );
+                    ?>
                 </div>
             </div>
         </div>
