@@ -11,37 +11,37 @@ use backend\components\TableWidget;
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Productcontents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="productcontent-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a('Create Productcontent', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
     </p>
     <?php endif;
 
     echo SearchWidget::widget(
     [
-		'action'=> Url::to('/user'),
+		'action'=> Url::to('/productcontent'),
 		'field' =>
-        ['User' =>
+        ['Productcontent' =>
             [
                 'name' => 'name',
-                'placeholder' => 'Find User',
+                'placeholder' => 'Find Productcontent',
                 'class' => 'form-control',
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
 echo TableWidget::widget([
-    'action' => 'User',
-    'action_url' => 'user',
+    'action' => 'Productcontent',
+    'action_url' => 'productcontent',
     'data' => $dataProvider,
-    'header' => [    'email','name','roles','created At',
+    'header' => [    'product','embed Type','content Type','content','created At','updated At',
     'Status', 'Action'],
-    'field' => [    'email' => 'email','name' => 'name','roles' => 'roles_name','created_at' => 'created_at',    'status' =>
+    'field' => [    'product' => 'product','embed_type' => 'embed_type','content_type' => 'content_type','content' => 'content','created_at' => 'created_at','updated_at' => 'updated_at',    'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],

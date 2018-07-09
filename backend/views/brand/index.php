@@ -11,37 +11,37 @@ use backend\components\TableWidget;
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Brands';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="brand-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a('Create Brand', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
     </p>
     <?php endif;
 
     echo SearchWidget::widget(
     [
-		'action'=> Url::to('/user'),
+		'action'=> Url::to('/brand'),
 		'field' =>
-        ['User' =>
+        ['Brand' =>
             [
                 'name' => 'name',
-                'placeholder' => 'Find User',
+                'placeholder' => 'Find Brand',
                 'class' => 'form-control',
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
 echo TableWidget::widget([
-    'action' => 'User',
-    'action_url' => 'user',
+    'action' => 'Brand',
+    'action_url' => 'brand',
     'data' => $dataProvider,
-    'header' => [    'email','name','roles','created At',
+    'header' => [    'slug','name','description','created At','updated At',
     'Status', 'Action'],
-    'field' => [    'email' => 'email','name' => 'name','roles' => 'roles_name','created_at' => 'created_at',    'status' =>
+    'field' => [    'slug' => 'slug','name' => 'name','description' => 'description','created_at' => 'created_at','updated_at' => 'updated_at',    'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],

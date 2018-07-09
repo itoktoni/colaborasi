@@ -11,37 +11,37 @@ use backend\components\TableWidget;
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Productcategories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="productcategory-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a('Create Productcategory', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
     </p>
     <?php endif;
 
     echo SearchWidget::widget(
     [
-		'action'=> Url::to('/user'),
+		'action'=> Url::to('/productcategory'),
 		'field' =>
-        ['User' =>
+        ['Productcategory' =>
             [
                 'name' => 'name',
-                'placeholder' => 'Find User',
+                'placeholder' => 'Find Productcategory',
                 'class' => 'form-control',
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
 echo TableWidget::widget([
-    'action' => 'User',
-    'action_url' => 'user',
+    'action' => 'Productcategory',
+    'action_url' => 'productcategory',
     'data' => $dataProvider,
-    'header' => [    'email','name','roles','created At',
+    'header' => [    'product','sub Category',
     'Status', 'Action'],
-    'field' => [    'email' => 'email','name' => 'name','roles' => 'roles_name','created_at' => 'created_at',    'status' =>
+    'field' => [    'product' => 'product','sub_category' => 'sub_category',    'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],

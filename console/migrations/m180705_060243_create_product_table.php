@@ -40,7 +40,6 @@ class m180705_060243_create_product_table extends Migration
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
-
         $this->createTable('product_content', [
             'id' => $this->primaryKey(),
             'product' => $this->integer(),
@@ -51,6 +50,12 @@ class m180705_060243_create_product_table extends Migration
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'status' => $this->tinyInteger(1)->notNull()->defaultValue(1),
         ], $tableOptions);
+
+        $this->createTable('product_category', [
+            'id' => $this->primaryKey(),
+            'product' => $this->integer()->notNull(),
+            'sub_category' => $this->integer()->notNull()
+        ]);
 
         $this->createTable('brand', [
             'id' => $this->primaryKey(),
@@ -82,6 +87,25 @@ class m180705_060243_create_product_table extends Migration
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'status' => $this->tinyInteger(1)->notNull()->defaultValue(1),
         ], $tableOptions);
+
+        $this->addForeignKey(
+            'fk-subcategory-category', 'sub_category', 'category','category', 'id', 'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-product-brand', 'product', 'brand', 'brand', 'id', 'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-product-content', 'product_content', 'product', 'product', 'id', 'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-product-category', 'product_category', 'product', 'product', 'id', 'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-product-sub-category', 'product_category', 'sub_category', 'sub_category', 'id', 'CASCADE'
+        );
     }
 
     /**
