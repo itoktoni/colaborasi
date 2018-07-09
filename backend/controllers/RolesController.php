@@ -18,8 +18,8 @@ class RolesController extends Controller
 
     public function init()
     {
-        $this->view->params['menu'] = 'rolescontroller';
-        $this->view->params['submenu'] = 'rolescontroller';
+        $this->view->params['menu']     = 'setting';
+        $this->view->params['submenu']  = 'roles';
     }
 
     /**

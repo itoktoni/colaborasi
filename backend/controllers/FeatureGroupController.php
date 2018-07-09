@@ -17,9 +17,9 @@ use yii\filters\VerbFilter;
     {
 
         public function init(){
-        $this->view->params['menu'] = 'featuregroupcontroller';
-        $this->view->params['submenu'] = 'featuregroupcontroller';
-    }
+            $this->view->params['menu']     = 'setting';
+            $this->view->params['submenu']  = 'feature-group';
+        }
 
     /**
     * {@inheritdoc}

@@ -17,8 +17,8 @@ class UserController extends Controller
 
     public function init()
     {
-        $this->view->params['menu'] = 'usercontroller';
-        $this->view->params['submenu'] = 'usercontroller';
+        $this->view->params['menu']     = 'setting';
+        $this->view->params['submenu']  = 'user';
     }
 
     /**
