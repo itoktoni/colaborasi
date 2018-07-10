@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "member".
@@ -22,8 +23,13 @@ use Yii;
  * @property string $updated_at
  * @property int $status
  */
-class Member extends \yii\db\ActiveRecord
+class Member extends \yii\db\ActiveRecord implements IdentityInterface 
 {
+
+    public $auth_key;
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -69,5 +75,36 @@ class Member extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'status' => 'Status',
         ];
+    }
+
+     public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
     }
 }

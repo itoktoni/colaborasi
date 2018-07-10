@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use common\models\base\Member;
 
 /**
  * Site controller
@@ -90,7 +91,26 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Facebook');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
-            var_dump($userProfile);
+            $get = Member::find()->where(['email' => $userProfile->email])->one();
+
+            if(empty($get->email)){
+
+                $user = new Member();
+                $user->email = $userProfile->email;
+                $user->name = $userProfile->displayName;
+                $user->save();
+
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+
+            }
+            else{
+                // d($get);
+                Yii::$app->user->login($get, 3600 * 24 * 30);
+            }
+
+            // var_dump($userProfile);
+            $adapter->disconnect();
+            return $this->redirect('/');
             $adapter->disconnect();
 
         } catch (\Exception $e) {
