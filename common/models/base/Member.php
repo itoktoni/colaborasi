@@ -77,7 +77,10 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
-     public static function findIdentity($id)
+     /**
+     * outorization require by social media login
+     */
+    public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -107,4 +110,27 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->getPrimaryKey();
     }
+
+    // end social media login
+    
+    //=================================================================================================
+
+    //autorize require by login
+
+    public static function findByUsername($username)
+    {
+        return static::find()->where(['email' => $username, 'status' => self::STATUS_ACTIVE])->one();
+    }
+
+    public function validatePassword($password)
+    {
+        if (md5($password) == $this->password)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // end outorization by login page
 }
