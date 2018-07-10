@@ -44,13 +44,29 @@ class FeatureSearch extends Feature
         ->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
 
         // add conditions that should always apply here
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
+        
+        /**
+         * Force Sorting
+         */
+        if(isset($params['sort_order']) && $params['sort_order']){
+            switch($params['sort_order']){
+                case "asc":
+                $dataProvider->setSort(['defaultOrder' => ['id' => SORT_ASC]]);
+                break;
+                case "desc":
+                $dataProvider->setSort(['defaultOrder' => ['id' => SORT_DESC]]);
+                break;
+            }
+            
+            unset($params['sort_order']);
+        }
 
         $this->load($params,'');
 

@@ -16,6 +16,8 @@ class SearchWidget extends Widget{
 
 	public $status 			= false;
 	public $model 			= false;
+	public $sort 			= true;
+	public $sort_field 		= false;
 	public $status_field 	= false;
 
 	public function init(){
@@ -38,6 +40,8 @@ class SearchWidget extends Widget{
 				'class' 		=> $this->class,
 				'method'		=> $this->method,
 				'action' 		=> $this->action,
+				'sort' 			=> $this->sort,
+				'sort_field' 	=> $this->sort_field,
 				'status' 		=> $this->status,
 				'status_field' 	=> $this->status_field
 			]

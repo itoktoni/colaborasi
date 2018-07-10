@@ -52,6 +52,22 @@ class RolesSearch extends Roles
             ],
         ]);
 
+         /**
+         * Force Sorting
+         */
+        if(isset($params['sort_order']) && $params['sort_order']){
+            switch($params['sort_order']){
+                case "asc":
+                $dataProvider->setSort(['defaultOrder' => ['id' => SORT_ASC]]);
+                break;
+                case "desc":
+                $dataProvider->setSort(['defaultOrder' => ['id' => SORT_DESC]]);
+                break;
+            }
+            
+            unset($params['sort_order']);
+        }
+
         $this->load($params,'');
 
         if (!$this->validate()) {

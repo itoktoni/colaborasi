@@ -1,11 +1,10 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use backend\models\base\Permission;
 use backend\components\CMS;
 use backend\components\SearchWidget;
 use backend\components\TableWidget;
+use backend\models\base\Permission;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 
@@ -14,18 +13,17 @@ use backend\components\TableWidget;
 $this->title = 'Brands';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="brand-index">
+<div class="container-fluid">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create Brand', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
-    </p>
-    <?php endif;
+    <h2><?php echo $this->title; ?></h2>
+    <div class="row">
+        <div class="col-md-12">
 
-    echo SearchWidget::widget(
+<?php
+echo SearchWidget::widget(
     [
-		'action'=> Url::to('/brand'),
-		'field' =>
+        'action' => Url::to('/brand'),
+        'field' =>
         ['Brand' =>
             [
                 'name' => 'name',
@@ -34,20 +32,38 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
-);
+); ?>
+
+    </div>
+</div>
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-icon" data-background-color="purple">
+                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+                        <a href="/brand/create" class="" title="" rel="tooltip" data-original-title="Create Brand">
+                            <i class="material-icons">add</i>
+                        </a>
+                    <?php endif;?>
+                </div>
+                <div class="card-content">
+                    <h4 class="card-title" style="visibility: hidden;">Feature</h4>
+                    <div class="table-responsive">
+<?php
 echo TableWidget::widget([
     'action' => 'Brand',
     'action_url' => 'brand',
     'data' => $dataProvider,
-    'header' => [    'slug','name','description','created At','updated At',
-    'Status', 'Action'],
-    'field' => [    'slug' => 'slug','name' => 'name','description' => 'description','created_at' => 'created_at','updated_at' => 'updated_at',    'status' =>
+    'header' => ['slug', 'name', 'description',
+        'Status'],
+    'field' => ['slug' => 'slug', 'name' => 'name', 'description' => 'description', 'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],
     ]]);
 ?>
-
+ </div>
 <?php
 echo yii\widgets\LinkPager::widget([
     'pagination' => $pages,
@@ -56,4 +72,9 @@ echo yii\widgets\LinkPager::widget([
     ],
 ]);
 ?>
+</div>
+            </div>
+        </div>
+    </div>
+
 </div>

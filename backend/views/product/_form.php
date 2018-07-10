@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use common\models\base\Brand;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\base\Product */
@@ -25,15 +27,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'price_discount')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'brand')->textInput() ?>
+    <?= $form->field($model, 'brand')->dropdownList(ArrayHelper::map(Brand::find()->where(['status' => 1])->all(),'id','name')); ?> 
 
     <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'image_path')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'image_thumbnail')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'image_portrait')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'headline')->textInput() ?>
 
@@ -43,15 +39,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'product_download_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'product_download_path')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'product_view')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'status')->dropdownList(Yii::$app->cms->status()) ?>    
 
 	<div class="form-group">
 		<?= Html::a('Back',Url::to('/product/'), ['class' => 'btn btn-primary']);?>		<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>

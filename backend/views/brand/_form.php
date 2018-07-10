@@ -11,24 +11,20 @@ use yii\widgets\ActiveForm;
 
 <div class="col-md-4 brand-form">
 
-	<?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin();?>
 
-	    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+	    <?=$form->field($model, 'slug')->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model, 'name')->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model, 'description')->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
+	<?=$form->field($model, 'status')->dropdownList(Yii::$app->cms->status())?>
 
 	<div class="form-group">
-		<?= Html::a('Back',Url::to('/brand/'), ['class' => 'btn btn-primary']);?>		<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+		<?=Html::a('Back', Url::to('/brand/'), ['class' => 'btn btn-primary']);?>		<?=Html::submitButton('Save', ['class' => 'btn btn-primary'])?>
 	</div>
 
-	<?php ActiveForm::end(); ?>
+	<?php ActiveForm::end();?>
 
 </div>

@@ -4,15 +4,11 @@ use yii\helpers\Url;?>
 
     <div class="row">
         <div class="col-md-12">
-            
                 <form action="<?php echo $action; ?>" method="<?php echo $method; ?>">
-                    <?php
-                        foreach ($field as $key => $item):
-                            ?>
+                    <?php foreach ($field as $key => $item):?>
 
                         <div class="col-md-3">
-                            <?php if (!is_array($item)):
-                            ?>
+                            <?php if (!is_array($item)):?>
 
                             <div class="form-group is-empty">
                                 <input type="text" name="<?php echo $key; ?>" class="<?php echo $class; ?>" placeholder="Find <?=ucwords($key);?>" value="<?php echo $item; ?>"
@@ -78,6 +74,16 @@ use yii\helpers\Url;?>
                             <?php endif;?>
                         </div>
                         <?php endforeach;?>
+
+                        <?php if ($status): ?>
+                        <div class="col-md-2">
+                            <div class="form-group is-empty" style="margin-top:11px;">
+                                <?php echo Html::dropDownList('sort_order', Yii::$app->request->get('sort_order', $defaultValue = null), (!$sort_field) ? backend\components\CMS::sort() : $status_field, ['prompt' => 'No Sort', 'class' => 'selectpicker','data-size' => '7','data-style' => 'select-with-transition']); ?>
+                            </div>
+                        </div>
+                        <?php endif;?>
+
+
                         <?php if ($status): ?>
                         <div class="col-md-2">
                             <div class="form-group is-empty" style="margin-top:11px;">

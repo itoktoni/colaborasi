@@ -18,8 +18,8 @@ use yii\data\Pagination;
     {
 
         public function init(){
-        $this->view->params['menu'] = 'categorycontroller';
-        $this->view->params['submenu'] = 'categorycontroller';
+        $this->view->params['menu'] = 'product';
+        $this->view->params['submenu'] = 'category';
     }
 
     /**

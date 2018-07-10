@@ -14,14 +14,13 @@ use backend\components\TableWidget;
 $this->title = 'Categories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="category-index">
+<div class="container-fluid">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
-    </p>
-    <?php endif;
-
+<h2><?php echo $this->title; ?></h2>
+<div class="row">
+    <div class="col-md-12">
+    
+<?php 
     echo SearchWidget::widget(
     [
 		'action'=> Url::to('/category'),
@@ -34,20 +33,38 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
-);
+);?>
+
+ </div>
+</div>
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-icon" data-background-color="purple">
+                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+                        <a href="/category/create" class="" title="" rel="tooltip" data-original-title="Create Category">
+                            <i class="material-icons">add</i>
+                        </a>
+                    <?php endif;?>
+                </div>
+                <div class="card-content">
+                    <h4 class="card-title" style="visibility: hidden;">Feature</h4>
+                    <div class="table-responsive">
+                    <?php 
 echo TableWidget::widget([
     'action' => 'Category',
     'action_url' => 'category',
     'data' => $dataProvider,
     'header' => [    'slug','name','description','created At','updated At',
-    'Status', 'Action'],
+    'Status'],
     'field' => [    'slug' => 'slug','name' => 'name','description' => 'description','created_at' => 'created_at','updated_at' => 'updated_at',    'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],
     ]]);
 ?>
-
+</div>
 <?php
 echo yii\widgets\LinkPager::widget([
     'pagination' => $pages,
@@ -56,4 +73,9 @@ echo yii\widgets\LinkPager::widget([
     ],
 ]);
 ?>
+</div>
+            </div>
+        </div>
+    </div>
+
 </div>

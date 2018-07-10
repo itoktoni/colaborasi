@@ -18,8 +18,8 @@ use yii\data\Pagination;
     {
 
         public function init(){
-        $this->view->params['menu'] = 'subcategorycontroller';
-        $this->view->params['submenu'] = 'subcategorycontroller';
+        $this->view->params['menu'] = 'product';
+        $this->view->params['submenu'] = 'sub-category';
     }
 
     /**
@@ -62,7 +62,7 @@ use yii\data\Pagination;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Subcategory Created');
-            return $this->redirect(['/subcategory/']);
+            return $this->redirect(['/sub-category/']);
     }
 
     return $this->render('create', [
@@ -83,7 +83,7 @@ public function actionUpdate($id)
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         Yii::$app->session->setFlash('success', 'Subcategory Updated');
-    return $this->redirect('/subcategory/');
+    return $this->redirect('/sub-category/');
 }
 
 return $this->render('update', [

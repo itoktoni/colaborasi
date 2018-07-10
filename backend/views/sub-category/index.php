@@ -14,17 +14,15 @@ use backend\components\TableWidget;
 $this->title = 'Subcategories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="subcategory-index">
+<div class="container-fluid">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php if(YII::$app->cms->check_permission()):?>    <p>
-        <?= Html::a('Create Subcategory', ['create'], ['class' => 'btn btn-primary pull-right']) ?>
-    </p>
-    <?php endif;
+<h2><?php echo $this->title; ?></h2>
+<div class="row">
+    <div class="col-md-12">
 
-    echo SearchWidget::widget(
+    <?php echo SearchWidget::widget(
     [
-		'action'=> Url::to('/subcategory'),
+		'action'=> Url::to('/sub-category'),
 		'field' =>
         ['Subcategory' =>
             [
@@ -35,19 +33,40 @@ $this->params['breadcrumbs'][] = $this->title;
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 );
+?>
+
+
+    </div>
+</div>
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-icon" data-background-color="purple">
+                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+                        <a href="/sub-category/create" class="" title="" rel="tooltip" data-original-title="Create Sub Category">
+                            <i class="material-icons">add</i>
+                        </a>
+                    <?php endif;?>
+                </div>
+                <div class="card-content">
+                    <h4 class="card-title" style="visibility: hidden;">Feature</h4>
+                    <div class="table-responsive">
+
+<?php 
 echo TableWidget::widget([
     'action' => 'Subcategory',
-    'action_url' => 'subcategory',
+    'action_url' => 'sub-category',
     'data' => $dataProvider,
-    'header' => [    'category','slug','name','description','created At','updated At',
-    'Status', 'Action'],
-    'field' => [    'category' => 'category','slug' => 'slug','name' => 'name','description' => 'description','created_at' => 'created_at','updated_at' => 'updated_at',    'status' =>
+    'header' => ['category','slug','name','description',
+    'Status'],
+    'field' => [    'category' => 'category_name','slug' => 'slug','name' => 'name','description' => 'description', 'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],
     ]]);
 ?>
-
+</div>
 <?php
 echo yii\widgets\LinkPager::widget([
     'pagination' => $pages,
@@ -56,4 +75,9 @@ echo yii\widgets\LinkPager::widget([
     ],
 ]);
 ?>
+</div>
+            </div>
+        </div>
+    </div>
+
 </div>

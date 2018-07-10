@@ -21,7 +21,7 @@ use Yii;
  */
 class Subcategory extends \yii\db\ActiveRecord
 {
-
+    public $category_name;
     const STATUS_DELETED = -9;
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;

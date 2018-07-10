@@ -17,6 +17,7 @@ class CMS {
     const PAYMENT_BALANCE = 1, PAYMENT_PAYPAL = 2;
     const BANK_BCA = 1,BANK_MANDIRI = 2;
     const DISCOUNT_PERCENTAGE = 1, DISCOUNT_FIXED = 2;
+    const SORT_ASCENDING = 'asc', SORT_DESCENDING = 'desc', SORT_RECENT = 'recent';
 
     /**
     * [getMenu description]
@@ -120,6 +121,11 @@ class CMS {
         return [CMS::STATUS_ACTIVE => 'Active',CMS::STATUS_INACTIVE => 'Inactive'];
     }
 
+
+    public function sort(){
+        return [CMS::SORT_ASCENDING => 'Ascending',CMS::SORT_DESCENDING => 'Descending',CMS::SORT_RECENT => 'Recent'];
+    }
+
     public function paymentWidget(){
         return Html::dropDownList('payment' ,CMS::paymentType());
     }
@@ -170,6 +176,10 @@ class CMS {
 
     public function getStatus($status){
         return CMS::status(true)[$status];
+    }
+
+    public function getSort($sort){
+        return CMS::sort[$sort];
     }
 
 }
