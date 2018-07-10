@@ -72,12 +72,6 @@ class SiteController extends Controller
 
     public function actionFacebook()
     {
-        if(Yii::$app->request->post()){
-
-            $update = Member::find(Yii::$app->request->post('id'))->one();
-            $update->password = md5($_POST['Member']['password']);
-            $update->save();
-        }
         $facebook = [
             'callback' => 'https://frontend.dev.co/facebook',
             "providers" => [
@@ -100,6 +94,19 @@ class SiteController extends Controller
 
             if(empty($get->email)){
 
+                $path = Yii::getAlias('@frontend') . '/web/files/profile';
+                $image = str_replace('150', '400', $userProfile->photoURL);
+                $content = file_get_contents($image);
+                file_put_contents($path.'/data.jpg', $content);
+
+                \Cloudinary::config(array( 
+                    "cloud_name" => "itoktoni", 
+                    "api_key" => "952542949129655", 
+                    "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                ));
+
+                \Cloudinary\Uploader::upload($path.'/data.jpg');
+
                 $user = new Member();
                 $user->email = $userProfile->email;
                 $user->name = $userProfile->displayName;
@@ -108,8 +115,6 @@ class SiteController extends Controller
                 return $this->render('setPassword', [
                     'model' => $user,
                 ]);
-
-                //Yii::$app->user->login($user, 3600 * 24 * 30);
 
             }
             else{
@@ -158,7 +163,6 @@ class SiteController extends Controller
 
     public function actionTwitter()
     {
-
         $facebook = [
             'callback' => 'https://frontend.dev.co/twitter',
             "providers" => [
@@ -186,7 +190,6 @@ class SiteController extends Controller
 
     public function actionGoogle()
     {
-
         $facebook = [
             'callback' => 'https://frontend.dev.co/google',
             "providers" => [
@@ -264,6 +267,20 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionPassword(){
+
+        if(Yii::$app->request->post()){
+
+            $update = Member::find(Yii::$app->request->post('id'))->one();
+            $update->password = md5($_POST['Member']['password']);
+            $update->save();
+
+            Yii::$app->user->login($update, 3600 * 24 * 30);
+
+            return $this->redirect('/');
+        }
     }
 
     /**
