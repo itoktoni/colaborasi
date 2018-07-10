@@ -29,6 +29,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public $auth_key;
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
+    public $password_hash;
 
     /**
      * {@inheritdoc}
@@ -133,4 +134,18 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     // end outorization by login page
+
+    // require for sign up
+
+    public function setPassword($password)
+    {
+        $this->password_hash = md5($password);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    // end sign up
 }
