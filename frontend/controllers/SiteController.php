@@ -72,7 +72,12 @@ class SiteController extends Controller
 
     public function actionFacebook()
     {
+        if(Yii::$app->request->post()){
 
+            $update = Member::find(Yii::$app->request->post('id'))->one();
+            $update->password = md5($_POST['Member']['password']);
+            $update->save();
+        }
         $facebook = [
             'callback' => 'https://frontend.dev.co/facebook',
             "providers" => [
@@ -99,17 +104,19 @@ class SiteController extends Controller
                 $user->email = $userProfile->email;
                 $user->name = $userProfile->displayName;
                 $user->save();
+                
+                return $this->render('setPassword', [
+                    'model' => $user,
+                ]);
 
-                Yii::$app->user->login($user, 3600 * 24 * 30);
+                //Yii::$app->user->login($user, 3600 * 24 * 30);
 
             }
             else{
-                // d($get);
+
                 Yii::$app->user->login($get, 3600 * 24 * 30);
             }
 
-            // var_dump($userProfile);
-            $adapter->disconnect();
             return $this->redirect('/');
             $adapter->disconnect();
 
