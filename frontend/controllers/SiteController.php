@@ -90,26 +90,34 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Facebook');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
+            // d($userProfile);
             $get = Member::find()->where(['email' => $userProfile->email])->one();
 
             if(empty($get->email)){
 
                 $path = Yii::getAlias('@frontend') . '/web/files/profile';
-                $image = str_replace('150', '400', $userProfile->photoURL);
-                $content = file_get_contents($image);
-                file_put_contents($path.'/data.jpg', $content);
+                if(!empty($userProfile->photoURL)){
+                    
+                    $image = str_replace('150', '400', $userProfile->photoURL);
+                    $content = file_get_contents($image);
+                    file_put_contents($path.'/'.$userProfile->identifier.'.jpg', $content);
 
-                \Cloudinary::config(array( 
-                    "cloud_name" => "itoktoni", 
-                    "api_key" => "952542949129655", 
-                    "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
-                ));
+                    \Cloudinary::config(array( 
+                        "cloud_name" => "itoktoni", 
+                        "api_key" => "952542949129655", 
+                        "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                    ));
 
-                \Cloudinary\Uploader::upload($path.'/data.jpg');
+                    $upload = \Cloudinary\Uploader::upload($path.'/'.$userProfile->identifier.'.jpg');
+                    unlink($path.'/'.$userProfile->identifier.'.jpg');
+                }
 
                 $user = new Member();
                 $user->email = $userProfile->email;
+                $user->social_media_type = 1;
+                $user->social_media_id = $userProfile->identifier;
                 $user->name = $userProfile->displayName;
+                $user->picture = $upload['url'];
                 $user->save();
                 
                 return $this->render('setPassword', [
@@ -152,7 +160,48 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Github');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
-            var_dump($userProfile);
+            // d($userProfile);
+            $get = Member::find()->where(['email' => $userProfile->email])->one();
+
+            if(empty($get->email)){
+
+                $path = Yii::getAlias('@frontend') . '/web/files/profile';
+                if(!empty($userProfile->photoURL)){
+                    
+                    $image = $userProfile->photoURL;
+                    $content = file_get_contents($image);
+                    file_put_contents($path.'/'.$userProfile->identifier.'.jpg', $content);
+
+                    \Cloudinary::config(array( 
+                        "cloud_name" => "itoktoni", 
+                        "api_key" => "952542949129655", 
+                        "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                    ));
+
+                    $upload = \Cloudinary\Uploader::upload($path.'/'.$userProfile->identifier.'.jpg');
+                    unlink($path.'/'.$userProfile->identifier.'.jpg');
+                }
+
+                $user = new Member();
+                $user->email = $userProfile->email;
+                $user->social_media_type = 4;
+                $user->social_media_id = $userProfile->identifier;
+                $user->name = $userProfile->displayName;
+                $user->picture = $upload['url'];
+                $user->save();
+                
+                return $this->render('setPassword', [
+                    'model' => $user,
+                ]);
+
+            }
+            else{
+
+                Yii::$app->user->login($get, 3600 * 24 * 30);
+            }
+
+            return $this->redirect('/');
+
             $adapter->disconnect();
 
         } catch (\Exception $e) {
@@ -179,7 +228,48 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Twitter');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
-            var_dump($userProfile);
+            // d($userProfile);
+            $get = Member::find()->where(['email' => $userProfile->email])->one();
+
+            if(empty($get->email)){
+
+                $path = Yii::getAlias('@frontend') . '/web/files/profile';
+                if(!empty($userProfile->photoURL)){
+                    
+                    $image = $userProfile->photoURL;
+                    $content = file_get_contents($image);
+                    file_put_contents($path.'/'.$userProfile->identifier.'.jpg', $content);
+
+                    \Cloudinary::config(array( 
+                        "cloud_name" => "itoktoni", 
+                        "api_key" => "952542949129655", 
+                        "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                    ));
+
+                    $upload = \Cloudinary\Uploader::upload($path.'/'.$userProfile->identifier.'.jpg');
+                    unlink($path.'/'.$userProfile->identifier.'.jpg');
+                    // d($upload);
+                }
+
+                $user = new Member();
+                $user->email = $userProfile->email;
+                $user->social_media_type = 2;
+                $user->social_media_id = $userProfile->identifier;
+                $user->name = $userProfile->firstName;
+                $user->picture = $upload['url'];
+                $user->save(false);
+                
+                return $this->render('setPassword', [
+                    'model' => $user,
+                ]);
+
+            }
+            else{
+
+                Yii::$app->user->login($get, 3600 * 24 * 30);
+            }
+
+            return $this->redirect('/');
             $adapter->disconnect();
 
         } catch (\Exception $e) {
@@ -206,7 +296,47 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Google');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
-            var_dump($userProfile);
+            // d($userProfile);
+            $get = Member::find()->where(['email' => $userProfile->email])->one();
+
+            if(empty($get->email)){
+
+                $path = Yii::getAlias('@frontend') . '/web/files/profile';
+                if(!empty($userProfile->photoURL)){
+                    
+                    $image = str_replace('150', '400', $userProfile->photoURL);
+                    $content = file_get_contents($image);
+                    file_put_contents($path.'/'.$userProfile->identifier.'.jpg', $content);
+
+                    \Cloudinary::config(array( 
+                        "cloud_name" => "itoktoni", 
+                        "api_key" => "952542949129655", 
+                        "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                    ));
+
+                    $upload = \Cloudinary\Uploader::upload($path.'/'.$userProfile->identifier.'.jpg');
+                    unlink($path.'/'.$userProfile->identifier.'.jpg');
+                }
+
+                $user = new Member();
+                $user->email = $userProfile->email;
+                $user->social_media_type = 3;
+                $user->social_media_id = $userProfile->identifier;
+                $user->name = $userProfile->displayName;
+                $user->picture = $upload['url'];
+                $user->save();
+                
+                return $this->render('setPassword', [
+                    'model' => $user,
+                ]);
+
+            }
+            else{
+
+                Yii::$app->user->login($get, 3600 * 24 * 30);
+            }
+
+            return $this->redirect('/');
             $adapter->disconnect();
 
         } catch (\Exception $e) {
@@ -273,7 +403,9 @@ class SiteController extends Controller
 
         if(Yii::$app->request->post()){
 
-            $update = Member::find(Yii::$app->request->post('id'))->one();
+            // d($_POST['email']);
+            $update = Member::find()->where(['email' => Yii::$app->request->post('id')])->one();
+            // d($update);
             $update->password = md5($_POST['Member']['password']);
             $update->save();
 

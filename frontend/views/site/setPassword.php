@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['action' =>['site/password'],'id' => 'reset-password-form']); ?>
 
                 <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
-                <input type="hidden" name="id" value="<?php echo $model->id;?>">
+                <input type="hidden" name="id" value="<?php echo $model->email;?>">
                 <div class="form-group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
                 </div>
