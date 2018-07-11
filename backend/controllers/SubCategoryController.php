@@ -18,7 +18,7 @@ use yii\data\Pagination;
     {
 
         public function init(){
-        $this->view->params['menu'] = 'product';
+        $this->view->params['menu'] = 'categories';
         $this->view->params['submenu'] = 'sub-category';
     }
 
