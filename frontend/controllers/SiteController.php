@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use common\models\base\Member;
 
 /**
  * Site controller
@@ -71,7 +72,6 @@ class SiteController extends Controller
 
     public function actionFacebook()
     {
-
         $facebook = [
             'callback' => 'https://frontend.dev.co/facebook',
             "providers" => [
@@ -90,7 +90,39 @@ class SiteController extends Controller
             $adapter = $hybridauth->authenticate('Facebook');
             $isConnected = $adapter->isConnected();
             $userProfile = $adapter->getUserProfile();
-            var_dump($userProfile);
+            $get = Member::find()->where(['email' => $userProfile->email])->one();
+
+            if(empty($get->email)){
+
+                $path = Yii::getAlias('@frontend') . '/web/files/profile';
+                $image = str_replace('150', '400', $userProfile->photoURL);
+                $content = file_get_contents($image);
+                file_put_contents($path.'/data.jpg', $content);
+
+                \Cloudinary::config(array( 
+                    "cloud_name" => "itoktoni", 
+                    "api_key" => "952542949129655", 
+                    "api_secret" => "ni6IH1pYX40tY_SJrsjLTk3zgAk" 
+                ));
+
+                \Cloudinary\Uploader::upload($path.'/data.jpg');
+
+                $user = new Member();
+                $user->email = $userProfile->email;
+                $user->name = $userProfile->displayName;
+                $user->save();
+                
+                return $this->render('setPassword', [
+                    'model' => $user,
+                ]);
+
+            }
+            else{
+
+                Yii::$app->user->login($get, 3600 * 24 * 30);
+            }
+
+            return $this->redirect('/');
             $adapter->disconnect();
 
         } catch (\Exception $e) {
@@ -131,7 +163,6 @@ class SiteController extends Controller
 
     public function actionTwitter()
     {
-
         $facebook = [
             'callback' => 'https://frontend.dev.co/twitter',
             "providers" => [
@@ -159,7 +190,6 @@ class SiteController extends Controller
 
     public function actionGoogle()
     {
-
         $facebook = [
             'callback' => 'https://frontend.dev.co/google',
             "providers" => [
@@ -237,6 +267,20 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionPassword(){
+
+        if(Yii::$app->request->post()){
+
+            $update = Member::find(Yii::$app->request->post('id'))->one();
+            $update->password = md5($_POST['Member']['password']);
+            $update->save();
+
+            Yii::$app->user->login($update, 3600 * 24 * 30);
+
+            return $this->redirect('/');
+        }
     }
 
     /**

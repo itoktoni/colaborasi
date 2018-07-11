@@ -10,6 +10,7 @@ return [
     'enableStrictParsing' => false,
     'showScriptName' => false,
     'rules' => [
+        '/password' => 'site/password',
         '/github' => 'site/github',
         '/facebook' => 'site/facebook',
         '/twitter' => 'site/twitter',

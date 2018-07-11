@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "236aaf67687bd6b288c6ae53b14551f3",
+    "content-hash": "b8025cf2da8bb0ca2baa877bd941b07e",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -228,6 +228,58 @@
             "time": "2017-07-16T21:13:23+00:00"
         },
         {
+            "name": "cloudinary/cloudinary_php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cloudinary/cloudinary_php.git",
+                "reference": "4cfeac33afeab67518c5c3f8b677cca9f81a80b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cloudinary/cloudinary_php/zipball/4cfeac33afeab67518c5c3f8b677cca9f81a80b6",
+                "reference": "4cfeac33afeab67518c5c3f8b677cca9f81a80b6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ],
+                "files": [
+                    "src/Helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cloudinary",
+                    "homepage": "https://github.com/cloudinary/cloudinary_php/graphs/contributors"
+                }
+            ],
+            "description": "Cloudinary PHP SDK",
+            "homepage": "https://github.com/cloudinary/cloudinary_php",
+            "keywords": [
+                "cdn",
+                "cloud",
+                "cloudinary",
+                "image management",
+                "sdk"
+            ],
+            "time": "2018-07-09T08:55:16+00:00"
+        },
+        {
             "name": "doctrine/lexer",
             "version": "v1.0.1",
             "source": {
@@ -449,12 +501,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hybridauth/hybridauth.git",
-                "reference": "b515c3fae7669e9774718129754f334ebf3009e8"
+                "reference": "fe04a87e07c55072316af10290e87bf2bffdfd92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/b515c3fae7669e9774718129754f334ebf3009e8",
-                "reference": "b515c3fae7669e9774718129754f334ebf3009e8",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/fe04a87e07c55072316af10290e87bf2bffdfd92",
+                "reference": "fe04a87e07c55072316af10290e87bf2bffdfd92",
                 "shasum": ""
             },
             "require": {
@@ -498,7 +550,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2018-06-21T07:18:48+00:00"
+            "time": "2018-07-10T10:55:47+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3817,7 +3869,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "hybridauth/hybridauth": 20
+        "hybridauth/hybridauth": 20,
+        "cloudinary/cloudinary_php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -23,16 +23,16 @@ class CMS {
     * [getMenu description]
     * @return [type] [description]
     */
-    public function getMenu(){
+    public static function getMenu(){
         $session = Yii::$app->session;
         return $session['menu'];
     }
 
-    public function getOtherMenu(){
+    public static function getOtherMenu(){
         return ['Brand' => 'brand', 'Contact' => 'contact'];
     }
 
-    public function activeMenu($source, $comparator, $stringreturn = 'class="active"', $default = false){
+    public static function activeMenu($source, $comparator, $stringreturn = 'class="active"', $default = false){
         if($source == $comparator){
             return $stringreturn;
         }
@@ -44,7 +44,7 @@ class CMS {
     * @param  [type] $access_type [description]
     * @return [type]              [description]
     */
-    public function check_permission($access_type = Permission::FULL_ACCESS){
+    public static function check_permission($access_type = Permission::FULL_ACCESS){
         $session = Yii::$app->session;
         if(!isset($session['menu']['list'][strtolower(Yii::$app->controller->id)])){
             return false;
@@ -59,16 +59,16 @@ class CMS {
     * [get_permission description]
     * @return [type] [description]
     */
-    public function get_permission(){
+    public static function get_permission(){
         $session = Yii::$app->session;
         return $session['menu']['list'][strtolower(Yii::$app->controller->id)]['access'];  
     }
 
-    public function getStatusTopup($var){
+    public static function getStatusTopup($var){
         return CMS::statusTopup()[$var];
     }
 
-    public function statusTopup(){
+    public static function statusTopup(){
         [CMS::TOPUP_REJECTED => "Rejected", CMS::TOPUP_WAITING => "Waiting for Payment",  CMS::TOPUP_USER_CONFIRMED => "Confirmed by User", CMS::TOPUP_ADMIN_CONFIRMED => "Confirmed by Admin", CMS::TOPUP_FINISH => "Confirmed by Finished"];
     }
 
@@ -76,7 +76,7 @@ class CMS {
     * [paymentType description]
     * @return [type] [description]
     */
-    public function paymentType(){
+    public static function paymentType(){
         return [CMS::PAYMENT_BALANCE =>'Balance', CMS::PAYMENT_PAYPAL => 'Paypal'];
     }
 
@@ -85,7 +85,7 @@ class CMS {
     * @param  [type] $var [description]
     * @return [type]      [description]
     */
-    public function getPaymentType($var){
+    public static function getPaymentType($var){
         return CMS::paymentType()[$var];
     }
 
@@ -94,11 +94,11 @@ class CMS {
     * @param  [type] $var [description]
     * @return [type]      [description]
     */
-    public function getStatusReview($var){
+    public static function getStatusReview($var){
         return CMS::statusReview()[$var];
     }
 
-    public function statusReview(){
+    public static function statusReview(){
         return [CMS::REVIEW_ACCEPTED => "Accepted",CMS::REVIEW_WAITING => "Waiting for Review",CMS::REVIEW_DELETED => 'Deleted'];
     }
 
@@ -106,15 +106,15 @@ class CMS {
     * [getPaymentBank description]
     * @return [type] [description]
     */
-    public function getPaymentBank($var){
+    public static function getPaymentBank($var){
         return (isset(CMS::paymentBank()[$var]))?CMS::paymentBank()[$var]:false;
     }
 
-    public function paymentBank(){
+    public static function paymentBank(){
         return [CMS::BANK_BCA => 'BCA',CMS::BANK_MANDIRI => 'Mandiri'];
     }
 
-    public function status($deleted = false){
+    public static function status($deleted = false){
         if($deleted){
             return [CMS::STATUS_ACTIVE => 'Active',CMS::STATUS_INACTIVE => 'Inactive',CMS::STATUS_DELETED => 'Deleted'];
         }
@@ -122,15 +122,15 @@ class CMS {
     }
 
 
-    public function sort(){
+    public static function sort(){
         return [CMS::SORT_ASCENDING => 'Ascending',CMS::SORT_DESCENDING => 'Descending',CMS::SORT_RECENT => 'Recent'];
     }
 
-    public function paymentWidget(){
+    public static function paymentWidget(){
         return Html::dropDownList('payment' ,CMS::paymentType());
     }
 
-    public function statusWidget(){
+    public static function statusWidget(){
         return Html::dropDownList('status' ,CMS::status());
     }
 
@@ -138,7 +138,7 @@ class CMS {
     * [voucher_type description]
     * @return [type] [description]
     */
-    public function voucher_type(){
+    public static function voucher_type(){
         return [CMS::VOUCHER_ONETIMEUSAGE => 'One time Usage', CMS::VOUCHER_TIMELINE => 'Timeline',CMS::VOUCHER_COUNTERBASED => 'Counter Based'];
     }
 
@@ -147,11 +147,11 @@ class CMS {
     * @param  [type] $type [description]
     * @return [type]       [description]
     */
-    public function get_voucher_type($type){
+    public static function get_voucher_type($type){
         return CMS::voucher_type()[$type];
     }
 
-    public function discount_type(){
+    public static function discount_type(){
         return [CMS::DISCOUNT_PERCENTAGE => 'Percentage', CMS::DISCOUNT_FIXED => 'Fixed'];
     }
 
@@ -160,7 +160,7 @@ class CMS {
     * @param  [type] $type [description]
     * @return [type]       [description]
     */
-    public function get_discount_type($type)
+    public static function get_discount_type($type)
     {
         return CMS::discount_type()[$type];
     }
@@ -170,15 +170,15 @@ class CMS {
     * @param  [type] $type [description]
     * @return [type]       [description]
     */
-    public function getDiscountType($type){
+    public static function getDiscountType($type){
         return CMS::get_discount_type($type);
     }
 
-    public function getStatus($status){
+    public static function getStatus($status){
         return CMS::status(true)[$status];
     }
 
-    public function getSort($sort){
+    public static function getSort($sort){
         return CMS::sort[$sort];
     }
 

@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "member".
@@ -22,8 +23,14 @@ use Yii;
  * @property string $updated_at
  * @property int $status
  */
-class Member extends \yii\db\ActiveRecord
+class Member extends \yii\db\ActiveRecord implements IdentityInterface 
 {
+
+    public $auth_key;
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 1;
+    public $password_hash;
+
     /**
      * {@inheritdoc}
      */
@@ -70,4 +77,75 @@ class Member extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+
+     /**
+     * outorization require by social media login
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    // end social media login
+    
+    //=================================================================================================
+
+    //autorize require by login
+
+    public static function findByUsername($username)
+    {
+        return static::find()->where(['email' => $username, 'status' => self::STATUS_ACTIVE])->one();
+    }
+
+    public function validatePassword($password)
+    {
+        if (md5($password) == $this->password)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // end outorization by login page
+
+    // require for sign up
+
+    public function setPassword($password)
+    {
+        $this->password_hash = md5($password);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    // end sign up
 }
