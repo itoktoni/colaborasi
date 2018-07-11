@@ -28,7 +28,7 @@ class PasswordResetRequestForm extends Model
                 'message' => 'There is no user with this email address.'
             ],
         ];
-    }
+    } 
 
     /**
      * Sends an email with a link, for resetting the password.
@@ -38,7 +38,7 @@ class PasswordResetRequestForm extends Model
     public function sendEmail()
     {
         /* @var $user User */
-        $user = User::findOne([
+        $user = Member::findOne([
             'status' => Member::STATUS_ACTIVE,
             'email' => $this->email,
         ]);
@@ -47,7 +47,7 @@ class PasswordResetRequestForm extends Model
             return false;
         }
         
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save()) {
                 return false;

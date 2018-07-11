@@ -2,6 +2,8 @@
 
 use backend\components\CustomformWidget;
 use common\models\base\Brand;
+use common\models\base\Subcategory;
+use common\models\base\Category;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -16,11 +18,17 @@ use yii\widgets\ActiveForm;
     'back_url' => Url::to('/product/'),
     'back_text' => 'Back',
     'model' => $model,
-    'page' => 2,
+    'page' => 3,
     'field' =>
     [
         [
             'name' => ['type' => 'text', 'option' => ['maxlength' => true]],
+            'category' => [
+                'type' => 'dropdown_model',
+                'item' => Category::find()->where(['status' => '1'])->all(),
+                'id' => 'id',
+                'name' => 'name',
+            ],
             'slug' => ['type' => 'text', 'option' => ['maxlength' => true]],
             'synopsis' => ['type' => 'text', 'option' => ['maxlength' => true]],
             'description' => ['type' => 'tinymce', 'option' => ['rows' => 6]],
@@ -42,5 +50,8 @@ use yii\widgets\ActiveForm;
             'status' => ['type' => 'status'],
 
         ],
+        [
+            'subcategory' => ['type' => 'dropdown_model','item' => Subcategory::find()->where(['status' => '1'])->all(),'option' => ['multiple' => true]]
+        ]
     ],
 ]); ?>

@@ -1,10 +1,10 @@
 <?php
 use backend\components\CMS;
+use dosamigos\tinymce\TinyMce;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use dosamigos\tinymce\TinyMce;
 ?>
 
     <?php $form = ActiveForm::begin();?>
@@ -70,15 +70,31 @@ $object = false;
             $object->dropDownList($item['item'], $item['option']);
             break;
         case "dropdown_model":
-            if (isset($item['id']) && isset($item['name'])) {
-                $item['option']['class'] = 'selectpicker';
-                $item['option']['data-style'] = 'select-with-transition';
-                $item['option']['data-size'] = '7';
-                $object->dropDownList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
+
+            if (!isset($item['id'])) {
+                $item['id'] = 'id';
             }
+            if (!isset($item['name'])) {
+                $item['name'] = 'name';
+            }
+            $item['option']['class'] = 'selectpicker';
+            $item['option']['data-style'] = 'select-with-transition';
+            $item['option']['data-size'] = '7';
+            $object->dropDownList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
+
             break;
-        case "checkboxList":
+        case "checkboxlist":
             $object->checkboxList($item['item'], $item['option']);
+            break;
+
+        case "checkboxlist_model":
+            if (!isset($item['id'])) {
+                $item['id'] = 'id';
+            }
+            if (!isset($item['name'])) {
+                $item['name'] = 'name';
+            }
+            $object->checkboxList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
             break;
         case "checkbox":
             $item['option']['class'] = 'form-check-input';
@@ -105,10 +121,10 @@ $object = false;
                     'plugins' => [
                         "advlist autolink lists link charmap print preview anchor",
                         "searchreplace visualblocks code fullscreen",
-                        "insertdatetime media table contextmenu paste"
+                        "insertdatetime media table contextmenu paste",
                     ],
-                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-                ]
+                    'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                ],
             ]);
             break;
 
@@ -144,7 +160,6 @@ if ($object) {
 ?>
 </div>
                         <?php endforeach;?>
-        </div>
     </div>
 
     <?php
