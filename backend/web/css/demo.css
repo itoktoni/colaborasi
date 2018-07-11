@@ -411,3 +411,9 @@
         top: 80px;
     }
 }
+
+
+.bootstrap-tagsinput{
+    display:block;
+    border-bottom: 1px #D2D2D2 solid;
+}

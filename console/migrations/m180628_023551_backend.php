@@ -95,8 +95,8 @@ class m180628_023551_backend extends Migration
 
         $rows = [
             [1, 'Setting', 'setting', 4, 'settings', 1],
-            [2, 'Product', 'product', 0, 'product', 1],
-            // [3, 'Category', 'category', 0, 'product', 1],
+            [2, 'Product', 'product', 0, 'shopping_basket', 1],
+            [3, 'Categories', 'category', 0, 'loyalty', 1],
         ];
 
         $this->batchInsert('feature_group', [
@@ -114,10 +114,10 @@ class m180628_023551_backend extends Migration
             [1, 'Feature Group', 'feature-group', 1, '-', 1],
             [1, 'Roles', 'roles', 2, '-', 1],
             [1, 'User', 'user', 3, '-', 1],
-            [2, 'Brand', 'brand', 0, '-', 1],
+            [3, 'Brand', 'brand', 0, 'loyalty', 1],
             [2, 'Product', 'product', 1, '-', 1],
-            [2, 'Category', 'category', 2, '-', 1],
-            [2, 'Sub Category', 'sub-category', 3, '-', 1],
+            [3, 'Category', 'category', 2, 'style', 1],
+            [3, 'Sub Category', 'sub-category', 3, 'style', 1],
         ];
         $this->batchInsert('feature',
             ['feature_group', 'name', 'slug', 'sort', 'icon', 'status'],
