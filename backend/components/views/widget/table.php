@@ -14,6 +14,7 @@ use yii\helpers\Url;
     </thead>
 
     <tbody>
+    	<?php if ( $dataProvider ) : ?>
     	<?php foreach ($dataProvider as $item): ?>
         <tr>
             <td><?php echo $item->id; ?></td>
@@ -46,5 +47,10 @@ use yii\helpers\Url;
             </td>
         </tr>
     	<?php endforeach;?>
+    	<?php else :?>
+    		<tr>
+    			<td colspan="<?php echo count($header);?>">No data available in table</td>
+    		</tr>
+    	<?php endif; ?>
     </tbody>
 </table>

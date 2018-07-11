@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<div class="card-content">
 <?php echo CustomformWidget::widget([
     'back_url' => Url::to('/product/'),
     'back_text' => 'Back',
@@ -55,3 +56,4 @@ use yii\widgets\ActiveForm;
         ]
     ],
 ]); ?>
+</div>

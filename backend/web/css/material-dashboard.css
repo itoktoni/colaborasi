@@ -30,6 +30,29 @@
  *               Buddha Bless:  "No Bugs"
  *
  * ========================================================= */
+
+.notification-wrapper{
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  display: block;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: none;
+}
+.notification-center{
+  margin: 40px auto;
+  position: relative;
+  height: auto;
+  width: 90%;
+  max-width: 500px;
+}
+.notification-content{
+  float: left;
+  width: 100%;
+}
+
 .noUi-target,
 .noUi-target * {
   -webkit-touch-callout: none;
@@ -4830,6 +4853,11 @@ select.selectpicker {
   width: 100%;
 }
 
+.select-with-transition .filter-option,.form-horizontal .select-with-transition .filter-option{
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
 .bootstrap-select.btn-group .dropdown-menu li.disabled a:hover, .bootstrap-select.btn-group .dropdown-menu li.disabled a:focus {
   box-shadow: none;
 }
@@ -7531,6 +7559,7 @@ label.control-label {
 }
 .form-group label.control-label {
   font-size: 11px;
+  font-size: 14px;
   line-height: 1.07143;
   color: #AAAAAA;
   font-weight: 400;
@@ -10069,6 +10098,7 @@ footer .btn {
 }
 .dropdown-menu li > a {
   font-size: 13px;
+  font-size: 14px;
   padding: 10px 20px;
   margin: 0 5px;
   border-radius: 2px;
