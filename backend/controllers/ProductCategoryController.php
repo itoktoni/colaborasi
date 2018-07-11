@@ -10,11 +10,12 @@ use yii\data\Pagination;
         use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
+    use backend\components\AuthController;
 
     /**
     * ProductCategoryController implements the CRUD actions for Productcategory model.
     */
-    class ProductCategoryController extends Controller
+    class ProductCategoryController extends AuthController 
     {
 
         public function init(){

@@ -9,11 +9,12 @@ use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\components\AuthController;
 
     /**
     * FeatureGroupController implements the CRUD actions for FeatureGroup model.
     */
-    class FeatureGroupController extends Controller
+    class FeatureGroupController extends AuthController 
     {
 
         public function init(){

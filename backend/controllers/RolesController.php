@@ -9,11 +9,12 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use backend\models\base\Permission;
+use backend\components\AuthController;
 
 /**
  * RolesController implements the CRUD actions for Roles model.
  */
-class RolesController extends Controller
+class RolesController extends AuthController 
 {
 
     public function init()

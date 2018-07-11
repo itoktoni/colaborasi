@@ -10,11 +10,12 @@ use yii\data\Pagination;
         use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
+    use backend\components\AuthController;
 
     /**
     * BrandController implements the CRUD actions for Brand model.
     */
-    class BrandController extends Controller
+    class BrandController extends AuthController 
     {
 
         public function init(){

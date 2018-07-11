@@ -10,11 +10,12 @@ use yii\data\Pagination;
         use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
+    use backend\components\AuthController;
 
     /**
     * SubCategoryController implements the CRUD actions for Subcategory model.
     */
-    class SubCategoryController extends Controller
+    class SubCategoryController extends AuthController 
     {
 
         public function init(){
