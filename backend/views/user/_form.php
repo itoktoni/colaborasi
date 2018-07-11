@@ -10,11 +10,11 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="col-md-4 user-form">
+<div class="card-content">
+	
+	<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
 
-	<?php $form = ActiveForm::begin(); ?>
-
-	    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -22,12 +22,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password_repeat')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropdownList(Yii::$app->cms->status()) ?>
+    <?= $form->field($model, 'status')->dropdownList(Yii::$app->cms->status(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Status']) ?>
 
-    <?= $form->field($model, 'roles')->dropdownList(ArrayHelper::map($roles,'id','name')) ?>
+    <?= $form->field($model, 'roles')->dropdownList(ArrayHelper::map($roles,'id','name'), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Role']) ?>
 
-	<div class="form-group">
-		<?= Html::a('Back',Url::to('/user/'), ['class' => 'btn btn-primary']);?>		<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+    <div class="form-group">
+		<?= Html::a('Back',Url::to('/user/'), ['class' => 'btn btn-fill btn-primary']);?>
+		<?= Html::submitButton('Save', ['class' => 'btn btn-fill btn-success']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>
