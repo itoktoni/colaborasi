@@ -70,6 +70,7 @@ use yii\data\Pagination;
     ]);
 }
 
+
 /**
 * Updates an existing Product model.
 * If update is successful, the browser will be redirected to the 'view' page.

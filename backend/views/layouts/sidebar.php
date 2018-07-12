@@ -50,7 +50,7 @@ use backend\models\Roles;
             </li>
             <?php
                 $menus = CMS::getMenu();
-
+                // d($this->params['menu']);
                 if ( $menus ):
                     foreach ( $menus['group'] as $key =>  $item ) :
                         ?>

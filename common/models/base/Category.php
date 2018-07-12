@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
 
 /**
  * This is the model class for table "category".
@@ -31,13 +32,24 @@ class Category extends \yii\db\ActiveRecord
         return 'category';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'slugAttribute' => 'slug',
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['slug', 'name'], 'required'],
+            [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'integer'],
             [['slug', 'name', 'description'], 'string', 'max' => 255],

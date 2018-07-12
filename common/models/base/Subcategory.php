@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
 
 /**
  * This is the model class for table "sub_category".
@@ -33,6 +34,17 @@ class Subcategory extends \yii\db\ActiveRecord
         return 'sub_category';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'slugAttribute' => 'slug',
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -40,7 +52,7 @@ class Subcategory extends \yii\db\ActiveRecord
     {
         return [
             [['category', 'status'], 'integer'],
-            [['slug', 'name'], 'required'],
+            [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['slug', 'name', 'description'], 'string', 'max' => 255],
             [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
