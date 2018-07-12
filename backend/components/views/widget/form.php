@@ -105,12 +105,6 @@ $object = false;
             break;
         case "checkbox":
             $item['class'] = 'form-check-input';
-            // var_dump($model->discount_flag);
-            // var_dump($model->{$key});
-            // die();
-            $item['uncheck'] = 'disabled';
-            // $item['option']['checked'] = true;
-            // }
             $object->checkbox($item['option']);
             break;
         case "text":

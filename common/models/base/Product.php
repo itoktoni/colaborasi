@@ -64,6 +64,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'name',
                 'slugAttribute' => 'slug',
+                'immutable'=>true
             ],
             [
                 'class' => ImageBehavior::className(),
