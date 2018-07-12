@@ -45,7 +45,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email','status'], 'required'],
+            [['email'], 'required'],
             [['balance'], 'number'],
             [['social_media_type', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -121,6 +121,11 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::find()->where(['email' => $username, 'status' => self::STATUS_ACTIVE])->one();
+    }
+
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
 
     public function validatePassword($password)

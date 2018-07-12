@@ -6,34 +6,61 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+<!-- content page -->
+<section class="bgwhite p-t-66 p-b-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 p-b-30">
+                <?php $form = ActiveForm::begin(['id' => 'login-form', 'options' => ['class' => 'login-form']]); ?>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+                    <h4 class="m-text26 p-b-36 p-t-15">
+                        Login
+                    </h4>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                    <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                    <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                    <div class="form-group" style="display: none;">
+                        <input type="checkbox" id="loginform-rememberme" name="LoginForm[rememberMe]" value="1" checked="">
+                    </div>
 
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                </div>
+                    <div class="form-group">
+                        <p class="text-forgot">If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.</p>
+                    </div>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                </div>
+                    <div class="w-size25">
+                        <?= Html::submitButton('Login', ['class' => 'flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4', 'name' => 'login-button']) ?>
+                    </div>
 
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+
+            <div class="col-md-6 p-b-30">
+                <?php $form = ActiveForm::begin(['id' => 'form-signup', 'action' => Url::to('/site/signup'), 'options' => ['class' => 'login-form']]); ?>
+
+                    <h4 class="m-text26 p-b-36 p-t-15">
+                        Sign Up
+                    </h4>
+
+                    <?= $form->field($modelsignup, 'name')->textInput(['autofocus' => true]) ?>
+
+                    <?= $form->field($modelsignup, 'password')->passwordInput() ?>
+
+                    <?= $form->field($modelsignup, 'email') ?>
+
+                    <div class="w-size25">
+                        <?= Html::submitButton('Signup', ['class' => 'flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4', 'name' => 'signup-button']) ?>
+                    </div>
+
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
-</div>
+</section>
