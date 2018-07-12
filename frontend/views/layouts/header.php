@@ -25,15 +25,15 @@ use yii\widgets\Menu;
 						</li>
 
 						<li>
-							<a href="product.html">Shop</a>
+							<a href="<?php echo Url::to('/category/'); ?>">Shop</a>
 						</li>
 
 						<li>
-							<a href="about.html">About</a>
+							<a href="<?php echo Url::to('/site/about/'); ?>">About</a>
 						</li>
 
 						<li>
-							<a href="contact.html">Contact</a>
+							<a href="<?php echo Url::to('/site/contact/'); ?>">Contact</a>
 						</li>
 					</ul>
 				</nav>
@@ -41,9 +41,41 @@ use yii\widgets\Menu;
 
 			<!-- Header Icon -->
 			<div class="header-icons">
-				<a href="#" class="header-wrapicon1 dis-block">
-					<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1" alt="ICON">
-				</a>
+				<div class="header-wrapicon1 dis-block">
+					<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
+
+					<!-- Login Popup -->
+					<div class="login-popup login-dropdown">
+						<ul>
+							<?php if ( Yii::$app->user->isGuest ) : ?>
+							<li>
+								<a href="<?php echo Url::to('/site/login/'); ?>">Login</a>
+							</li>
+							<?php else : ?>
+							<li style="border-bottom: 0;text-transform: uppercase;">
+								<p>Welcome <?php echo Yii::$app->user->identity->name; ?></p>
+							</li>
+							<li>
+								<a href="<?php echo Url::to('/site/profile/'); ?>">Profile</a>
+							</li>
+							<li>
+								<a href="<?php echo Url::to('/site/downloads/'); ?>">Downloads</a>
+							</li>
+							<li>
+								<a href="<?php echo Url::to('/site/purchase-history/'); ?>">Purchase History</a>
+							</li>
+							<li>
+								<?= Html::beginForm(['/site/logout'], 'post') ?>
+                                    <?= Html::submitButton(
+                                        'Logout',
+                                        ['class' => 'link-logout']
+                                    ) ?>
+                                <?= Html::endForm() ?> 
+							</li>
+							<?php endif; ?> 
+						</ul>
+					</div>
+				</div>
 
 				<span class="linedivide1"></span>
 
@@ -139,7 +171,7 @@ use yii\widgets\Menu;
 		<div class="btn-show-menu">
 			<!-- Header Icon mobile -->
 			<div class="header-icons-mobile">
-				<a href="#" class="header-wrapicon1 dis-block">
+				<a href="<?php echo Url::to('/site/login/'); ?>" class="header-wrapicon1 dis-block">
 					<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1" alt="ICON">
 				</a>
 
@@ -241,15 +273,15 @@ use yii\widgets\Menu;
 				</li>
 
 				<li class="item-menu-mobile">
-					<a href="product.html">Shop</a>
+					<a href="<?php echo Url::to('/category/'); ?>">Shop</a>
 				</li>
 
 				<li class="item-menu-mobile">
-					<a href="about.html">About</a>
+					<a href="<?php echo Url::to('/site/about/'); ?>">About</a>
 				</li>
 
 				<li class="item-menu-mobile">
-					<a href="contact.html">Contact</a>
+					<a href="<?php echo Url::to('/site/contact/'); ?>">Contact</a>
 				</li>
 			</ul>
 		</nav>

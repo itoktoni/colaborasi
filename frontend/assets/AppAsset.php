@@ -38,6 +38,8 @@ class AppAsset extends AssetBundle
         'vendors/lightbox2/js/lightbox.min.js',
         'vendors/sweetalert/sweetalert.min.js',
         'vendors/parallax100/parallax100.js',
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyC9gsbJtv4rbhXA0-Zy_cxsWiOeaFku9r4',
+        'js/map-custom.js',
         'js/main.js',
     ];
     public $depends = [

@@ -80,6 +80,13 @@
     });
 
 
+    /*[ Show login dropdown ]
+    ===========================================================*/
+    $('.js-show-login-popup').on('click', function(){
+        $(this).parent().find('.login-dropdown').toggleClass('show-login-popup');
+    });
+
+
      /*[ Fixed Header ]
     ===========================================================*/
     var posWrapHeader = $('.topbar').height();
