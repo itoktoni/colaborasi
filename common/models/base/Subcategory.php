@@ -40,7 +40,7 @@ class Subcategory extends \yii\db\ActiveRecord
     {
         return [
             [['category', 'status'], 'integer'],
-            [['slug', 'name'], 'required'],
+            [['slug', 'name','status'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['slug', 'name', 'description'], 'string', 'max' => 255],
             [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],

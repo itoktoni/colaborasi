@@ -34,7 +34,7 @@ class Productcategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product', 'sub_category'], 'required'],
+            [['product', 'sub_category','status'], 'required'],
             [['product', 'sub_category'], 'integer'],
             [['product'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product' => 'id']],
             [['sub_category'], 'exist', 'skipOnError' => true, 'targetClass' => SubCategory::className(), 'targetAttribute' => ['sub_category' => 'id']],
@@ -67,5 +67,23 @@ class Productcategory extends \yii\db\ActiveRecord
     public function getSubCategory()
     {
         return $this->hasOne(SubCategory::className(), ['id' => 'sub_category']);
+    }
+
+    /**
+     * Insert batch or update it if duplicate
+     */
+    public function insertBatch($data){
+        foreach($data as $key => $item){
+            $check = self::find()->where(['product' => $data[0],'sub_category' => $data[1]])->one();
+            if($check){
+                unset($data[$key]);
+            }
+        }
+
+        if(!$data){
+            return;
+        }
+        $command = Yii::$app->db->createCommand()->batchInsert(self::tableName(), ['product', 'sub_category'], $data);
+        $command->execute();
     }
 }

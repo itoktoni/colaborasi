@@ -7,7 +7,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 ?>
 
-    <?php $form = ActiveForm::begin();?>
+    <?php $form = ActiveForm::begin($form_option);?>
 
 
     <div class="form-group pull-right">
@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
     <?php foreach ($field as $item): ?>
     <div class="col-md-4 product-form">
         <?php foreach ($item as $key => $item): ?>
-        <div class="form-group">
+
             <?php
 $object = $form->field($model, $key);
 
@@ -43,21 +43,22 @@ if (isset($item['type']) && $item['type']) {
             <div class="clearfix"></div>
                 <span class="btn btn-raised btn-round btn-primary btn-file">
                     <span class="fileinput-new">Select File</span>
-                    <input type="file" name="<?php echo $key; ?>" />
+                    <?=Html::activeFileInput($model, $key, $item['option'])?>
                 </span>
                 <?php
 $object = false;
             break;
         case "uploadimage": ?>
+        <?php if ($model->{$key}): ?>
+        <?=Html::img($model->{$key});?>
+        <?php endif;?>
         <label class="control-label"><?php echo isset($item['label']) ? $item['label'] : ucwords($key); ?></label>
-        <div class="clearfix"></div>
-
+            <div class="clearfix"></div>
                     <span class="btn btn-raised btn-round btn-primary btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <span class="fileinput-exists">Change</span>
-                        <input type="file" name="<?php echo $key; ?>" />
+                        <?=Html::activeFileInput($model, $key, $item['option'])?>
                     </span>
-                    <?php
+                <?php
 $object = false;
             break;
         case "datepicker":
@@ -80,8 +81,14 @@ $object = false;
             $item['option']['class'] = 'selectpicker';
             $item['option']['data-style'] = 'select-with-transition';
             $item['option']['data-size'] = '7';
-            $object->dropDownList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
 
+            if (!$item['item']) {
+                $item['item'] = [];
+                $object->dropDownList([], $item['option']);
+                break;
+            }
+
+            $object->dropDownList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
             break;
         case "checkboxlist":
             $object->checkboxList($item['item'], $item['option']);
@@ -105,7 +112,7 @@ $object = false;
             break;
         case "tags":
             $item['option']['data-role'] = "tagsinput";
-            $item['option']['data-color'] = "primary";
+            $item['option']['data-color'] = "#9c27b0";
             $item['option']['class'] = "tagsinput form-control";
             $object->textInput($item['option']);
             break;
@@ -146,6 +153,9 @@ $object = false;
         case "widget":
             $object->widget($item['widget_object'], $item['option']);
             break;
+        case "html":
+            $object = $item['content'];
+            break;
         default:
             $object->textInput($item['option']);
     }
@@ -158,7 +168,6 @@ if ($object) {
 }
 
 ?>
-</div>
                         <?php endforeach;?>
     </div>
 

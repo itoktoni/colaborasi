@@ -23,7 +23,9 @@
         "hybridauth/hybridauth": "~3.0@dev",
         "2amigos/yii2-tinymce-widget": "~1.1",
         "cloudinary/cloudinary_php": "dev-master",
-        "kartik-v/yii2-number": "*"
+        "kartik-v/yii2-number": "*",
+        "godzie44/yii2-image-behavior": "^1.0",
+        "yiisoft/yii2-imagine": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

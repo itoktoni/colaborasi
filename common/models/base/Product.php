@@ -2,7 +2,12 @@
 
 namespace common\models\base;
 
+use common\models\CartInterface;
 use Yii;
+use \godzie44\yii\behaviors\image\ImageBehavior;
+use yii\imagine\Image;
+use yii\behaviors\SluggableBehavior;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "product".
@@ -33,15 +38,17 @@ use Yii;
  * @property ProductCategory[] $productCategories
  * @property ProductContent[] $productContents
  */
-class Product extends \yii\db\ActiveRecord
+class Product extends \yii\db\ActiveRecord implements CartInterface
 {
-    
+
     const STATUS_DELETED = -9;
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
-
     public $subcategory;
+    public $content;
+    public $discount_flag;
+
     /**
      * {@inheritdoc}
      */
@@ -50,20 +57,41 @@ class Product extends \yii\db\ActiveRecord
         return 'product';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'slugAttribute' => 'slug',
+            ],
+            [
+                'class' => ImageBehavior::className(),
+                'imageAttr' => 'image',
+                'images' => [
+                    '_default' => ['default' => []], //save default upload image
+                    '_small' => ['resize' => [500, 500]], //and save resized copy
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['slug', 'name', 'brand'], 'required'],
+            [['name', 'brand', 'status', 'category', 'price'], 'required'],
             [['description'], 'string'],
             [['price', 'price_discount'], 'number'],
             [['brand', 'headline', 'product_view', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['slug'], 'unique'],
             [['slug', 'synopsis', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 64],
             [['brand'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand' => 'id']],
+            [['image'], 'file', 'extensions' => 'png, jpg, jpeg'],
         ];
     }
 
@@ -98,6 +126,56 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     * [upload description]
+     * @param  [type]  $path     [description]
+     * @param  boolean $filename [description]
+     * @return [type]            [description]
+     */
+    public function upload($path, $filename = false)
+    {
+        
+            if (!$this->image) {
+                return false;
+            }
+
+            FileHelper::createDirectory($path, $mode = 0775, $recursive = true);
+
+            if (!$filename) {
+                $filename = $this->image->BaseName;
+            }
+
+            $originFile = $path . $filename . '.' . $this->image->extension;
+            $this->image->saveAs($originFile);
+            $thumbnFile = $path . $filename . '-thumb.' . $this->image->extension;
+            $portrait = $path . $filename . '-portrait.' . $this->image->extension;
+            $headline = $path . $filename . '-headline.' . $this->image->extension;
+
+            Image::resize($originFile, 250, 250, false, true)->save($thumbnFile, ['quality' => 80]);
+            Image::resize($originFile, 500, 250, false, true)->save($portrait, ['quality' => 80]);
+            Image::resize($originFile, 750, 750, false, true)->save($headline, ['quality' => 100]);
+            // $this->save();
+            return ['filename' => $filename, 'extension' => '.' . $this->image->extension];
+        
+    }
+
+    public function product_upload($path, $filename = false)
+    {
+        if (!$this->product_download_url) {
+            return false;
+        }
+        FileHelper::createDirectory($path, $mode = 0775, $recursive = true);
+
+        if (!$filename) {
+            $filename = $this->product_download_url->BaseName;
+        }
+
+        $originFile = $path . $filename . '.' . $this->product_download_url->extension;
+        $this->product_download_url->saveAs($originFile);
+
+        return ['filename' => $filename, 'extension' => '.' . $this->product_download_url->extension];
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getBrand0()
@@ -120,4 +198,31 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProductContent::className(), ['product' => 'id']);
     }
+
+       /**
+     * Returns the price for the cart item
+     *
+     * @return int
+     */
+    public function getPrice(){
+        return $this->price;
+      }
+  /**
+   * Returns the label for the cart item (displayed in cart etc)
+   *
+   * @return int|string
+   */
+  public function getLabel(){
+    return $this->name;
+  }
+  /**
+   * Returns unique id to associate cart item with product
+   *
+   * @return int|string
+   */
+  public function getUniqueId(){
+    return $this->id;
+  }
+
+
 }

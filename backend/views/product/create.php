@@ -19,7 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				    <h4 class="card-title"><?= Html::encode($this->title) ?></h4>
 				</div>
             	<?= $this->render('_form', [
-			        'model' => $model,
+					'model' => $model,
+					'content' => $content,
+					'subcategory_list' => false,
+					'selected_subcategory' => false
 			    ]) ?>
             </div>
         </div>

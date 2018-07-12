@@ -2,3 +2,6 @@
 /vendor/
 /common/config/main-local.php
 /frontend/web/files/
+/uploads/*
+/product/*
+/common/config/*

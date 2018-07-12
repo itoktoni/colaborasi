@@ -12,12 +12,13 @@ return [
     'rules' => [
         '/adminlogin' => 'site/login',
         '/dashboard' => 'dashboard/index',
-        '/logout' => 'site/logout'
+        '/logout' => 'site/logout',
         // '/' => 'home/homepage',
         // 'view/<id:[0-9a-zA-Z\-]+>' => 'home/detail',
         // 'cat/<id:[0-9a-zA-Z\-]+>' => 'home/category',
         // 'subcategory/<id:[0-9a-zA-Z\-]+>' => 'home/subcategory',
         // 'add/<id:\d+>' => 'home/add',
+        'product/subcategory/<id:\d+>' => 'product/subcategory',
         // '/cart' => 'home/cart',
         // '/allproduct' => 'home/product',
     ],

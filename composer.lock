@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83a200ba6183565ab54f6848a83f716d",
+    "content-hash": "5b980139369d0fe5331595eda058efd8",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -496,6 +496,56 @@
             "time": "2018-07-03T02:25:00+00:00"
         },
         {
+            "name": "godzie44/yii2-image-behavior",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/godzie44/yii2-image-upload-helper-behavior.git",
+                "reference": "1f995bde76b69826aa27516e6878d8e26113d963"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/godzie44/yii2-image-upload-helper-behavior/zipball/1f995bde76b69826aa27516e6878d8e26113d963",
+                "reference": "1f995bde76b69826aa27516e6878d8e26113d963",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "2.0.*",
+                "yurkinx/yii2-image": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "godzie44\\yii\\behaviors\\image\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Derevtsov Konstantin",
+                    "email": "godzie@yandex.ru"
+                }
+            ],
+            "description": "Behavior that will help you to save the modified copy of the uploaded image and give you easy access to them",
+            "keywords": [
+                "Behavior",
+                "image",
+                "upload image",
+                "yii"
+            ],
+            "time": "2016-06-05T14:42:54+00:00"
+        },
+        {
             "name": "hybridauth/hybridauth",
             "version": "dev-master",
             "source": {
@@ -551,6 +601,64 @@
                 "twitter"
             ],
             "time": "2018-07-10T10:55:47+00:00"
+        },
+        {
+            "name": "imagine/imagine",
+            "version": "v0.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine.git",
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
+                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "^3.3",
+                "symfony/phpunit-bridge": "^3.2"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "time": "2017-05-16T10:31:22+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -976,6 +1084,54 @@
             "time": "2018-07-05T15:44:47+00:00"
         },
         {
+            "name": "yiisoft/yii2-imagine",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-imagine.git",
+                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/a8a1a068862a86e3395e665bc86e63d5c9b60841",
+                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841",
+                "shasum": ""
+            },
+            "require": {
+                "imagine/imagine": "~0.6.0 | ~0.7.1",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\imagine\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "amigo.cobos@gmail.com"
+                }
+            ],
+            "description": "The Imagine integration for the Yii framework",
+            "keywords": [
+                "helper",
+                "image",
+                "imagine",
+                "yii2"
+            ],
+            "time": "2018-02-22T11:57:06+00:00"
+        },
+        {
             "name": "yiisoft/yii2-redis",
             "version": "2.0.8",
             "source": {
@@ -1075,6 +1231,49 @@
                 "yii2"
             ],
             "time": "2018-04-24T23:17:42+00:00"
+        },
+        {
+            "name": "yurkinx/yii2-image",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yurkinx/yii2-image.git",
+                "reference": "0d6d261bf9c2dc35e9ad8c5cc56793580b74eefd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yurkinx/yii2-image/zipball/0d6d261bf9c2dc35e9ad8c5cc56793580b74eefd",
+                "reference": "0d6d261bf9c2dc35e9ad8c5cc56793580b74eefd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-0": {
+                    "yii\\image\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Yuri Kileev",
+                    "email": "kileev@gmail.com"
+                }
+            ],
+            "description": "Yii2 extension for image manipulating using Kohana Image Library.",
+            "homepage": "https://github.com/yurkinx/yii2-image",
+            "keywords": [
+                "extension",
+                "image",
+                "yii2"
+            ],
+            "time": "2015-06-24T13:41:22+00:00"
         }
     ],
     "packages-dev": [

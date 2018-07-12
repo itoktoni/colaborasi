@@ -18,6 +18,8 @@ class CMS {
     const BANK_BCA = 1,BANK_MANDIRI = 2;
     const DISCOUNT_PERCENTAGE = 1, DISCOUNT_FIXED = 2;
     const SORT_ASCENDING = 'asc', SORT_DESCENDING = 'desc', SORT_RECENT = 'recent';
+    const CONTENT_VIDEO = 1, CONTENT_MUSIC = 2, CONTENT_IMAGE = 3;
+    const SOURCE_TYPE_EMBED = 1, SOURCE_TYPE_SERVER = 2;
 
     /**
     * [getMenu description]
@@ -181,6 +183,19 @@ class CMS {
     public static function getSort($sort){
         return CMS::sort[$sort];
     }
+
+    public static function contentType(){
+        
+    
+        return [CMS::CONTENT_VIDEO => 'Video',CMS::CONTENT_MUSIC => 'Music',CMS::CONTENT_IMAGE => 'Image'];
+    }
+
+
+    public static function embedType(){
+        return [CMS::SOURCE_TYPE_EMBED => 'Embed', CMS::SOURCE_TYPE_SERVER => 'Server'];
+    }
+
+
 
 }
 ?>

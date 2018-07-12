@@ -26,6 +26,7 @@ class m180705_060243_create_product_table extends Migration
             'price' => $this->decimal(),
             'price_discount' => $this->decimal(),
             'brand' => $this->integer()->notNull(),
+            'discount_flag' => $this->tinyInteger(1)->defaultValue(1),
             'image' => $this->string(),
             'image_path' => $this->string(),
             'image_thumbnail' => $this->string(),
@@ -55,8 +56,10 @@ class m180705_060243_create_product_table extends Migration
         $this->createTable('product_category', [
             'id' => $this->primaryKey(),
             'product' => $this->integer()->notNull(),
-            'sub_category' => $this->integer()->notNull()
+            'sub_category' => $this->integer()->notNull(),
         ]);
+
+        // $this->addPrimaryKey('prod-cate_pk', 'product_category', ['product', 'sub_category']);
 
         $this->createTable('brand', [
             'id' => $this->primaryKey(),
@@ -90,7 +93,7 @@ class m180705_060243_create_product_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey(
-            'fk-subcategory-category', 'sub_category', 'category','category', 'id', 'CASCADE'
+            'fk-subcategory-category', 'sub_category', 'category', 'category', 'id', 'CASCADE'
         );
         $this->addForeignKey(
             'fk-product-brand', 'product', 'brand', 'brand', 'id', 'CASCADE'
@@ -111,6 +114,54 @@ class m180705_060243_create_product_table extends Migration
         $this->addForeignKey(
             'fk-product-sub-category', 'product_category', 'sub_category', 'sub_category', 'id', 'CASCADE'
         );
+
+        $rows = [
+            [1, 'apple', 'Apple', 'Apple Brand', 1],
+            [2, 'toshiba', 'Toshiba', 'Toshiba Brand', 1],
+            [3, 'xiaomi', 'Mi', 'Xiaomi Brand', 1],
+        ];
+
+        $this->batchInsert('brand', [
+            'id',
+            'slug',
+            'name',
+            'description',
+            'status'],
+            $rows);
+
+        $rows = [
+            [1, 'cellphone', 'Cellphone', 'Cellphone Category', 1],
+            [2, 'application', 'Apps', 'Application Category', 1],
+            [3, 'music', 'Music', 'Music Category', 1],
+        ];
+
+        $this->batchInsert('category', [
+            'id',
+            'slug',
+            'name',
+            'description',
+            'status'],
+            $rows);
+
+        $rows = [
+            [1,'tablet', 'Tablet', 'Tablet Subcategory', 1],
+            [1,'smartphone', 'Smartphone', 'Smartphone Subcategory', 1],
+            [1,'antique', 'Antique', 'Antique Cellphone Subcategory', 1],
+            [2,'games', 'Games', 'Games Subcategory', 1],
+            [2,'utility', 'Utility', 'Utility Subcategory', 1],
+            [2,'scheduler', 'Scheduler', 'Scheduler Subcategory', 1],
+            [3,'rock', 'Rock', 'Rock Subcategory', 1],
+            [3,'pop', 'Pop', 'Pop Subcategory', 1],
+            [3,'blues', 'Blues', 'Blues Subcategory', 1],
+        ];
+
+        $this->batchInsert('sub_category', [
+            'category',
+            'slug',
+            'name',
+            'description',
+            'status'],
+            $rows);
     }
 
     /**

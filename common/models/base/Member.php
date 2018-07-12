@@ -45,7 +45,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email'], 'required'],
+            [['email','status'], 'required'],
             [['balance'], 'number'],
             [['social_media_type', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],

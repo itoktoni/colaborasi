@@ -18,8 +18,12 @@ $this->params['breadcrumbs'][] = 'Update';
             	<div class="card-header card-header-text" data-background-color="purple">
 				    <h4 class="card-title"><?= Html::encode($this->title) ?></h4>
 				</div>
+
             	<?= $this->render('_form', [
-			        'model' => $model,
+					'model' => $model,
+					'content' => $content,
+					'subcategory_list' => $subcategory_list,
+					'selected_subcategory' => $selected_subcategory
 			    ]) ?>
             </div>
         </div>
