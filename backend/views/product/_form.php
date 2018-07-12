@@ -98,3 +98,4 @@ function __init_discount_field(f){
 __init_discount_field($('#product-discount_flag'));
 
 ");
+

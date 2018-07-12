@@ -19,9 +19,9 @@ use common\models\base\Category;
 
 	    <?= $form->field($model, 'category')->dropdownList(ArrayHelper::map(Category::find()->where(['status' => 1])->all(),'id','name'), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Category']); ?> 
 
-	    <?=$form->field($model, 'slug')->textInput(['maxlength' => true])?>
+		<?=$form->field($model, 'name')->textInput(['maxlength' => true, 'autofocus' => true])?>
 
-	    <?=$form->field($model, 'name')->textInput(['maxlength' => true])?>
+	    <?=$form->field($model, 'slug')->textInput(['maxlength' => true])?>
 
 	    <?=$form->field($model, 'description')->textInput(['maxlength' => true])?>
 

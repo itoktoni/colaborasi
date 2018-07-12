@@ -5,12 +5,11 @@ namespace backend\controllers;
 use Yii;
 use common\models\base\Category;
 use yii\data\Pagination;
-
-    use common\models\search\CategorySearch;
-        use yii\web\Controller;
-    use yii\web\NotFoundHttpException;
-    use yii\filters\VerbFilter;
-    use backend\components\AuthController;
+use common\models\search\CategorySearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use backend\components\AuthController;
 
     /**
     * CategoryController implements the CRUD actions for Category model.

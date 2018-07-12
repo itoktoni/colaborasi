@@ -3,6 +3,7 @@
 namespace common\models\base;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
 
 /**
  * This is the model class for table "brand".
@@ -19,7 +20,7 @@ use Yii;
  */
 class Brand extends \yii\db\ActiveRecord
 {
-    
+
     const STATUS_DELETED = -9;
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
@@ -31,13 +32,24 @@ class Brand extends \yii\db\ActiveRecord
         return 'brand';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'slugAttribute' => 'slug',
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['slug','name','status'], 'required'],
+            [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'integer'],
             [['slug', 'name', 'description'], 'string', 'max' => 255],

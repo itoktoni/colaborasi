@@ -2,45 +2,44 @@
 
 namespace backend\controllers;
 
-use Yii;
+use backend\components\AuthController;
 use backend\models\base\FeatureGroup;
-use yii\data\Pagination;
-
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use backend\components\AuthController;
 
-    /**
-    * FeatureGroupController implements the CRUD actions for FeatureGroup model.
-    */
-    class FeatureGroupController extends AuthController 
+/**
+ * FeatureGroupController implements the CRUD actions for FeatureGroup model.
+ */
+class FeatureGroupController extends AuthController
+{
+
+    public function init()
     {
-
-        public function init(){
-            $this->view->params['menu']     = 'setting';
-            $this->view->params['submenu']  = 'feature-group';
-        }
+        $this->view->params['menu'] = 'setting';
+        $this->view->params['submenu'] = 'feature-group';
+    }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['GET'],
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['GET'],
+                ],
+            ],
         ];
     }
 
     /**
-    * Lists all FeatureGroup models.
-    * @return mixed
-    */
+     * Lists all FeatureGroup models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchmodel = new \backend\models\search\FeatureGroupSearch;
@@ -48,14 +47,14 @@ use backend\components\AuthController;
         $data['pages'] = $query->getPagination();
         $data['dataProvider'] = $query->getModels();
 
-        return $this->render('index',$data);
+        return $this->render('index', $data);
     }
 
     /**
-    * Creates a new FeatureGroup model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return mixed
-    */
+     * Creates a new FeatureGroup model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $model = new FeatureGroup();
@@ -63,63 +62,63 @@ use backend\components\AuthController;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'FeatureGroup Created');
             return $this->redirect(['/feature-group/']);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
-    return $this->render('create', [
-    'model' => $model,
-    ]);
-}
+/**
+ * Updates an existing FeatureGroup model.
+ * If update is successful, the browser will be redirected to the 'view' page.
+ * @param integer $id
+ * @return mixed
+ * @throws NotFoundHttpException if the model cannot be found
+ */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'FeatureGroup Updated');
+            return $this->redirect('/feature-group/');
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
 
 /**
-* Updates an existing FeatureGroup model.
-* If update is successful, the browser will be redirected to the 'view' page.
-* @param integer $id
-* @return mixed
-* @throws NotFoundHttpException if the model cannot be found
-*/
-public function actionUpdate($id)
-{
-    $model = $this->findModel($id);
-
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        Yii::$app->session->setFlash('success', 'FeatureGroup Updated');
-    return $this->redirect('/feature-group/');
-}
-
-return $this->render('update', [
-'model' => $model,
-]);
-}
+ * Deletes an existing FeatureGroup model.
+ * If deletion is successful, the browser will be redirected to the 'index' page.
+ * @param integer $id
+ * @return mixed
+ * @throws NotFoundHttpException if the model cannot be found
+ */
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = -9;
+        $model->save(false);
+        Yii::$app->session->setFlash('success', 'FeatureGroup Deleted');
+        return $this->redirect('/feature-group/');
+    }
 
 /**
-* Deletes an existing FeatureGroup model.
-* If deletion is successful, the browser will be redirected to the 'index' page.
-* @param integer $id
-* @return mixed
-* @throws NotFoundHttpException if the model cannot be found
-*/
-public function actionDelete($id)
-{
- $model = $this->findModel($id);
- $model->status = -9;
- $model->save(false);
- Yii::$app->session->setFlash('success', 'FeatureGroup Deleted');
- return $this->redirect('/feature-group/');
-}
-
-/**
-* Finds the FeatureGroup model based on its primary key value.
-* If the model is not found, a 404 HTTP exception will be thrown.
-* @param integer $id
-* @return FeatureGroup the loaded model
-* @throws NotFoundHttpException if the model cannot be found
-*/
-protected function findModel($id)
-{
+ * Finds the FeatureGroup model based on its primary key value.
+ * If the model is not found, a 404 HTTP exception will be thrown.
+ * @param integer $id
+ * @return FeatureGroup the loaded model
+ * @throws NotFoundHttpException if the model cannot be found
+ */
+    protected function findModel($id)
+    {
         if (($model = FeatureGroup::findOne($id)) !== null) {
-    return $model;
-}
+            return $model;
+        }
 
-throw new NotFoundHttpException('The requested page does not exist.');
-}
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 }

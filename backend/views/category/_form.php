@@ -15,9 +15,9 @@ use yii\widgets\ActiveForm;
 
 		<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
 
+		<?= $form->field($model, 'name')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+		
 		<?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
-
-		<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
 		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
