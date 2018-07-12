@@ -104,7 +104,13 @@ $object = false;
             $object->checkboxList(ArrayHelper::map($item['item'], $item['id'], $item['name']), $item['option']);
             break;
         case "checkbox":
-            $item['option']['class'] = 'form-check-input';
+            $item['class'] = 'form-check-input';
+            // var_dump($model->discount_flag);
+            // var_dump($model->{$key});
+            // die();
+            $item['uncheck'] = 'disabled';
+            // $item['option']['checked'] = true;
+            // }
             $object->checkbox($item['option']);
             break;
         case "text":

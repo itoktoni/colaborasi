@@ -74,11 +74,12 @@ class ProductController extends AuthController
             ));
 
             $subsave = [];
-
-            foreach (Yii::$app->request->post('Product')['subcategory'] as $item) {
-                $subsave[] = [$model->id, $item];
+            if (Yii::$app->request->post('Product')['subcategory']) {
+                foreach (Yii::$app->request->post('Product')['subcategory'] as $item) {
+                    $subsave[] = [$model->id, $item];
+                }
+                ProductCategory::insertBatch($subsave);
             }
-            ProductCategory::insertBatch($subsave);
 
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . $model->id . '\\', $model->slug)) {
@@ -158,12 +159,15 @@ class ProductController extends AuthController
                 "api_key" => YII::$app->params['cloudinaryApiKey'],
                 "api_secret" => YII::$app->params['cloudinarySecret'],
             ));
-            $subsave = [];
 
-            foreach ($post['Product']['subcategory'] as $item) {
-                $subsave[] = [$model->id, $item];
+            if ($post['Product']['subcategory']) {
+                $subsave = [];
+
+                foreach ($post['Product']['subcategory'] as $item) {
+                    $subsave[] = [$model->id, $item];
+                }
+                ProductCategory::insertBatch($subsave);
             }
-            ProductCategory::insertBatch($subsave);
 
             $image = UploadedFile::getInstance($model, 'image');
 
@@ -212,7 +216,7 @@ class ProductController extends AuthController
         $cats = [];
 
         foreach ($active_category as $item) {
-                $cats[$item->sub_category] = array("selected"=>true);
+            $cats[$item->sub_category] = array("selected" => true);
         }
 
         return $this->render('update', [

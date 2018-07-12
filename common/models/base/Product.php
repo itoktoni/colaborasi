@@ -20,6 +20,7 @@ use yii\helpers\FileHelper;
  * @property string $price
  * @property string $price_discount
  * @property int $brand
+ * @property int $discount_flag
  * @property string $image
  * @property string $image_path
  * @property string $image_thumbnail
@@ -47,7 +48,6 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
 
     public $subcategory;
     public $content;
-    public $discount_flag;
 
     /**
      * {@inheritdoc}
@@ -85,7 +85,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             [['name', 'brand', 'status', 'category', 'price'], 'required'],
             [['description'], 'string'],
             [['price', 'price_discount'], 'number'],
-            [['brand', 'headline', 'product_view', 'status'], 'integer'],
+            [['brand', 'headline', 'product_view', 'status','discount_flag'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['slug'], 'unique'],
             [['slug', 'synopsis', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path'], 'string', 'max' => 255],
@@ -107,6 +107,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             'synopsis' => 'Synopsis',
             'description' => 'Description',
             'price' => 'Price',
+            'discount_flag' => 'Discount Flag',
             'price_discount' => 'Price Discount',
             'brand' => 'Brand',
             'image' => 'Image',
@@ -124,6 +125,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             'updated_at' => 'Updated At',
         ];
     }
+    
 
     /**
      * [upload description]

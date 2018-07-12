@@ -74,7 +74,7 @@ class Productcategory extends \yii\db\ActiveRecord
      */
     public function insertBatch($data){
         foreach($data as $key => $item){
-            $check = self::find()->where(['product' => $data[0],'sub_category' => $data[1]])->one();
+            $check = self::find()->where(['product' => $item[0],'sub_category' => $item[1]])->one();
             if($check){
                 unset($data[$key]);
             }
