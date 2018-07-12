@@ -20,6 +20,7 @@ class m180705_060243_create_product_table extends Migration
             'id' => $this->primaryKey(),
             'slug' => $this->string()->notNull(),
             'name' => $this->string(64)->notNull(),
+            'category' => $this->integer(64)->notNull(),
             'synopsis' => $this->string(),
             'description' => $this->text(),
             'price' => $this->decimal(),
@@ -96,11 +97,15 @@ class m180705_060243_create_product_table extends Migration
         );
 
         $this->addForeignKey(
+            'fk-product-category', 'product', 'category', 'category', 'id', 'CASCADE'
+        );
+
+        $this->addForeignKey(
             'fk-product-content', 'product_content', 'product', 'product', 'id', 'CASCADE'
         );
 
         $this->addForeignKey(
-            'fk-product-category', 'product_category', 'product', 'product', 'id', 'CASCADE'
+            'fk-product-category-product', 'product_category', 'product', 'product', 'id', 'CASCADE'
         );
 
         $this->addForeignKey(

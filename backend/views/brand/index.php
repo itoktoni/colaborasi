@@ -19,25 +19,26 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
 
-<?php
-echo SearchWidget::widget(
-    [
-        'action' => Url::to('/brand'),
-        'field' =>
-        ['Brand' =>
-            [
-                'name' => 'name',
-                'placeholder' => 'Find Brand',
-                'class' => 'form-control',
-            ],
-        ], 'status' => backend\components\CMS::StatusWidget(),
-    ]
-); ?>
+            <?php
+            echo SearchWidget::widget(
+                [
+                    'action' => Url::to('/brand'),
+                    'field' =>
+                    ['Brand' =>
+                        [
+                            'name' => 'name',
+                            'placeholder' => 'Find Brand',
+                            'class' => 'form-control',
+                        ],
+                    ], 'status' => backend\components\CMS::StatusWidget(),
+                ]
+            ); 
+            ?>
 
+        </div>
     </div>
-</div>
 
-<div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-icon" data-background-color="purple">
@@ -50,31 +51,32 @@ echo SearchWidget::widget(
                 <div class="card-content">
                     <h4 class="card-title" style="visibility: hidden;">Feature</h4>
                     <div class="table-responsive">
-<?php
-echo TableWidget::widget([
-    'action' => 'Brand',
-    'action_url' => 'brand',
-    'data' => $dataProvider,
-    'header' => ['slug', 'name', 'description',
-        'Status'],
-    'field' => ['slug' => 'slug', 'name' => 'name', 'description' => 'description', 'status' =>
-        ['callback' =>
-            ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
-        ],
-    ]]);
-?>
- </div>
-<?php
-echo yii\widgets\LinkPager::widget([
-    'pagination' => $pages,
-    'options' => [
-        'class' => 'pagination pull-right',
-    ],
-]);
-?>
-</div>
+                        <?php
+                        echo TableWidget::widget([
+                            'action' => 'Brand',
+                            'action_url' => 'brand',
+                            'data' => $dataProvider,
+                            'header' => ['slug', 'name', 'description',
+                                'Status'],
+                            'field' => ['slug' => 'slug', 'name' => 'name', 'description' => 'description', 'status' =>
+                                ['callback' =>
+                                    ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
+                                ],
+                            ]]);
+                        ?>
+                    </div>
+
+                    <?php
+                    echo yii\widgets\LinkPager::widget([
+                        'pagination' => $pages,
+                        'options' => [
+                            'class' => 'pagination pull-right',
+                        ],
+                    ]);
+                    ?>
+
+                </div>
             </div>
         </div>
     </div>
-
 </div>

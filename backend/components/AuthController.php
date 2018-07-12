@@ -34,10 +34,13 @@ class AuthController extends Controller {
      */
     public function beforeAction($action)
     {
-
-
         if (Yii::$app->user->isGuest)
         {
+            return $this->redirect('/adminlogin');
+        }
+
+        if(!isset(Yii::$app->user->identity->name)){
+            Yii::$app->user->logout();
             return $this->redirect('/adminlogin');
         }
 

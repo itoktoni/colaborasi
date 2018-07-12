@@ -151,7 +151,7 @@ class User extends ActiveRecord implements IdentityInterface {
                     'status' => self::STATUS_ACTIVE,
         ]);
     }
-
+ 
     /**
      * Finds out if password reset token is valid
      *

@@ -29,7 +29,22 @@ AppAsset::register($this);
 </head>
 <body class="">
 <?php $this->beginBody() ?>
-    
+
+    <div class="notification-wrapper">
+        <div class="notification-center">
+            <div class="notification-content">
+                <div class="alert alert-success">
+                    <button type="button" aria-hidden="true" class="close" onclick="close_popup()">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <span>
+                        <strong><?php echo Yii::$app->session->getFlash('success'); ?></strong>    
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <?= $this->render('sidebar') ?>
 
@@ -42,6 +57,23 @@ AppAsset::register($this);
 
     </div>
 
+    <?php if(Yii::$app->session->hasFlash('success')):?>
+        <?php
+            $script = "
+                $('.notification-wrapper').fadeIn(300);
+                setTimeout(function(){
+                    $('.notification-wrapper').fadeOut(300);
+                },3000);";
+            $this->registerJs($script);
+        ?>
+    <?php endif; ?>
+
+    <script>
+        function close_popup()
+        {
+            $('.notification-wrapper').fadeOut(300);
+        }
+    </script>
 <?php $this->endBody() ?>
 </body>
 </html>

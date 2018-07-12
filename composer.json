@@ -22,7 +22,8 @@
         "facebook/graph-sdk": "^5.6",
         "hybridauth/hybridauth": "~3.0@dev",
         "2amigos/yii2-tinymce-widget": "~1.1",
-        "cloudinary/cloudinary_php": "dev-master"
+        "cloudinary/cloudinary_php": "dev-master",
+        "kartik-v/yii2-number": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

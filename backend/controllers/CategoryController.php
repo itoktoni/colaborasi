@@ -5,20 +5,20 @@ namespace backend\controllers;
 use Yii;
 use common\models\base\Category;
 use yii\data\Pagination;
-
-    use common\models\search\CategorySearch;
-        use yii\web\Controller;
-    use yii\web\NotFoundHttpException;
-    use yii\filters\VerbFilter;
+use common\models\search\CategorySearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use backend\components\AuthController;
 
     /**
     * CategoryController implements the CRUD actions for Category model.
     */
-    class CategoryController extends Controller
+    class CategoryController extends AuthController 
     {
 
         public function init(){
-        $this->view->params['menu'] = 'categories';
+        $this->view->params['menu'] = 'product';
         $this->view->params['submenu'] = 'category';
     }
 
