@@ -20,8 +20,9 @@ class CategoryController extends \yii\web\Controller
 		$maincats = false;
 		$subcheck = false;
 
+		$this->view->params['menu'] = 'shop';
+
 		if ( $cats ) :
-			$this->view->params['menu'] = $cats;
 			$maincats 					= Category::findOne(['slug' => $cats]);
 
 			if ( !$maincats )

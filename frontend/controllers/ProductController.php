@@ -17,6 +17,8 @@ class ProductController extends \yii\web\Controller
 
 	public function actionIndex( $slug = false )
 	{
+		$this->view->params['menu'] = 'shop';
+		
 		if( !$slug )
 		{
 			throw new \yii\web\NotFoundHttpException();

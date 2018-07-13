@@ -6,6 +6,8 @@ use yii\widgets\LinkPager;
 use frontend\components\CMS;
 use yii\helpers\ArrayHelper;
 
+$this->title = $product->name;
+
 ?>
 
 <!-- breadcrumb -->

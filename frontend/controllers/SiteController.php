@@ -26,6 +26,13 @@ class SiteController extends Controller
      * {@inheritdoc}
      */
 
+    public $session;
+
+    public function init()
+    {
+        $this->session = Yii::$app->session;
+    }
+
     public $config = [
         // "base_url" => "http: //localhost/advanced/frontend/web/facebook",
         'callback' => 'https://frontend.dev.co/social',
@@ -56,7 +63,8 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        // session_destroy();
+        $this->view->params['menu'] = 'signup';
+
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -397,12 +405,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->view->params['menu'] = 'home';
+
         $latest_product = Product::find()->limit(6)->orderBy(['created_at' => SORT_DESC])->all();   
 
         return $this->render('index', 
             [
                 'latest_product'=> $latest_product,
-                'headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all()
+                'headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all(),
+                'cart'          => $this->session->get('cart')
             ]
         );
     }
@@ -430,6 +441,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->view->params['menu'] = 'login';
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -456,8 +469,9 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        $this->view->params['menu'] = 'logout';
 
+        Yii::$app->user->logout();
         return $this->goHome();
     }
 
@@ -468,6 +482,8 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        $this->view->params['menu'] = 'contact';
+
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -491,6 +507,8 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+        $this->view->params['menu'] = 'about';
+
         return $this->render('about');
     }
 
@@ -508,6 +526,8 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+        $this->view->params['menu'] = 'requestpasswordreset';
+
         $model = new PasswordResetRequestForm();
         
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -534,6 +554,8 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
+        $this->view->params['menu'] = 'resetpassword';
+
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {

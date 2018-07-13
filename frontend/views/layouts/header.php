@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
+use frontend\components\CMS;
+
+$cart = $_SESSION['cart'];
 
 ?>
 
@@ -20,19 +23,19 @@ use yii\widgets\Menu;
 			<div class="wrap_menu">
 				<nav class="menu">
 					<ul class="main_menu">
-						<li class="sale-noti">
+						<li <?php echo CMS::activeMenu($this->params['menu'], 'home'); ?>>
 							<a href="<?php echo Url::to('/site/'); ?>">Home</a>
 						</li>
 
-						<li>
+						<li <?php echo CMS::activeMenu($this->params['menu'], 'shop'); ?>>
 							<a href="<?php echo Url::to('/category/'); ?>">Shop</a>
 						</li>
 
-						<li>
+						<li <?php echo CMS::activeMenu($this->params['menu'], 'about'); ?>>
 							<a href="<?php echo Url::to('/site/about/'); ?>">About</a>
 						</li>
 
-						<li>
+						<li <?php echo CMS::activeMenu($this->params['menu'], 'contact'); ?>>
 							<a href="<?php echo Url::to('/site/contact/'); ?>">Contact</a>
 						</li>
 					</ul>
@@ -81,76 +84,48 @@ use yii\widgets\Menu;
 
 				<div class="header-wrapicon2">
 					<img src="<?php echo Url::to("@web/images/icons/icon-header-02.png"); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
-					<span class="header-icons-noti">0</span>
+					<span class="header-icons-noti"><?php echo CMS::getCountCart();?></span>
 
 					<!-- Header cart noti -->
 					<div class="header-cart header-dropdown">
+
+						<?php 
+							$subtotal = 0; 
+							if ( $cart ) :
+						?>
 						<ul class="header-cart-wrapitem">
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-01.jpg"); ?>" alt="IMG">
-								</div>
+							<?php foreach ($cart as $key => $item) : ?>
+								<li class="header-cart-item">
+									<div class="header-cart-item-img">
+										<img src="<?php echo $item['image'];?>" alt="IMG">
+									</div>
 
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										White Shirt With Pleat Detail Back
-									</a>
+									<div class="header-cart-item-txt">
+										<a href="#" class="header-cart-item-name">
+											<?php echo $item['name'];?>
+										</a>
 
-									<span class="header-cart-item-info">
-										1 x $19.00
-									</span>
-								</div>
-							</li>
-
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-02.jpg"); ?>" alt="IMG">
-								</div>
-
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										Converse All Star Hi Black Canvas
-									</a>
-
-									<span class="header-cart-item-info">
-										1 x $39.00
-									</span>
-								</div>
-							</li>
-
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-03.jpg"); ?>" alt="IMG">
-								</div>
-
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										Nixon Porter Leather Watch In Tan
-									</a>
-
-									<span class="header-cart-item-info">
-										1 x $17.00
-									</span>
-								</div>
-							</li>
+										<span class="header-cart-item-info">
+											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
+										</span>
+									</div>
+								</li>
+							<?php
+								$subtotal += $item['price'] * $item['qty'];
+								endforeach;
+							?>
 						</ul>
 
-						<div class="header-cart-total">
-							Total: $75.00
+						<div class="header-cart-total" style="text-align: center;">
+							Total: IDR <?php echo number_format($subtotal,0,'','.');?>
 						</div>
 
-						<div class="header-cart-buttons">
-							<div class="header-cart-wrapbtn">
-								<!-- Button -->
-								<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									View Cart
-								</a>
-							</div>
+						<?php endif;?>
 
-							<div class="header-cart-wrapbtn">
-								<!-- Button -->
-								<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									Check Out
+						<div class="header-cart-buttons">
+							<div class="header-cart-wrapbtn" style="margin: 0 auto;">
+								<a href="<?php echo Url::to('/cart/'); ?>" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									View Cart
 								</a>
 							</div>
 						</div>
@@ -170,85 +145,87 @@ use yii\widgets\Menu;
 		<!-- Button show menu -->
 		<div class="btn-show-menu">
 			<!-- Header Icon mobile -->
-			<div class="header-icons-mobile">
-				<a href="<?php echo Url::to('/site/login/'); ?>" class="header-wrapicon1 dis-block">
-					<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1" alt="ICON">
-				</a>
+			<div class="header-icons-mobile" style="position: relative;">
+				<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
+
+				<!-- Login Popup -->
+				<div class="login-popup login-dropdown">
+					<ul>
+						<?php if ( Yii::$app->user->isGuest ) : ?>
+						<li>
+							<a href="<?php echo Url::to('/site/login/'); ?>">Login</a>
+						</li>
+						<?php else : ?>
+						<li style="border-bottom: 0;text-transform: uppercase;">
+							<p>Welcome <?php echo Yii::$app->user->identity->name; ?></p>
+						</li>
+						<li>
+							<a href="<?php echo Url::to('/site/profile/'); ?>">Profile</a>
+						</li>
+						<li>
+							<a href="<?php echo Url::to('/site/downloads/'); ?>">Downloads</a>
+						</li>
+						<li>
+							<a href="<?php echo Url::to('/site/purchase-history/'); ?>">Purchase History</a>
+						</li>
+						<li>
+							<?= Html::beginForm(['/site/logout'], 'post') ?>
+                                <?= Html::submitButton(
+                                    'Logout',
+                                    ['class' => 'link-logout']
+                                ) ?>
+                            <?= Html::endForm() ?> 
+						</li>
+						<?php endif; ?> 
+					</ul>
+				</div>
 
 				<span class="linedivide2"></span>
 
 				<div class="header-wrapicon2">
 					<img src="<?php echo Url::to("@web/images/icons/icon-header-02.png"); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
-					<span class="header-icons-noti">0</span>
+					<span class="header-icons-noti"><?php echo CMS::getCountCart();?></span>
 
 					<!-- Header cart noti -->
 					<div class="header-cart header-dropdown">
+
+						<?php 
+							$subtotal = 0; 
+							if ( $cart ) :
+						?>
 						<ul class="header-cart-wrapitem">
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-01.jpg"); ?>" alt="IMG">
-								</div>
+							<?php foreach ($cart as $key => $item) : ?>
+								<li class="header-cart-item">
+									<div class="header-cart-item-img">
+										<img src="<?php echo $item['image'];?>" alt="IMG">
+									</div>
 
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										White Shirt With Pleat Detail Back
-									</a>
+									<div class="header-cart-item-txt">
+										<a href="#" class="header-cart-item-name">
+											<?php echo $item['name'];?>
+										</a>
 
-									<span class="header-cart-item-info">
-										1 x $19.00
-									</span>
-								</div>
-							</li>
-
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-02.jpg"); ?>" alt="IMG">
-								</div>
-
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										Converse All Star Hi Black Canvas
-									</a>
-
-									<span class="header-cart-item-info">
-										1 x $39.00
-									</span>
-								</div>
-							</li>
-
-							<li class="header-cart-item">
-								<div class="header-cart-item-img">
-									<img src="<?php echo Url::to("@web/images/item-cart-03.jpg"); ?>" alt="IMG">
-								</div>
-
-								<div class="header-cart-item-txt">
-									<a href="#" class="header-cart-item-name">
-										Nixon Porter Leather Watch In Tan
-									</a>
-
-									<span class="header-cart-item-info">
-										1 x $17.00
-									</span>
-								</div>
-							</li>
+										<span class="header-cart-item-info">
+											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
+										</span>
+									</div>
+								</li>
+							<?php
+								$subtotal += $item['price'] * $item['qty'];
+								endforeach;
+							?>
 						</ul>
 
-						<div class="header-cart-total">
-							Total: $75.00
+						<div class="header-cart-total" style="text-align: center;">
+							Total: IDR <?php echo number_format($subtotal,0,'','.');?>
 						</div>
 
-						<div class="header-cart-buttons">
-							<div class="header-cart-wrapbtn">
-								<!-- Button -->
-								<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									View Cart
-								</a>
-							</div>
+						<?php endif;?>
 
-							<div class="header-cart-wrapbtn">
-								<!-- Button -->
-								<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									Check Out
+						<div class="header-cart-buttons">
+							<div class="header-cart-wrapbtn" style="margin: 0 auto;">
+								<a href="<?php echo Url::to('/cart/'); ?>" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									View Cart
 								</a>
 							</div>
 						</div>
