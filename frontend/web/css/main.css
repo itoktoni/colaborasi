@@ -297,6 +297,13 @@ iframe {
   object-position: center;
   height: 340px;
 }
+.header-cart-item-close{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  z-index: 1;
+  cursor:  pointer;
+}
 
 
 

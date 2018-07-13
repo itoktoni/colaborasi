@@ -95,13 +95,13 @@ $cart = $_SESSION['cart'];
 						?>
 						<ul class="header-cart-wrapitem">
 							<?php foreach ($cart as $key => $item) : ?>
-								<li class="header-cart-item">
+								<li class="header-cart-item" style="position: relative;">
 									<div class="header-cart-item-img">
 										<img src="<?php echo $item['image'];?>" alt="IMG">
 									</div>
 
 									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
+										<a href="<?php echo Url::to('/product/'.$item['slug']);?>" class="header-cart-item-name">
 											<?php echo $item['name'];?>
 										</a>
 
@@ -109,6 +109,10 @@ $cart = $_SESSION['cart'];
 											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
 										</span>
 									</div>
+
+									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$key);?>">
+										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
+									</a>
 								</li>
 							<?php
 								$subtotal += $item['price'] * $item['qty'];
@@ -195,7 +199,7 @@ $cart = $_SESSION['cart'];
 						?>
 						<ul class="header-cart-wrapitem">
 							<?php foreach ($cart as $key => $item) : ?>
-								<li class="header-cart-item">
+								<li class="header-cart-item" style="position: relative;">
 									<div class="header-cart-item-img">
 										<img src="<?php echo $item['image'];?>" alt="IMG">
 									</div>
@@ -209,6 +213,10 @@ $cart = $_SESSION['cart'];
 											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
 										</span>
 									</div>
+
+									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$key);?>">
+										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
+									</a>
 								</li>
 							<?php
 								$subtotal += $item['price'] * $item['qty'];
