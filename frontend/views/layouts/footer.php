@@ -68,13 +68,13 @@ use yii\widgets\Menu;
 
 				<ul>
 					<li class="p-b-9">
-						<a href="#" class="s-text7">
+						<a href="<?php echo Url::to('/site/about/'); ?>" class="s-text7">
 							About Us
 						</a>
 					</li>
 
 					<li class="p-b-9">
-						<a href="#" class="s-text7">
+						<a href="<?php echo Url::to('/site/contact/'); ?>" class="s-text7">
 							Contact Us
 						</a>
 					</li>

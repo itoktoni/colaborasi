@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use common\models\base\Member;
+use common\models\base\Product;
 
 /**
  * Site controller
@@ -396,7 +397,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $latest_product = Product::find()->limit(6)->orderBy(['created_at' => SORT_DESC])->all();   
+
+        return $this->render('index', 
+            [
+                'latest_product'=> $latest_product,
+                'headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all()
+            ]
+        );
     }
 
     public function actionPassword(){
