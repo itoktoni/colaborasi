@@ -71,12 +71,13 @@ $this->title = 'Home';
             <?php
                 $category_list  = ArrayHelper::map(CMS::getCategory(),'id','name'); 
                 $slug_list      = ArrayHelper::map(CMS::getCategory(),'id','slug'); 
+                $image_list     = ArrayHelper::map(CMS::getCategory(),'id','image'); 
                 foreach ($category_list as $key => $value) :
             ?>
             <div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
                 <!-- block1 -->
                 <div class="block1 hov-img-zoom pos-relative m-b-30">
-                    <img src="<?php echo Url::to("@web/images/banner-05.jpg"); ?>" alt="IMG-BENNER">
+                    <img src="<?php echo $image_list[$key]; ?>" alt="IMG-BENNER" class="image-category-homepage">
 
                     <div class="block1-wrapbtn w-size2">
                         <!-- Button -->
@@ -105,20 +106,20 @@ $this->title = 'Home';
             <!-- Tab01 -->
             <div class="tab01">
                 <!-- Nav tabs -->
-                <!-- <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#best-seller" role="tab">Best Seller</a>
+                        <a class="nav-link active" data-toggle="tab" href="#latest" role="tab">Latest</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#featured" role="tab">Featured</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#sale" role="tab">Sale</a>
+                        <a class="nav-link" data-toggle="tab" href="#promoted" role="tab">Promoted</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#top-rate" role="tab">Top Rate</a>
+                        <a class="nav-link" data-toggle="tab" href="#best-seller" role="tab">Best Seller</a>
                     </li>
-                </ul> -->
+                </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content p-t-35">
@@ -141,9 +142,9 @@ $this->title = 'Home';
 
                                             <div class="block2-btn-addcart w-size1 trans-0-4">
                                                 <!-- Button -->
-                                                <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                <a class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4 link-add-to-cart" href="<?php echo Url::to('/cart/add/'.$product->id) ;?>">
                                                     Add to Cart
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

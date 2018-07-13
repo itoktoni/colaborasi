@@ -49,9 +49,7 @@ if (isset($item['type']) && $item['type']) {
 $object = false;
             break;
         case "uploadimage": ?>
-        <?php if ($model->{$key}): ?>
-        <?=Html::img($model->{$key});?>
-        <?php endif;?>
+        <?=Html::img($model->{$key},['id' => 'image-preview']);?>
         <label class="control-label"><?php echo isset($item['label']) ? $item['label'] : ucwords($key); ?></label>
             <div class="clearfix"></div>
                     <span class="btn btn-raised btn-round btn-primary btn-file">

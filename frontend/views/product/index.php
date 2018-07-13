@@ -6,6 +6,8 @@ use yii\widgets\LinkPager;
 use frontend\components\CMS;
 use yii\helpers\ArrayHelper;
 
+$this->title = $product->name;
+
 ?>
 
 <!-- breadcrumb -->
@@ -65,10 +67,9 @@ use yii\helpers\ArrayHelper;
 						</div>
 
 						<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
-							<!-- Button -->
-							<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-								Add to Cart
-							</button>
+							<a class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 link-add-to-cart" href="<?php echo Url::to('/cart/add/'.$product->id) ;?>">
+                                Add to Cart
+                            </a>
 						</div>
 					</div>
 				</div>
@@ -160,10 +161,9 @@ use yii\helpers\ArrayHelper;
 								</a>
 
 								<div class="block2-btn-addcart w-size1 trans-0-4">
-									<!-- Button -->
-									<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-										Add to Cart
-									</button>
+									<a class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4 link-add-to-cart" href="<?php echo Url::to('/cart/add/'.$related_product->id) ;?>">
+		                                Add to Cart
+		                            </a>
 								</div>
 							</div>
 						</div>

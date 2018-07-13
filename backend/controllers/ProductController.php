@@ -86,7 +86,7 @@ class ProductController extends AuthController
                 foreach (Yii::$app->request->post('Product')['subcategory'] as $item) {
                     $subsave[] = [$model->id, $item];
                 }
-                ProductCategory::insertBatch($subsave);
+                ProductCategory::insertBatch($subsave, $model->id);
             }
 
             $model->image = UploadedFile::getInstance($model, 'image');
@@ -172,13 +172,7 @@ class ProductController extends AuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $post = Yii::$app->request->post();
-
-        // if (Yii::$app->request->post() && !$post['Product']['image']) {
-        //     unset($post['Product']['image']);
-        //     $post['Product']['image'] = $model->image;
-        // }
-
+        
         $post = Yii::$app->request->post();
         if (!isset($_FILES['image'])) {
             $post['Product']['image'] = $model->image;
@@ -202,7 +196,8 @@ class ProductController extends AuthController
                 foreach ($post['Product']['subcategory'] as $item) {
                     $subsave[] = [$model->id, $item];
                 }
-                ProductCategory::insertBatch($subsave);
+
+                ProductCategory::insertBatch($subsave, $model->id);
             }
 
             $image = UploadedFile::getInstance($model, 'image');
@@ -277,7 +272,7 @@ class ProductController extends AuthController
         }
 
         $content = $this->renderPartial('_content');
-        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->all();
+        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->where(['=','status', ProductCategory::STATUS_ACTIVE])->all();
         $cats = [];
 
         foreach ($active_category as $item) {

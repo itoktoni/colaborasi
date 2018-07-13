@@ -40,32 +40,28 @@ use yii\widgets\ActiveForm;
                 'id' => 'id',
                 'name' => 'name',
             ],
-            'price' => ['type' => 'text','option' => ['type' => 'number']],
-            'discount_flag' => ['type' => 'checkbox','option' => ['label' => 'Discounted?']],
-            'price_discount' => ['type' => 'text', 'option' => ['type' => 'number']], 
         ],
         [
             'image' => ['type' => 'uploadimage'],
-            'synopsis' => ['type' => 'text', 'option' => ['maxlength' => true]],
+            'synopsis' => ['type' => 'tinymce', 'option' => ['maxlength' => true]],
             'description' => ['type' => 'tinymce', 'option' => ['rows' => 6]],
-            
-            'headline' => ['type' => 'checkbox','option' => ['label' => 'Headline']],
-            'meta_description' => ['type' => 'text'],
-            'meta_keyword' => ['type' => 'tags'],
-            'product_download_url' => ['type' => 'file','option' => ['label' => 'File Product']],
-            'status' => ['type' => 'status'],
-
         ],
         [
-            
-            'content' =>     ['type' => 'html', 'content' => $content]
+            'price' => ['type' => 'text','option' => ['type' => 'number']],
+            'discount_flag' => ['type' => 'checkbox','option' => ['label' => 'Discounted?']],
+            'price_discount' => ['type' => 'text', 'option' => ['type' => 'number']], 
+            'headline' => ['type' => 'checkbox','option' => ['label' => 'Headline']],
+            'product_download_url' => ['type' => 'file','option' => ['label' => 'File Product']],
+            'meta_description' => ['type' => 'text'],
+            'meta_keyword' => ['type' => 'tags'],
+            'status' => ['type' => 'status'],
+
         ]
-        
     ],
 ]); ?>
 </div>
 
-
+<?php $this->registerJs("registerImagepreview('#product-image','#image-preview');");?>
 <?php $this->registerJs("$('#product-category').on('changed.bs.select', function (e) {
     var val = '".Url::to('/product/subcategory',true)."/'+$(this).val();
     $.ajax({

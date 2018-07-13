@@ -57,6 +57,7 @@ class m180705_060243_create_product_table extends Migration
             'id' => $this->primaryKey(),
             'product' => $this->integer()->notNull(),
             'sub_category' => $this->integer()->notNull(),
+            'status' => $this->tinyInteger(1)->notNull()->defaultValue(0),
         ]);
 
         // $this->addPrimaryKey('prod-cate_pk', 'product_category', ['product', 'sub_category']);
@@ -76,6 +77,9 @@ class m180705_060243_create_product_table extends Migration
             'slug' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
             'description' => $this->string(),
+            'image' => $this->string(),
+            'image_path' => $this->string(),
+            'image_thumbnail' => $this->string(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'status' => $this->tinyInteger(1)->notNull()->defaultValue(1),
@@ -130,7 +134,7 @@ class m180705_060243_create_product_table extends Migration
             $rows);
 
         $rows = [
-            [1, 'cellphone', 'Cellphone', 'Cellphone Category', 1],
+            [1, 'movie', 'Movie', 'Movie Category', 1],
             [2, 'application', 'Apps', 'Application Category', 1],
             [3, 'music', 'Music', 'Music Category', 1],
         ];
@@ -144,9 +148,9 @@ class m180705_060243_create_product_table extends Migration
             $rows);
 
         $rows = [
-            [1,'tablet', 'Tablet', 'Tablet Subcategory', 1],
-            [1,'smartphone', 'Smartphone', 'Smartphone Subcategory', 1],
-            [1,'antique', 'Antique', 'Antique Cellphone Subcategory', 1],
+            [1,'fantasy', 'Fantasy', 'Fantasy Subcategory', 1],
+            [1,'adventure', 'Adventure', 'Adventure Subcategory', 1],
+            [1,'horror', 'Horror', 'Horror Subcategory', 1],
             [2,'games', 'Games', 'Games Subcategory', 1],
             [2,'utility', 'Utility', 'Utility Subcategory', 1],
             [2,'scheduler', 'Scheduler', 'Scheduler Subcategory', 1],

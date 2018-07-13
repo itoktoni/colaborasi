@@ -77,12 +77,17 @@ class Productcategory extends \yii\db\ActiveRecord
             $check = self::find()->where(['product' => $item[0],'sub_category' => $item[1]])->one();
             if($check){
                 unset($data[$key]);
+                $check->status = 1;
+                $check->save();
             }
         }
 
         if(!$data){
             return;
         }
+
+        
+
         $command = Yii::$app->db->createCommand()->batchInsert(self::tableName(), ['product', 'sub_category'], $data);
         $command->execute();
     }

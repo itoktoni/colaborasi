@@ -118,6 +118,7 @@ class m180628_023551_backend extends Migration
             [2, 'Product', 'product', 1, '-', 1],
             [3, 'Category', 'category', 2, 'style', 1],
             [3, 'Sub Category', 'sub-category', 3, 'style', 1],
+            [1, 'Headline', 'headline', 4, 'style', 1],
         ];
         $this->batchInsert('feature',
             ['feature_group', 'name', 'slug', 'sort', 'icon', 'status'],
@@ -132,6 +133,7 @@ class m180628_023551_backend extends Migration
             [1, 6, 2],
             [1, 7, 2],
             [1, 8, 2],
+            [1, 9, 2],
         ];
         $this->batchInsert('permission',
             ['roles', 'feature', 'access'],

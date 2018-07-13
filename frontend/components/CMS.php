@@ -30,4 +30,25 @@ class CMS {
 		return $return;
 	}
 
+	public static function activeMenu($source, $comparator, $stringreturn = 'class="sale-noti"', $default = false){
+        if($source == $comparator){
+            return $stringreturn;
+        }
+        return $default;
+    }
+
+    public static function getCountCart() 
+    {
+        $session    = Yii::$app->session;
+        $items      = $session->get('cart');
+        $count      = 0;
+        if($items){
+            foreach($items as $item){
+                $count += 1;
+            }
+        }
+
+        return $count;
+    }
+
 }

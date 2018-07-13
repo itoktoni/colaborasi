@@ -87,6 +87,12 @@ $this->registerJs($script);
                 }
 
 
+                function registerImagepreview(source, target){
+                    $(source).change(function () {
+                        readFile(this, target);
+                    });
+                }
+
                 function registerSlugify(source, target){
                     $(source).blur(function () {
                         $(target).val(slugify($(source).val()));
