@@ -83,7 +83,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
     public function rules()
     {
         return [
-            [['name', 'brand', 'status', 'category', 'price'], 'required'],
+            [['name', 'brand', 'status', 'category','subcategory', 'price'], 'required'],
             [['description'], 'string'],
             [['price', 'price_discount'], 'number'],
             [['brand', 'headline', 'product_view', 'status','discount_flag'], 'integer'],

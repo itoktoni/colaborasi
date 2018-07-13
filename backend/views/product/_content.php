@@ -5,7 +5,7 @@ use backend\components\CMS;?>
     <div class="card card-signup">
         <div class="panel-body">
             <div class="card-header card-header-icon pull-right" data-background-color="purple">
-                <a href="#" class="" title="" rel="tooltip" data-original-title="Add Content">
+                <a href="#" id="add_content" class="" title="" rel="tooltip" data-original-title="Add Content">
                     <i class="material-icons">add</i>
                 </a>
             </div>
@@ -34,7 +34,7 @@ use backend\components\CMS;?>
                 </div>
                 <div class="form-group" id="embed" style="display:none;">
                     <label class="control-label">Embed Code</label>
-                    <textarea name="embed_code" class="form-control" rows="6"> </textarea>
+                    <textarea id="embed_code" name="embed_code" class="form-control" rows="6"> </textarea>
                 </div>
                 <div class="form-group" id="upload" style="display:none;">
                     <label class="control-label"></label>
@@ -48,7 +48,28 @@ use backend\components\CMS;?>
         </div>
     </div>
 
-    <?php $this->registerJs("$('#embed_type').on('changed.bs.select', function (e) {
+    <?php $this->registerJs("
+
+    $('#add_content').click(function(){
+        var value = '';
+        if($('#content_type').val() == '1'){
+            if($('#embed_type').val() == '1'){
+                value = $('embed_code').val();
+            }else if($('#embed_type').val() == '2'){
+                value = $('embed_code').val();
+            }
+        }else if($('#content_type').val() == '2'){
+            if($('#embed_type').val() == '1'){
+
+            }else if($('#embed_type').val() == '2'){
+
+            }
+        }
+
+    });
+
+
+    $('#embed_type').on('changed.bs.select', function (e) {
     if($(this).val() == '1'){
         $('#embed').show();
         $('#upload').hide();

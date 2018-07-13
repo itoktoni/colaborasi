@@ -72,17 +72,25 @@ class Productcategory extends \yii\db\ActiveRecord
     /**
      * Insert batch or update it if duplicate
      */
-    public function insertBatch($data){
+    public function insertBatch($data, $id){
+
+        $command = Yii::$app->db->createCommand()->update(self::tableName(), ['status' => '0'], 'product='.$id);
+        $command->execute();
         foreach($data as $key => $item){
             $check = self::find()->where(['product' => $item[0],'sub_category' => $item[1]])->one();
             if($check){
                 unset($data[$key]);
+                $check->status = 1;
+                $check->save();
             }
         }
 
         if(!$data){
             return;
         }
+
+        
+
         $command = Yii::$app->db->createCommand()->batchInsert(self::tableName(), ['product', 'sub_category'], $data);
         $command->execute();
     }

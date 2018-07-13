@@ -2,9 +2,8 @@
 
 namespace backend\controllers;
 
-use backend\components\AuthController;
-use common\models\base\Category;
-use common\models\search\CategorySearch;
+use common\models\base\Headline;
+use common\models\search\HeadlineSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -13,15 +12,15 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
- * CategoryController implements the CRUD actions for Category model.
+ * HeadlineController implements the CRUD actions for Headline model.
  */
-class CategoryController extends AuthController
+class HeadlineController extends Controller
 {
 
     public function init()
     {
-        $this->view->params['menu'] = 'categories';
-        $this->view->params['submenu'] = 'category';
+        $this->view->params['menu'] = 'setting';
+        $this->view->params['submenu'] = 'headline';
     }
 
     /**
@@ -40,12 +39,12 @@ class CategoryController extends AuthController
     }
 
     /**
-     * Lists all Category models.
+     * Lists all Headline models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchmodel = new \common\models\search\CategorySearch;
+        $searchmodel = new \common\models\search\HeadlineSearch;
         $query = $searchmodel->search(Yii::$app->request->get());
         $data['pages'] = $query->getPagination();
         $data['dataProvider'] = $query->getModels();
@@ -54,13 +53,13 @@ class CategoryController extends AuthController
     }
 
     /**
-     * Creates a new Category model.
+     * Creates a new Headline model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Category();
+        $model = new Headline();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Cloudinary::config(array(
@@ -70,24 +69,21 @@ class CategoryController extends AuthController
             ));
 
             $model->image = UploadedFile::getInstance($model, 'image');
-            if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . 'category' . '\\' . $model->id . '\\', $model->slug)) {
+            if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . 'headline' . '\\' . $model->id . '\\', $model->title)) {
 
-                $model->image = Url::to('/uploads/' . $model->id . '/category' . '/' . $filename['filename'] . $filename['extension']);
-                $model->image_path = Url::to('@uploadpath') . '/category' . '/' . $model->id . '/' . $filename['filename'] . $filename['extension'];
-                $thumbnail_path = Url::to('@uploadpath') . '/category' . '/' . $model->id . '/' . $filename['filename'] . '-thumb' . $filename['extension'];
+                $model->image = Url::to('/uploads/' . $model->id . '/headline' . '/' . $filename['filename'] . $filename['extension']);
+                $image_path = Url::to('@uploadpath') . '/headline' . '/' . $model->id . '/' . $filename['filename'] . $filename['extension'];
 
-                $original_image = \Cloudinary\Uploader::upload($model->image_path);
-                $thumbnail_image = \Cloudinary\Uploader::upload($thumbnail_path);
-
-                unlink($thumbnail_path);
+                $original_image = \Cloudinary\Uploader::upload($image_path);
+                unlink($image_path);
 
                 $model->image = $original_image['url'];
-                $model->image_thumbnail = $thumbnail_image['url'];
 
                 $model->save(false);
             }
-            Yii::$app->session->setFlash('success', 'Category Created');
-            return $this->redirect(['/category/']);
+
+            Yii::$app->session->setFlash('success', 'Headline Created');
+            return $this->redirect(['/headline/']);
         }
 
         return $this->render('create', [
@@ -96,7 +92,7 @@ class CategoryController extends AuthController
     }
 
 /**
- * Updates an existing Category model.
+ * Updates an existing Headline model.
  * If update is successful, the browser will be redirected to the 'view' page.
  * @param integer $id
  * @return mixed
@@ -108,7 +104,7 @@ class CategoryController extends AuthController
 
         $post = Yii::$app->request->post();
         if (!isset($_FILES['image'])) {
-            $post['Category']['image'] = $model->image;
+            $post['Headline']['image'] = $model->image;
         }
 
         if (Yii::$app->request->post() && $model->load($post) && $model->save()) {
@@ -121,25 +117,22 @@ class CategoryController extends AuthController
 
             if ($image != null) {
                 $model->image = $image;
-                if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . 'category' . '\\' . $model->id . '\\', $model->slug)) {
-                    $model->image = Url::to('/uploads/' . $model->id . '/category' . '/' . $filename['filename'] . $filename['extension']);
-                    $model->image_path = Url::to('@uploadpath') . '/category' . '/' . $model->id . '/' . $filename['filename'] . $filename['extension'];
-                    $thumbnail_path = Url::to('@uploadpath') . '/category' . '/' . $model->id . '/' . $filename['filename'] . '-thumb' . $filename['extension'];
+                if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . 'headline' . '\\' . $model->id . '\\', $model->title)) {
+                    $model->image = Url::to('/uploads/' . $model->id . '/headline' . '/' . $filename['filename'] . $filename['extension']);
+                    $image_path = Url::to('@uploadpath') . '/headline' . '/' . $model->id . '/' . $filename['filename'] . $filename['extension'];
 
-                    $original_image = \Cloudinary\Uploader::upload($model->image_path);
-                    $thumbnail_image = \Cloudinary\Uploader::upload($thumbnail_path);
+                    $original_image = \Cloudinary\Uploader::upload($image_path);
 
-                    unlink($thumbnail_path);
+                    unlink($image_path);
 
                     $model->image = $original_image['url'];
-                    $model->image_thumbnail = $thumbnail_image['url'];
 
                     $model->save(false);
                 }
             }
 
-            Yii::$app->session->setFlash('success', 'Category Updated');
-            return $this->redirect('/category/');
+            Yii::$app->session->setFlash('success', 'Headline Updated');
+            return $this->redirect('/headline/');
         }
 
         return $this->render('update', [
@@ -148,7 +141,7 @@ class CategoryController extends AuthController
     }
 
 /**
- * Deletes an existing Category model.
+ * Deletes an existing Headline model.
  * If deletion is successful, the browser will be redirected to the 'index' page.
  * @param integer $id
  * @return mixed
@@ -157,22 +150,21 @@ class CategoryController extends AuthController
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->status = -9;
-        $model->save(false);
-        Yii::$app->session->setFlash('success', 'Category Deleted');
-        return $this->redirect('/category');
+        $model->delete();
+        Yii::$app->session->setFlash('success', 'Headline Deleted');
+        return $this->redirect('/headline');
     }
 
 /**
- * Finds the Category model based on its primary key value.
+ * Finds the Headline model based on its primary key value.
  * If the model is not found, a 404 HTTP exception will be thrown.
  * @param integer $id
- * @return Category the loaded model
+ * @return Headline the loaded model
  * @throws NotFoundHttpException if the model cannot be found
  */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Headline::findOne($id)) !== null) {
             return $model;
         }
 
