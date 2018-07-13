@@ -71,12 +71,13 @@ $this->title = 'Home';
             <?php
                 $category_list  = ArrayHelper::map(CMS::getCategory(),'id','name'); 
                 $slug_list      = ArrayHelper::map(CMS::getCategory(),'id','slug'); 
+                $image_list     = ArrayHelper::map(CMS::getCategory(),'id','image'); 
                 foreach ($category_list as $key => $value) :
             ?>
             <div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
                 <!-- block1 -->
                 <div class="block1 hov-img-zoom pos-relative m-b-30">
-                    <img src="<?php echo Url::to("@web/images/banner-05.jpg"); ?>" alt="IMG-BENNER">
+                    <img src="<?php echo $image_list[$key]; ?>" alt="IMG-BENNER" class="image-category-homepage">
 
                     <div class="block1-wrapbtn w-size2">
                         <!-- Button -->

@@ -292,6 +292,11 @@ iframe {
 .link-add-to-cart:hover{
   color: #fff!important;
 }
+.image-category-homepage{
+  object-fit: cover;
+  object-position: center;
+  height: 340px;
+}
 
 
 
