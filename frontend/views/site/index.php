@@ -106,20 +106,20 @@ $this->title = 'Home';
             <!-- Tab01 -->
             <div class="tab01">
                 <!-- Nav tabs -->
-                <!-- <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#best-seller" role="tab">Best Seller</a>
+                        <a class="nav-link active" data-toggle="tab" href="#latest" role="tab">Latest</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#featured" role="tab">Featured</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#sale" role="tab">Sale</a>
+                        <a class="nav-link" data-toggle="tab" href="#promoted" role="tab">Promoted</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#top-rate" role="tab">Top Rate</a>
+                        <a class="nav-link" data-toggle="tab" href="#best-seller" role="tab">Best Seller</a>
                     </li>
-                </ul> -->
+                </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content p-t-35">

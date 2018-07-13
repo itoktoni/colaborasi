@@ -28,5 +28,6 @@ return [
         'cart/add/'                                 => 'cart/add',
         'cart/'                                     => 'cart/index',
         'cart'                                      => 'cart/index',
+        'checkout'                                  => 'cart/checkout',
     ],
 ];
