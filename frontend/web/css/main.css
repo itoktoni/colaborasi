@@ -277,6 +277,16 @@ iframe {
 }
 
 
+/*[ ADDITIONAL HOMEPAGE ]
+///////////////////////////////////////////////////////////
+*/
+.image-product-homepage{
+  width: 270px;
+  height: 360px;
+  object-fit: cover;
+  object-position: center;
+}
+
 
 
 /*[ LOADDING ]

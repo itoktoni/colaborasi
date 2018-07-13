@@ -208,4 +208,17 @@
         $('.video-mo-01').css('opacity','0');
     });
 
+
+    /*[ Dropdown selection ]
+    ===========================================================*/
+    $(".selection-1").select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $('#dropDownSelect1')
+    });
+
+    $(".selection-2").select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $('#dropDownSelect2')
+    });
+
 })(jQuery);
