@@ -10,11 +10,11 @@ use common\models\Brand;
 
 class CMS {
 
-	public function getCategory(){
+	public static function getCategory(){
         return Category::find()->where(['status' => Category::STATUS_ACTIVE])->orderBy(['name' => SORT_ASC])->limit(3)->all();
     }
 
-    public function getSubCategory(){
+    public static function getSubCategory(){
 		$subcategory = Subcategory::find()
 						->select(['sub_category.*','category_name' => 'category.name', 'category_slug' => 'category.slug'])
 						->where(['category.status' => Category::STATUS_ACTIVE, 'sub_category.status' => Category::STATUS_ACTIVE])
