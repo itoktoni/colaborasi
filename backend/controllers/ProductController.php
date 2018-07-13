@@ -41,6 +41,14 @@ class ProductController extends AuthController
         ];
     }
 
+    public function algolia(){
+
+        $client = new \AlgoliaSearch\Client('TP8H76V4RK', 'ae0afaa0a2f3f3ccb559691522805852');
+        $index = $client->initIndex('team_product');
+
+        return $index;
+    }
+
     /**
      * Lists all Product models.
      * @return mixed
@@ -113,6 +121,34 @@ class ProductController extends AuthController
                     }
                 }
                 $model->save(false);
+
+                $this->algolia()->addObject([
+                    'id' => $model->id,
+                    'slug' => Url::to('/'.$model->slug),
+                    'name' => $model->name,
+                    'category' => $model->category,
+                    'synopsis' => $model->synopsis,
+                    'description' => $model->description,
+                    'price' => $model->price,
+                    'price_discount' => $model->price_discount,
+                    'brand' => $model->brand,
+                    'discount_flag' => $model->discount_flag,
+                    'image' => $model->image,
+                    'image_path' => $model->image_path,
+                    'image_thumbnail' => $model->image_thumbnail,
+                    'image_portrait' => $model->image_portrait,
+                    'headline' => $model->headline,
+                    'meta_description' => $model->meta_description,
+                    'meta_keyword' => $model->meta_keyword,
+                    'product_download_url' => $model->product_download_url,
+                    'product_download_path' => $model->product_download_path,
+                    'product_view' => $model->product_view,
+                    'status' => $model->status,
+                    'created_at' => $model->created_at,
+                    'updated_at' => $model->updated_at,
+                ]);
+
+
             }
 
             Yii::$app->session->setFlash('success', 'Product Created');
@@ -207,6 +243,35 @@ class ProductController extends AuthController
 
             $model->save(false);
 
+            $client = new \AlgoliaSearch\Client('TP8H76V4RK', 'ae0afaa0a2f3f3ccb559691522805852');
+            $index = $client->initIndex('team_product');
+
+            $this->algolia()->saveObjects([
+                    'id' => $model->id,
+                    'slug' => Url::to('/'.$model->slug),
+                    'name' => $model->name,
+                    'category' => $model->category,
+                    'synopsis' => $model->synopsis,
+                    'description' => $model->description,
+                    'price' => $model->price,
+                    'price_discount' => $model->price_discount,
+                    'brand' => $model->brand,
+                    'discount_flag' => $model->discount_flag,
+                    'image' => $model->image,
+                    'image_path' => $model->image_path,
+                    'image_thumbnail' => $model->image_thumbnail,
+                    'image_portrait' => $model->image_portrait,
+                    'headline' => $model->headline,
+                    'meta_description' => $model->meta_description,
+                    'meta_keyword' => $model->meta_keyword,
+                    'product_download_url' => $model->product_download_url,
+                    'product_download_path' => $model->product_download_path,
+                    'product_view' => $model->product_view,
+                    'status' => $model->status,
+                    'created_at' => $model->created_at,
+                    'updated_at' => $model->updated_at,
+                ]);
+
             Yii::$app->session->setFlash('success', 'Product Updated');
             return $this->redirect('/product/');
         }
@@ -239,6 +304,7 @@ class ProductController extends AuthController
         $model = $this->findModel($id);
         $model->status = -9;
         $model->save(false);
+        $this->algolia()->deleteObjects([$model->id]);
         Yii::$app->session->setFlash('success', 'Product Deleted');
         return $this->redirect('/product');
     }

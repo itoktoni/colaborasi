@@ -72,7 +72,7 @@ class Productcategory extends \yii\db\ActiveRecord
     /**
      * Insert batch or update it if duplicate
      */
-    public function insertBatch($data){
+    public static function insertBatch($data){
         foreach($data as $key => $item){
             $check = self::find()->where(['product' => $item[0],'sub_category' => $item[1]])->one();
             if($check){

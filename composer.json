@@ -25,7 +25,8 @@
         "cloudinary/cloudinary_php": "dev-master",
         "kartik-v/yii2-number": "*",
         "godzie44/yii2-image-behavior": "^1.0",
-        "yiisoft/yii2-imagine": "^2.1"
+        "yiisoft/yii2-imagine": "^2.1",
+        "algolia/algoliasearch-client-php": "^1.27"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
