@@ -104,7 +104,7 @@ $this->title = 'Shop';
 
 							<div class="block2-txt p-t-20">
 								<a href="<?php echo Url::to('/product/'.$product->slug);?>" class="block2-name dis-block s-text3 p-b-5">
-									Herschel supply co 25l
+									<?php echo $product->name;?>
 								</a>
 
 								<span class="block2-price m-text6 p-r-5">
