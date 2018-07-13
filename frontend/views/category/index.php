@@ -68,18 +68,6 @@ $this->title = 'Shop';
 								<option>Price: high to low</option>
 							</select>
 						</div>
-
-						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-							<select class="selection-2" name="sorting">
-								<option>Price</option>
-								<option>$0.00 - $50.00</option>
-								<option>$50.00 - $100.00</option>
-								<option>$100.00 - $150.00</option>
-								<option>$150.00 - $200.00</option>
-								<option>$200.00+</option>
-
-							</select>
-						</div>
 					</div>
 
 					<span class="s-text8 p-t-5 p-b-5">
@@ -96,7 +84,7 @@ $this->title = 'Shop';
 					<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
 						<!-- Block2 -->
 						<div class="block2">
-							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+							<div class="block2-img wrap-pic-w of-hidden pos-relative">
 								<img src="<?php echo $product->image;?>" alt="IMG-PRODUCT" class="image-product-homepage">
 
 								<div class="block2-overlay trans-0-4">
