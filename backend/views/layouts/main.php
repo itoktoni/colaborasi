@@ -62,15 +62,15 @@ AppAsset::register($this);
         </div>
 
         <?php if (Yii::$app->session->hasFlash('success')): ?>
-        <?php
-$script = "
-                $('.notification-wrapper').fadeIn(300);
-                setTimeout(function(){
-                    $('.notification-wrapper').fadeOut(300);
-                },3000);";
-$this->registerJs($script);
-?>
-            <?php endif;?>
+            <?php
+                $script = "
+                                $('.notification-wrapper').fadeIn(300);
+                                setTimeout(function(){
+                                    $('.notification-wrapper').fadeOut(300);
+                                },3000);";
+                $this->registerJs($script);
+            ?>
+        <?php endif;?>
 
             <script>
                 function close_popup() {
