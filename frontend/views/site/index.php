@@ -73,11 +73,16 @@ $this->title = 'Home';
                 $slug_list      = ArrayHelper::map(CMS::getCategory(),'id','slug'); 
                 $image_list     = ArrayHelper::map(CMS::getCategory(),'id','image'); 
                 foreach ($category_list as $key => $value) :
+                    if ( empty($image_list[$key]) ) :
+                        $img = Url::to("@web/images/banner-03.jpg");
+                    else :
+                        $img = $image_list[$key];
+                    endif;                    
             ?>
             <div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
                 <!-- block1 -->
                 <div class="block1 hov-img-zoom pos-relative m-b-30">
-                    <img src="<?php echo $image_list[$key]; ?>" alt="IMG-BENNER" class="image-category-homepage">
+                    <img src="<?php echo $img; ?>" alt="IMG-BENNER" class="image-category-homepage">
 
                     <div class="block1-wrapbtn w-size2">
                         <!-- Button -->
