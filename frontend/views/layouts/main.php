@@ -75,7 +75,7 @@ channel.bind('my-event', function(data) {
     swal({ title: "Information Notification !",
         text: data.message,
         timer: 3000,
-        showConfirmButton: false,
+        showConfirmButton: true,
         icon: "info",
     });
 
