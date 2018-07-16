@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\Menu;
 use frontend\components\CMS;
 
+<<<<<<< HEAD
 if(isset($_SESSION['cart'])){
 	
 	$cart = $_SESSION['cart'];
@@ -12,6 +13,13 @@ if(isset($_SESSION['cart'])){
 else{
 	$cart = [];
 }
+=======
+if ( isset($_SESSION['cart']) ) :
+	$cart = $_SESSION['cart'];
+else :
+	$cart = '';
+endif;
+>>>>>>> b891b4519d01c8255775c9b6f4b4db9a0d5fef21
 
 ?>
 
