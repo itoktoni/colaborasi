@@ -5,7 +5,11 @@ use yii\helpers\Url;
 use yii\widgets\Menu;
 use frontend\components\CMS;
 
-$cart = $_SESSION['cart'];
+if ( isset($_SESSION['cart']) ) :
+	$cart = $_SESSION['cart'];
+else :
+	$cart = '';
+endif;
 
 ?>
 
