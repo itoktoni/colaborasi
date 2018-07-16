@@ -39,7 +39,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::submitButton('Login', ['class' => 'flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4', 'name' => 'login-button']) ?>
                     </div>
 
+                    <hr>
+
+                    <div class="form-group pull-right">
+                        <a class="btn btn-primary" href="/facebook">Sign With Facebook</a> 
+                        <a class="btn btn-info" href="/twitter">Sign With Twitter</a> 
+                        <a class="btn btn-danger" href="/google">Sign With Google</a> 
+                        <a class="btn btn-warning" href="/github">Sign With Github</a> 
+                    </div>
+
                 <?php ActiveForm::end(); ?>
+    
             </div>
 
             <div class="col-md-6 p-b-30">

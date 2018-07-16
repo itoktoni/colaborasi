@@ -111,6 +111,7 @@ class SiteController extends Controller
                     $content = file_get_contents($image);
                     file_put_contents($path.'/'.$userProfile->identifier.'.jpg', $content);
 
+                    // d(true);
                     \Cloudinary::config(array( 
                         "cloud_name" => "itoktoni", 
                         "api_key" => "952542949129655", 
@@ -408,12 +409,18 @@ class SiteController extends Controller
         $this->view->params['menu'] = 'home';
 
         $latest_product = Product::find()->limit(6)->orderBy(['created_at' => SORT_DESC])->all();   
+        if(!empty($this->session->get('cart'))){
+            $cart = $this->session->get('cart');
+        }
+        else{
+            $cart = [];
+        }
 
         return $this->render('index', 
             [
                 'latest_product'=> $latest_product,
                 'headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all(),
-                'cart'          => $this->session->get('cart')
+                'cart'          => $cart
             ]
         );
     }

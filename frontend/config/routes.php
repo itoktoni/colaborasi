@@ -16,6 +16,7 @@ return [
         '/twitter'                                  => 'site/twitter',
         '/google'                                   => 'site/google',
         '/register'                                 => 'site/signup',
+        '/login'                                    => 'site/login',
         'category/<cats:(.*)>/<subcategory:(.*)>'   => 'category/index/',
         'category/<cats:(.*)>'                      => 'category/index/',
         'product/<slug:(.*)>'                       => 'product/index/',

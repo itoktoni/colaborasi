@@ -37,4 +37,15 @@ AppAsset::register($this);
 
 </body>
 
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+<script>
+    swal({ title: "Success !",
+        text: "<?=Yii::$app->session->getFlash('success')?>",
+        timer: 2000,
+        showConfirmButton: false,
+        icon: "success",
+    });
+</script>
+<?php endif;?>
+
 <?php $this->endPage() ?>

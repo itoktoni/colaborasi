@@ -5,21 +5,11 @@ use yii\helpers\Url;
 use yii\widgets\Menu;
 use frontend\components\CMS;
 
-<<<<<<< HEAD
-if(isset($_SESSION['cart'])){
-	
-	$cart = $_SESSION['cart'];
-}
-else{
-	$cart = [];
-}
-=======
 if ( isset($_SESSION['cart']) ) :
 	$cart = $_SESSION['cart'];
 else :
 	$cart = '';
 endif;
->>>>>>> b891b4519d01c8255775c9b6f4b4db9a0d5fef21
 
 ?>
 
@@ -66,7 +56,7 @@ endif;
 						<ul>
 							<?php if ( Yii::$app->user->isGuest ) : ?>
 							<li>
-								<a href="<?php echo Url::to('/site/login/'); ?>">Login</a>
+								<a href="<?php echo Url::to(['site/login']); ?>">Login</a>
 							</li>
 							<?php else : ?>
 							<li style="border-bottom: 0;text-transform: uppercase;">
