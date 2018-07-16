@@ -48,4 +48,28 @@ AppAsset::register($this);
 </script>
 <?php endif;?>
 
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script>
+
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('b07270a223c7b4f48843', {
+    cluster: 'ap1',
+    encrypted: true
+});
+
+var channel = pusher.subscribe('my-channel');
+channel.bind('my-event', function(data) {
+    
+    swal({ title: "Success !",
+        text: data.message,
+        timer: 2000,
+        showConfirmButton: false,
+        icon: "success",
+    });
+
+});
+</script>
+
 <?php $this->endPage() ?>
