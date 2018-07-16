@@ -56,9 +56,9 @@ echo TableWidget::widget([
     'action' => 'Category',
     'action_url' => 'category',
     'data' => $dataProvider,
-    'header' => [    'slug','name','description',
+    'header' => [    'slug','name','description','image',
     'Status'],
-    'field' => [    'slug' => 'slug','name' => 'name','description' => 'description', 'status' =>
+    'field' => [    'slug' => 'slug','name' => 'name','description' => 'description', 'image' => 'image', 'status' =>
         ['callback' =>
             ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
         ],

@@ -16,7 +16,8 @@ class AppAsset extends AssetBundle
         'css/material-dashboard.css',
         'css/demo.css',
         'css/font-awesome.css',
-        'css/google-roboto-300-700.css',
+        'css/google-roboto-300-700.css',        
+        'component/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
     ];
     public $js = [
         'js/bootstrap.min.js',
@@ -29,6 +30,7 @@ class AppAsset extends AssetBundle
         'js/bootstrap-notify.js',
         'js/jquery.sharrre.js',
         'js/bootstrap-datetimepicker.js',
+        'component/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
         'js/jquery-jvectormap.js',
         'js/nouislider.min.js',
         'js/jquery.select-bootstrap.js',

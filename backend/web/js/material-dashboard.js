@@ -140,6 +140,12 @@ $(document).ready(function(){
         });
     }
 
+    $('.datepicker-date').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        todayHighlight: true,
+    })
+
 
 });
 
