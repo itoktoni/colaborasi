@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
+use yii\bootstrap\ActiveForm;
 
 ?>
 
@@ -69,20 +70,20 @@ use yii\widgets\Menu;
 				Newsletter
 			</h4>
 
-			<form>
+			 <?php $form = ActiveForm::begin(['id' => 'contact-form','action' => Url::to(['site/subscribe']), 'options' => ['class' => 'login-form']]);?>
 				<div class="effect1 w-size9">
 					<input class="s-text7 bg6 w-full p-b-5" type="text" name="email" placeholder="email@example.com">
+					<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 					<span class="effect1-line"></span>
 				</div>
 
 				<div class="w-size2 p-t-20">
 					<!-- Button -->
-					<button class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4">
+					<button type="submit" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4">
 						Subscribe
 					</button>
 				</div>
-
-			</form>
+            <?php ActiveForm::end();?>
 		</div>
 	</div>
 

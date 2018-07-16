@@ -23,7 +23,7 @@ class CategoryController extends \yii\web\Controller
 		$this->view->params['menu'] = 'shop';
 
 		if ( $cats ) :
-			$maincats 					= Category::findOne(['slug' => $cats]);
+			$maincats = Category::findOne(['slug' => $cats]);
 
 			if ( !$maincats )
 			{

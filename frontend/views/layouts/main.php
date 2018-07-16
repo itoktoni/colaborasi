@@ -41,9 +41,19 @@ AppAsset::register($this);
 <script>
     swal({ title: "Success !",
         text: "<?=Yii::$app->session->getFlash('success')?>",
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false,
         icon: "success",
+    });
+</script>
+<?php endif;?>
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+<script>
+    swal({ title: "Error !",
+        text: "<?=Yii::$app->session->getFlash('error')?>",
+        timer: 3000,
+        showConfirmButton: false,
+        icon: "error",
     });
 </script>
 <?php endif;?>
@@ -62,11 +72,11 @@ var pusher = new Pusher('b07270a223c7b4f48843', {
 var channel = pusher.subscribe('my-channel');
 channel.bind('my-event', function(data) {
     
-    swal({ title: "Success !",
+    swal({ title: "Information Notification !",
         text: data.message,
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false,
-        icon: "success",
+        icon: "info",
     });
 
 });

@@ -16,6 +16,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use common\models\base\Member;
 use common\models\base\Product;
+use common\models\base\Subscribe;
 
 /**
  * Site controller
@@ -81,6 +82,8 @@ class SiteController extends Controller
 
     public function actionFacebook()
     {
+        $this->view->params['menu'] = 'home';
+
         $facebook = [
             'callback' => 'https://frontend.dev.co/facebook',
             "providers" => [
@@ -441,6 +444,29 @@ class SiteController extends Controller
         }
     }
 
+    
+    public function actionSubscribe(){
+
+        // d(true);
+        if(Yii::$app->request->post()){
+
+            // d(Yii::$app->request->post());
+            $update = Subscribe::find()->where(['email' => Yii::$app->request->post('email')])->one();
+            if(empty($update)){
+                $subscribe = new Subscribe();
+                $subscribe->email = Yii::$app->request->post('email');
+                $subscribe->save();
+                Yii::$app->session->setFlash('success', 'Success Add Subscribe Channel');
+                return $this->redirect('/');
+
+            }
+
+            Yii::$app->session->setFlash('error', 'You are Already Subscribe');
+
+            return $this->redirect('/');
+        }
+    }
+
     /**
      * Logs in a user.
      *
@@ -492,7 +518,9 @@ class SiteController extends Controller
         $this->view->params['menu'] = 'contact';
 
         $model = new ContactForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
             } else {

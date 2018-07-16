@@ -26,6 +26,20 @@ return [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+//            'viewPath' => '@app/mail',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.sendgrid.net', // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => 'apikey',
+                'password' => $params['mail'],
+                'port' => '587', // Port 25 is a very common port too
+                'encryption' => 'tls', // It is often used, check your provider or mail server specs
+            ],
+//            'viewPath' => 'app/view/layouts/mail',
+            'useFileTransport' => false,
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
