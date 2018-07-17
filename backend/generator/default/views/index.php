@@ -2,6 +2,7 @@
 
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use backend\components\CMS;
 
 /* @var $this yii\web\View */
 /* @var $generator yii\gii\generators\crud\Generator */
@@ -54,11 +55,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-icon" data-background-color="purple">
-                    <?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>
+                    <?php echo '<?php if (YII::$app->cms->check_permission(Permission::FULL_ACCESS)): ?>';?>
                     <a href="/user/create" class="" title="" rel="tooltip" data-original-title="Create User">
                         <i class="material-icons">add</i>
                     </a>
-                    <?php endif;?>
+                    <?php echo "<?php endif;";?>
                 </div>
                 <div class="card-content">
                     <h4 class="card-title" style="visibility: hidden;">Users</h4>

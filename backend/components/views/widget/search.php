@@ -25,17 +25,17 @@ use yii\helpers\Url;?>
                             <?php elseif (isset($item['is_dropdown'])): ?>
 
                                 <div class="form-group is-empty" style="margin-top: 11px;">
-                            <select class="selectpicker" data-size="7" data-style="select-with-transition" name="<?php echo (isset($item['name'])) ? $item['name'] : $key; ?>" class="<?php echo (isset($item['class'])) ? $item['class'] : 'form-control'; ?>">
+                               <select class="selectpicker" data-size="7" data-style="select-with-transition" name="<?php echo (isset($item['name'])) ? $item['name'] : $key; ?>" class="<?php echo (isset($item['class'])) ? $item['class'] : 'form-control'; ?>">
                                 <option value="" selected>
-                                    <?php echo (isset($item['placeholder'])) ? ucwords($item['placeholder']) : 'Select ' . ucwords((isset($item['name'])) ? $item['name'] : $key); ?>
+                                    <?php echo (isset($item['placeholder'])) ? ucwords($item['placeholder']) : 'Select ' . ucwords((isset($item['placeholder'])) ? $item['name'] : $key); ?>
                                 </option>
                                 <?php
                                 if (!isset($item['value'])):
-                                    $item['value'] = (isset($item['name'])) ? Yii::$app->request->get('name') : Yii::$app->request->get($key);
+                                    $item['value'] = (isset($item['name'])) ? Yii::$app->request->get($item['name']) : Yii::$app->request->get($key);
                                 endif;
                                 foreach ($item['item'] as $key => $e):
                                 ?>
-                                    <option value="<?php echo $key; ?>" <?php echo ($item[ 'value']== $key) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo $key; ?>" <?php echo ($item['value']== $key) ? 'selected' : ''; ?>>
                                         <?php echo $e; ?>
                                     </option>
                                     <?php endforeach;?>
@@ -65,14 +65,12 @@ use yii\helpers\Url;?>
                                 <span class="material-input"></span>
                             </div>
 
-
                             <?php endif;?>
-                            <?php endif;?>
-
-                            <?php if (isset($item['clearfix']) && $item['clearfix']): ?>
-                            <div class="clearfix"></div>
                             <?php endif;?>
                         </div>
+                        <?php if (isset($item['clearfix']) && $item['clearfix']):?>
+                            <div class="clearfix">&nbsp;</div>
+                            <?php endif;?>
                         <?php endforeach;?>
 
                         <?php if ($status): ?>

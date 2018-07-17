@@ -19,6 +19,7 @@ use yii\widgets\ActiveForm;
     'back_url' => Url::to('/product/'),
     'back_text' => 'Back',
     'model' => $model,
+    // 'col_class' => 'col-md-12',
     'page' => 3,
     'form_option' => ['options' => ['enctype' => 'multipart/form-data']],
     'field' =>
@@ -59,6 +60,10 @@ use yii\widgets\ActiveForm;
         ]
     ],
 ]); ?>
+
+<div class="col-md-12">
+Test Media Content
+</div>
 </div>
 
 <?php $this->registerJs("registerImagepreview('#product-image','#image-preview');");?>
