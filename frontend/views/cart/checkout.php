@@ -8,6 +8,9 @@ use frontend\components\CMS;
 
 $this->title = 'Checkout';
 
+$this->registerJsFile(
+    '@web/js/ongkir.js',
+    ['depends' => [frontend\assets\AppAsset::className()]]);
 ?>
 
 <!-- Title Page -->
@@ -88,19 +91,63 @@ $this->title = 'Checkout';
 				<?php $grandtotal = $subtotal - $discount; ?>
 
 				<!--  -->
+
+				<div class="flex-w flex-sb-m p-t-12 p-t-12">
+					<span class="s-text18 w-size19 w-full-sm">
+						Courier:
+					</span>
+
+					<span class="m-text21 w-size20 w-full-sm">
+						IDR <span id="ongkir">0</span>
+					</span>
+				</div>
+				<hr>
 				<div class="flex-w flex-sb-m p-t-12 p-b-30">
 					<span class="m-text22 w-size19 w-full-sm">
 						Total:
 					</span>
 
 					<span class="m-text21 w-size20 w-full-sm">
-						IDR <?php echo number_format($grandtotal,0,'','.');?>
+						IDR <span id="total"><?php echo number_format($grandtotal,0,'','.');?></span> 
+						<input type="hidden" id="ongkos" name="ongkos">
+						<input type="hidden" id="jasa" name="jasa">
 					</span>
 				</div>
 			</div>
 
 			<div class="bo9 p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 442px);">
-				buat shipping
+
+				<h5 class="m-text20 p-b-10">
+					Shipping
+				</h5>
+
+				 <select  id="province" class="select form-control-lg col-lg-12" name="province">
+					<option value="">Select Province</option>
+					<?php foreach ($province as $p): ?>
+						<option value="<?php echo $p->province_id; ?>">
+							<?php echo $p->province; ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+				<hr style="padding:5px;">
+				
+				<select name="city" class="select form-control-lg col-lg-12" id="city">
+					<option value="">Select City</option>
+				</select>
+				<hr style="padding:5px;">
+
+				<select id="courier" class="select form-control-lg col-lg-12" name="courier">
+					<option>Select Courier...</option>
+					<option value="jne">JNE</option>
+					<option value="tiki">TIKI</option>
+					<option value="pos">POS Indonesia</option>
+				</select>
+				<hr style="padding:5px;">
+				
+				<select name="service" class="select form-control-lg col-lg-12" id="service">
+				<option value="">Select Service..</option>
+				</select>
+				<hr style="padding:5px;">
 			</div>
 		</div>
 	</div>
