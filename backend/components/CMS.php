@@ -203,7 +203,7 @@ class CMS {
     }
 
 
-    public static function format_date($date, $format = 'd-m-Y H:i:s'){
+    public static function format_date($date, $format = 'd M Y'){
         return date($format,strtotime($date));
     }
 

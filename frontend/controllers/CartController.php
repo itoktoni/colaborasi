@@ -6,6 +6,7 @@ use Yii;
 use common\models\base\Product;
 use common\models\base\Voucher;
 use yii\web\ForbiddenHttpException;
+use frontend\components\CMS;
 
 class CartController extends \yii\web\Controller
 {
@@ -119,14 +120,40 @@ class CartController extends \yii\web\Controller
 
 	public function actionVoucher(){
 		if(Yii::$app->request->post('voucher')){
-			$voucher = Voucher::find()->select(['name','code','discount_prosentase','discount_price'])->where(['code' => Yii::$app->request->post('voucher')])->one();
+			$voucher = Voucher::find()
+						->select(['code', 'voucher_type', 'discount_type', 'discount_counter', 'discount_prosentase', 'discount_price', 'start_date', 'end_date'])
+						->andwhere(['code' => Yii::$app->request->post('voucher')])
+						->andwhere(['status' => Voucher::STATUS_ACTIVE])
+						->one();
 
-			if(!$voucher){
+			if ( $voucher ) :
+
+				if ( $voucher->voucher_type == CMS::VOUCHER_TIMELINE ) :
+					$start_date = strtotime($voucher->start_date);
+					$end_date = strtotime($voucher->end_date);
+					$datetoday = strtotime(date('d M Y', time()));
+
+					if ( ( $datetoday > $start_date || $datetoday == $start_date ) && ( $datetoday < $end_date || $datetoday == $end_date ) ) :
+						Yii::$app->session->setFlash('success', 'Voucher '.$voucher->name.' Applied.');
+						Yii::$app->session->set('voucher', $voucher);
+					else :
+						Yii::$app->session->setFlash('error', 'Voucher is not found!');
+					endif;
+				else : 
+
+					if (!$voucher) :
+						Yii::$app->session->setFlash('error', 'Voucher is not found!');
+					else :
+						Yii::$app->session->setFlash('success', 'Voucher '.$voucher->name.' Applied.');
+						Yii::$app->session->set('voucher', $voucher);
+					endif;
+
+				endif;
+
+			else :
 				Yii::$app->session->setFlash('error', 'Voucher is not found!');
-			}else{
-				Yii::$app->session->setFlash('success', 'Voucher '.$voucher->name.' Applied.');
-				Yii::$app->session->set('voucher', $voucher);
-			}
+			endif;
+			
 		}else{
 			Yii::$app->session->setFlash('error', 'Error when applying voucher.');
 		}
