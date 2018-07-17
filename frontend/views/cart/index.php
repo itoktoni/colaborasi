@@ -180,7 +180,7 @@ endif;
 				</button> -->
 				<form action="<?php echo Url::to('/checkout');?>" method="post">
 					<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
-					<input type="submit" value="Proceed to Checkout" name="checkout" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+					<input type="submit" value="Proceed to Checkout" name="checkout" class="flex-c-m sizefull bg1 bo-rad-23 p-t-20 p-b-20 hov1 s-text1 trans-0-4">
 				</form>
 			</div>
 		</div>

@@ -10,22 +10,26 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Reset password';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-reset-password">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please choose your new password:</p>
+<section class="bgwhite p-t-66 p-b-60">
+    <div class="container">
+        <div class="row">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['action' =>['site/password'],'id' => 'reset-password-form']); ?>
+            <div class="col-md-6 p-b-30">
+                
+                <?php $form = ActiveForm::begin(['action' => ['site/password'], 'id' => 'reset-password-form']);?>
 
-                <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
-                <input type="hidden" name="id" value="<?php echo $model->email;?>">
+                <?=$form->field($model, 'password')->passwordInput(['autofocus' => true])?>
+                <input type="hidden" name="id" value="<?php echo $model->email; ?>">
                 <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                    <?=Html::submitButton('Save', ['class' => 'btn btn-primary flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4'])?>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end();?>
+
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+
