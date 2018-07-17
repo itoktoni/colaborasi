@@ -15,23 +15,23 @@ use yii\widgets\ActiveForm;
 
 		<?php $form = ActiveForm::begin();?>
 
-		    <?=$form->field($model, 'name')->textInput(['maxlength' => true])?>
+	    <?=$form->field($model, 'name')->textInput(['maxlength' => true])?>
 
-    <?=$form->field($model, 'code')->textInput(['maxlength' => true])?>
+        <?=$form->field($model, 'code')->textInput(['maxlength' => true])?>
 
-    <?=$form->field($model, 'description')->textarea(['rows' => 6])?>
+        <?=$form->field($model, 'description')->textarea(['rows' => 6])?>
 
-    <?=$form->field($model, 'voucher_type')->dropdownList(Yii::$app->cms->voucher_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Voucher Type']);?>
+        <?=$form->field($model, 'voucher_type')->dropdownList(Yii::$app->cms->voucher_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Voucher Type']);?>
 
-    <?=$form->field($model, 'discount_type')->dropdownList(Yii::$app->cms->discount_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Discount Type']);?>
+        <?=$form->field($model, 'discount_type')->dropdownList(Yii::$app->cms->discount_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Discount Type']);?>
 
-    <?=$form->field($model, 'discount_counter', ['options' => ['style' => 'display:none;']])->textInput(['type' => 'number'])?>
+        <?=$form->field($model, 'discount_counter', ['options' => ['style' => 'display:none;']])->textInput(['type' => 'number'])?>
 
-    <?=$form->field($model, 'discount_prosentase', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0, 'max' => 100])->label('Discount Percentage')?>
+        <?=$form->field($model, 'discount_prosentase', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0, 'max' => 100])->label('Discount Percentage')?>
 
-    <?=$form->field($model, 'discount_price', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number'])->label('Discount Amount')?>
+        <?=$form->field($model, 'discount_price', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number'])->label('Discount Amount')?>
 
-            <div class="form-group field-voucher-start_date" style="display:none;">
+        <div class="form-group field-voucher-start_date" style="display:none;">
             <label class="control-label" for="voucher-start_date">Start Date</label>
             <div class="input-group date">
                 <div class="input-group-addon">

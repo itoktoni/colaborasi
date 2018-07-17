@@ -306,6 +306,24 @@ iframe {
 }
 
 
+/*[ CHECKOUT PAGE ]
+///////////////////////////////////////////////////////////
+*/
+.payment-method{
+  float: left;
+  width: 100%;
+}
+.payment-method ul, .payment-method ul li{
+  float: left;
+  width: 100%;
+}
+.payment-method label{
+  padding-left: 20px;
+}
+.payment-method .image-payment{
+  max-height: 40px;
+}
+
 
 /*[ LOADDING ]
 ///////////////////////////////////////////////////////////

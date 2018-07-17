@@ -5,3 +5,5 @@
 /uploads/*
 /product/*
 /common/config/*
+/param-local.php
+/param.php
