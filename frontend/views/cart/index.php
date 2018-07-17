@@ -70,20 +70,39 @@ endif;
 			</div>
 		</div>
 
+		<?php if( !YII::$app->session->get('voucher') ): ?>
+
+		<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
+			<form method="post" action="<?php echo Url::to('/cart/voucher');?>">
+				<div class="flex-w flex-m w-full-sm">
+					<div class="size11 bo4 m-r-10">
+						<input type="text" placeholder="Coupon Code" value="" id="coupon_code" class="sizefull s-text7 p-l-22 p-r-22" name="voucher">
+						<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
+					</div>
+
+					<div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
+						<input type="submit" value="Apply coupon" name="apply_coupon" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<?php else: ?>
+
+		<?php $voucher = YII::$app->session->get('voucher') ;?>
 		<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
 			<div class="flex-w flex-m w-full-sm">
 				<div class="size11 bo4 m-r-10">
-					<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon-code" placeholder="Coupon Code">
+					<input type="text" placeholder="Coupon Code" value="<?php echo $voucher['code'];?>" class="sizefull s-text7 p-l-22 p-r-22">
 				</div>
 
 				<div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
-					<!-- Button -->
-					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-						Apply coupon
-					</button>
+					<a href="<?php echo Url::to(['/cart/vouchercancel']);?>" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">REMOVE COUPON</a>
 				</div>
 			</div>
 		</div>
+
+		<?php endif;?>
 
 		<!-- Total -->
 		<div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
@@ -102,6 +121,8 @@ endif;
 				</span>
 			</div>
 
+			<?php if( !YII::$app->session->get('voucher') ): ?>
+
 			<!--  -->
 			<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
 				<span class="s-text18 w-size19 w-full-sm">
@@ -112,6 +133,32 @@ endif;
 					IDR <?php echo number_format($discount,0,'','.');?>
 				</span>
 			</div>
+
+			<?php else: ?>
+
+			<?php
+			//print_r($voucher);
+			if ( !empty( $voucher['discount_prosentase'] ) ) : 
+				$discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
+			elseif( !empty( $voucher['discount_price'] ) ) :
+				$discount = $voucher['discount_price'];
+			else :
+				$discount = 0;
+			endif;
+			?>
+
+			<!--  -->
+			<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
+				<span class="s-text18 w-size19 w-full-sm">
+					Discount:
+				</span>
+
+				<span class="m-text21 w-size20 w-full-sm">
+					IDR <?php echo number_format($discount,0,'','.');?>
+				</span>
+			</div>
+
+			<?php endif;?>
 
 			<?php $grandtotal = $subtotal - $discount; ?>
 
@@ -128,9 +175,13 @@ endif;
 
 			<div class="size15 trans-0-4">
 				<!-- Button -->
-				<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+				<!-- <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 					Proceed to Checkout
-				</button>
+				</button> -->
+				<form action="<?php echo Url::to('/checkout');?>" method="post">
+					<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
+					<input type="submit" value="Proceed to Checkout" name="checkout" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+				</form>
 			</div>
 		</div>
 	</div>
