@@ -182,7 +182,11 @@ class CartController extends \yii\web\Controller
 			return $this->redirect(['/cart']);
 		}
 
-		return $this->render('checkout',['cart' => $this->session->get('cart')]);
+		$province = Yii::$app->runAction('/ongkir/province');
+		return $this->render('checkout',[
+			'cart' => $this->session->get('cart'),
+			'province' => json_decode($province),
+		]);
 	}
 }
 
