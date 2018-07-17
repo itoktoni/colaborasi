@@ -29,6 +29,22 @@ echo SearchWidget::widget(
                 'placeholder' => 'Find Voucher',
                 'class' => 'form-control',
             ],
+            'discount_type' => [
+                'is_dropdown' => true,
+                'name' => 'discount_type',
+                'placeholder' => 'All Discount Type',
+                'item' => CMS::discount_type(),
+                'class' => 'form-control',
+            ],
+            'voucher_type' => [
+                'is_dropdown' => true,
+                'name' => 'voucher_type',
+                'placeholder' => 'All Voucher Type',
+                'item' => CMS::voucher_type(),
+                'class' => 'form-control',
+                'clearfix' => true,
+            ],
+            
         ],
         'status' => backend\components\CMS::StatusWidget(),
     ]
@@ -56,7 +72,7 @@ echo TableWidget::widget(
         'action' => 'Voucher',
         'action_url' => 'voucher',
         'data' => $dataProvider,
-        'header' => ['Name', 'Code', 'Description', 'Voucher Type','Discount Type','Discount(%)', 'Discount(IDR)', 'Start Date', 'End Date', 'Counter', 'Status'],
+        'header' => ['Name', 'Code', 'Description', 'Voucher Type', 'Discount Type', 'Discount(%)', 'Discount(IDR)', 'Start Date', 'End Date', 'Counter', 'Status'],
         'field' => [
             'name' => 'name',
             'code' => 'code',
@@ -77,7 +93,7 @@ echo TableWidget::widget(
             'end_date' => [
                 'callback' => ['class' => 'backend\components\CMS', 'method' => 'format_date'],
             ],
-            'voucher_counter' => 'discount_prosentase',
+            'discount_counter' => 'discount_counter',
             'status' => [
                 'callback' => ['class' => 'backend\components\CMS', 'method' => 'getStatus'],
             ],

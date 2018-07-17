@@ -13,6 +13,8 @@ class CustomformWidget extends Widget{
 	public $field = false;
 	public $page = false;
 	public $form_option = false;
+
+	public $col_class = 'col-md-4';
 	
 	public $model = false;
 	// public $back_text = false;
@@ -33,7 +35,8 @@ class CustomformWidget extends Widget{
 				'model' 			=> $this->model,
 				'back_text' 		=> $this->back_text,
 				'back_url' 			=> $this->back_url,
-				'form_option'		=> $this->form_option
+				'form_option'		=> $this->form_option,
+				'col_class' 		=> $this->col_class
 			]
 		);
 	}

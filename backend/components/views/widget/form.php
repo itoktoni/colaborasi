@@ -17,8 +17,9 @@ use yii\widgets\ActiveForm;
     <?php $field = [$field];?>
     <?php endif;?>
 
-    <?php foreach ($field as $item): ?>
-    <div class="col-md-4 product-form form-group">
+    <?php foreach ($field as $item):?>
+    
+        <div class="<?php echo $col_class;?> product-form form-group">
         <?php foreach ($item as $key => $item): ?>
 
             <?php
