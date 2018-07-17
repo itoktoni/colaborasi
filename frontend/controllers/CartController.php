@@ -4,7 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\base\Product;
-// use common\models\base\Voucher;
+use common\models\base\Voucher;
 use yii\web\ForbiddenHttpException;
 
 class CartController extends \yii\web\Controller
@@ -117,8 +117,7 @@ class CartController extends \yii\web\Controller
 		$this->session->destroy();
 	}
 
-	/*public function actionVoucher()
-	{
+	public function actionVoucher(){
 		if(Yii::$app->request->post('voucher')){
 			$voucher = Voucher::find()->select(['name','code','discount_prosentase','discount_price'])->where(['code' => Yii::$app->request->post('voucher')])->one();
 
@@ -135,15 +134,15 @@ class CartController extends \yii\web\Controller
 		$this->redirect(['/cart']);
 	}
 
-	public function actionVouchercancel()
-	{
+	public function actionVouchercancel(){
 		Yii::$app->session->set('voucher', false);
 		Yii::$app->session->setFlash('success', 'Voucher is canceled.');
 		$this->redirect(['/cart']);
-	}*/
+	}
 
 	public function actionCheckout()
 	{
+		$this->view->params['menu'] = 'checkout';
 		if(Yii::$app->user->isGuest)
 		{
 			Yii::$app->session->setFlash('error', 'Please login first before proceed to checkout');
