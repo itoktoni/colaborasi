@@ -4,14 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Voucher */
+/* @var $model common\models\base\Voucher */
 
 $this->title = 'Create Voucher';
 $this->params['breadcrumbs'][] = ['label' => 'Vouchers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<div class="container-fluid">
+<div class="voucher-create container-fluid">
 	<div class="row">
 		<div class="col-md-12">
             <div class="card">
@@ -20,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				</div>
             	<?= $this->render('_form', [
 			        'model' => $model,
-			        'dataProvider' => $dataProvider,
 			    ]) ?>
             </div>
         </div>

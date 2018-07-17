@@ -149,7 +149,7 @@ class CMS {
     * @param  [type] $type [description]
     * @return [type]       [description]
     */
-    public static function get_voucher_type($type){
+    public static function getVoucherType($type){
         return CMS::voucher_type()[$type];
     }
 
@@ -193,6 +193,18 @@ class CMS {
 
     public static function embedType(){
         return [CMS::SOURCE_TYPE_EMBED => 'Embed', CMS::SOURCE_TYPE_SERVER => 'Server'];
+    }
+
+    /**
+     * Money format goes here
+     */
+    public static function format_money($value){
+        return number_format($value,2,',','.');
+    }
+
+
+    public static function format_date($date, $format = 'd-m-Y H:i:s'){
+        return date($format,strtotime($date));
     }
 
 
