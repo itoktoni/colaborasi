@@ -114,7 +114,7 @@ endif;
 										</span>
 									</div>
 
-									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$key);?>">
+									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$item['id']);?>">
 										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
 									</a>
 								</li>
@@ -218,7 +218,7 @@ endif;
 										</span>
 									</div>
 
-									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$key);?>">
+									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$item['id']);?>">
 										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
 									</a>
 								</li>

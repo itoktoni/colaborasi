@@ -32,8 +32,9 @@ endif;
 						<th class="column-1"></th>
 						<th class="column-2">Product</th>
 						<th class="column-3">Price</th>
-						<th class="column-4 p-l-70">Quantity</th>
+						<th class="column-5">Quantity</th>
 						<th class="column-5">Total</th>
+						<th class="column-5"></th>
 					</tr>
 
 					<?php 
@@ -50,16 +51,13 @@ endif;
 									</td>
 									<td class="column-2"><?php echo $item['name'];?></td>
 									<td class="column-3">IDR <?php echo number_format($item['price'],0,'','.');?></td>
-									<td class="column-4">
-										<div class="flex-w bo5 of-hidden w-size17">
-											<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2" style="visibility: hidden;">
-												<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
-											</button>
-
-											<input class="size8 m-text18 t-center num-product" type="number" name="num-product1" value="1" readonly="">
-										</div>
+									<td class="column-5">
+										<input class="size8 m-text18 t-center num-product" type="number" name="num-product1" value="1" readonly="">
 									</td>
 									<td class="column-5">IDR <?php echo number_format($item['price'],0,'','.');?></td>
+									<td class="column-5">
+										<a href="<?php echo Url::to('/cart/delete/'.$item['id']);?>"><i class="up-mark fs-20 color1 fa fa-close" aria-hidden="true"></i></a>
+									</td>
 								</tr>
 
 					<?php 
