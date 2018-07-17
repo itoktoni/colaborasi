@@ -884,6 +884,7 @@ li.sale-noti > a {
 .header-wrapicon1 img,
 .header-wrapicon2 img {
   height: 100%;
+  height: auto;
 }
 
 .header-icon1:hover,
