@@ -115,7 +115,7 @@ $this->registerJsFile(
 				</div>
 			</div>
 
-			<div class="bo9 p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 442px);">
+			<div class="p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 442px);">
 
 				<h5 class="m-text20 p-b-10">
 					Shipping
@@ -148,6 +148,29 @@ $this->registerJsFile(
 				<option value="">Select Service..</option>
 				</select>
 				<hr style="padding:5px;">
+
+				<h5 class="m-text20 p-b-10 p-t-30">
+					PAYMENT
+				</h5>
+
+				<div class="payment-method">
+					<ul>
+						<li>
+							<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked="checked">
+		                    <label for="payment_method_paypal">
+		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal-visa.png"); ?>">
+		                    </label>
+						</li>
+					</ul>
+				</div>
+
+				<div class="size12 trans-0-4 m-t-30 m-b-10 m-r-10" style="float: left;">
+					<form action="<?php echo Url::to('/paypal');?>" method="post">
+						<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
+						<input type="submit" value="Continue" name="continue_payment" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
+					</form>
+				</div>
+
 			</div>
 		</div>
 	</div>
