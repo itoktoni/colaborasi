@@ -78,6 +78,8 @@ $('#service').change(function () {
     $('#ongkos').val(ongkos);
     $('#jasa').val(jasa);
 
+    $('#total-ongkir').val(parseInt(ongkos));
+
 });
 
 $(document).ready(function () {

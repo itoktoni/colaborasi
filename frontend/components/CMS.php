@@ -6,7 +6,8 @@ use Yii;
 use yii\helpers\Html;
 use common\models\base\Category;
 use common\models\base\Subcategory;
-use common\models\Brand;
+use common\models\base\Brand;
+use common\models\base\Payments;
 
 class CMS {
 
@@ -63,9 +64,9 @@ class CMS {
         return $rounded; //or return $rounded if you kept the rounding bit from above
     }
 
-    public static function getInvoiceCode( $model, $table, $field )
+    public static function getInvoiceCode( $table, $field )
     {
-        $valid = $model;
+        $valid = Payments::find()->one();
         if ( $valid ) :
             $year = date('y', time());
             $month = date('m', time());
