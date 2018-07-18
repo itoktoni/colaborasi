@@ -54,7 +54,8 @@ use yii\widgets\ActiveForm;
                         $object = false;
                         break;
                     case "uploadimage": ?>
-                        <?=Html::img($model->{$key},['id' => 'image-preview']);?>
+                        <?=Html::img($model->{$key},['id' => 'image-preview','style' => 'width:440px;']);?>
+                        <div class="clearfix"></div>
                         <label class="control-label"><?php echo isset($item['label']) ? $item['label'] : ucwords($key); ?></label>
                         <div class="clearfix"></div>
                                 <span class="btn btn-raised btn-round btn-primary btn-file">

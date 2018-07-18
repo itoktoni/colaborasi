@@ -19,6 +19,7 @@ return [
         // 'subcategory/<id:[0-9a-zA-Z\-]+>' => 'home/subcategory',
         // 'add/<id:\d+>' => 'home/add',
         'product/subcategory/<id:\d+>' => 'product/subcategory',
+        'product/content-delete/<id:\d+>' => 'product/contentdelete',
         // '/cart' => 'home/cart',
         // '/allproduct' => 'home/product',
     ],

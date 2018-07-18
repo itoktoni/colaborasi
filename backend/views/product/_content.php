@@ -1,6 +1,8 @@
 <?php
 
-use backend\components\CMS;?>
+use backend\components\CMS;
+use yii\helpers\Html;
+use yii\helpers\Url;?>
 
     <div class="card card-signup">
         <div class="panel-body" id="targetku">
@@ -38,18 +40,25 @@ use backend\components\CMS;?>
                 </div>
             </div>
             <div id="embed_clone" class="col-md-12">
-
             </div>
         </div>
     </div>
     <div class="media-container card card-signup" id="expandable_media">
 
+    <?php if (isset($data) && $data): ?>
+        <?php foreach ($data as $item): ?>
+        <div style='position:relative;' class='panel-body'>
+        <?php echo urldecode($item->content);?>
+        <a href="<?php echo Url::to('/product/content-delete/'.$item->id);?>" class='btn btn-warning delete-content' style='position:absolute; top: 5px; right: 5px;width:25px; height: 25px;padding: 0;margin: 0;border: none;z-index:999;'><i class='material-icons' style='top: 3px;'>delete</i></a>
+        </div>
+        <?php endforeach;?>
+    <?php endif;?>
     </div>
 
     <?php $this->registerJs("
-    var inputVideo = $('<input type=\'hidden\' name=\'Product[video[]]\' />');
-    var inputImage = $('<input type=\'hidden\' name=\'Product[content_image[]]\' />');
-    var inputMusic = $('<input type=\'hidden\' name=\'Product[music[]]\' />');
+    var inputVideo = $('<input type=\'hidden\' name=\'Product[video][]\' />');
+    var inputImage = $('<input type=\'hidden\' name=\'Product[content_image][]\' />');
+    var inputMusic = $('<input type=\'hidden\' name=\'Product[music][]\' />');
     var inputFile = $('<div class=\'form-group\'><label class=\'control-label\'></label><span class=\'btn btn-raised btn-round btn-primary btn-file\'><span class=\'fileinput-new\'>File</span><input type=\'file\' name=\'content_file[]\'><div class=\'ripple-container\'></div></span></div>');
     var content = '';
 
@@ -70,7 +79,7 @@ use backend\components\CMS;?>
             return false;
         }
         content += $('#embed_code').val();
-        content += '<input type=\'hidden\' name=\'Product['+type+'[]]\' value='+htmlentities.encode($('#embed_code').val())+'/>';
+        content += '<input type=\'hidden\' name=\'Product['+type+'][]\' value=\''+htmlentities.encode($('#embed_code').val())+'\'/>';
         $('#embed_code').val('');
         return true;
     }
@@ -78,7 +87,7 @@ use backend\components\CMS;?>
     function __add_input_object(type, text){
         var target = inputFile.clone();
         $(target).find('span.fileinput-new').html(text);
-        $(target).find('input').attr('name','Product['+type+'[]]');
+        $(target).find('input').attr('name','Product['+type+'][]');
         content += target.prop('outerHTML');
         return true;
     }
@@ -145,7 +154,7 @@ use backend\components\CMS;?>
              * @param {String} str String with unescaped HTML characters
              **/
             encode : function(str) {
-                return escape(str);
+                return encodeURI(str);
                 // var buf = [];
 
                 // for (var i=str.length-1;i>=0;i--) {
