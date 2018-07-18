@@ -129,7 +129,7 @@ endif;
 			</div>
 
 			<div class="p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 442px);">
-<<<<<<< HEAD
+
 				<form action="<?php echo Url::to('/continuepayment');?>" method="post">
 					<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
 					<h5 class="m-text20 p-b-24">
@@ -183,73 +183,21 @@ endif;
 					<div class="payment-method">
 						<ul>
 							<li>
-								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked="checked">
+								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
 			                    <label for="payment_method_paypal">
-			                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal-visa.png"); ?>">
+			                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
+			                    </label>
+							</li>
+							<li>
+								<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
+			                    <label for="payment_method_paypal">
+			                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/cc.png"); ?>">
 			                    </label>
 							</li>
 						</ul>
 					</div>
 
 					<div class="size12 trans-0-4 m-t-30 m-b-10 m-r-10" style="float: left;">
-=======
-
-				<h5 class="m-text20 p-b-10">
-					Shipping
-				</h5>
-
-				 <select  id="province" class="select form-control-lg col-lg-12" name="province">
-					<option value="">Select Province</option>
-					<?php foreach ($province as $p): ?>
-						<option value="<?php echo $p->province_id; ?>">
-							<?php echo $p->province; ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
-				<hr style="padding:5px;">
-				
-				<select name="city" class="select form-control-lg col-lg-12" id="city">
-					<option value="">Select City</option>
-				</select>
-				<hr style="padding:5px;">
-
-				<select id="courier" class="select form-control-lg col-lg-12" name="courier">
-					<option>Select Courier...</option>
-					<option value="jne">JNE</option>
-					<option value="tiki">TIKI</option>
-					<option value="pos">POS Indonesia</option>
-				</select>
-				<hr style="padding:5px;">
-				
-				<select name="service" class="select form-control-lg col-lg-12" id="service">
-				<option value="">Select Service..</option>
-				</select>
-				<hr style="padding:5px;">
-
-				<h5 class="m-text20 p-b-10 p-t-30">
-					PAYMENT
-				</h5>
-
-				<div class="payment-method">
-					<ul>
-						<li>
-							<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
-		                    <label for="payment_method_paypal">
-		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
-		                    </label>
-						</li>
-						<li>
-							<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
-		                    <label for="payment_method_paypal">
-		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/cc.png"); ?>">
-		                    </label>
-						</li>
-					</ul>
-				</div>
-
-				<div class="size12 trans-0-4 m-t-30 m-b-10 m-r-10" style="float: left;">
-					<form action="<?php echo Url::to('/paypal');?>" method="post">
->>>>>>> 5c0c14e267a2646a10c35d9a421e17b55f73f100
 						<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
 						<input type="submit" value="Continue" name="continue_payment" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
 					</div>
