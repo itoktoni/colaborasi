@@ -13,15 +13,6 @@ $this->registerJsFile(
 
 ?>
 
-<div class="panel-search w-full p-t-10 p-b-15">
-	<div class="bor8 dis-flex p-l-15">
-		<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-			<i class="zmdi zmdi-search"></i>
-		</button>
-		<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" id="aa-search-input" name="search" placeholder="Search">
-	</div>
-</div>
-
 <!-- Content page -->
 <section class="bgwhite p-t-55 p-b-65">
 	<div class="container">
@@ -58,8 +49,8 @@ $this->registerJsFile(
 						<?php endforeach;?>
 					</ul>
 
-					<div class="search-product pos-relative bo4 of-hidden">
-						<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
+					<div class="panel-search search-product pos-relative bo4">
+						<input class="s-text7 size6 p-l-23 p-r-50" type="text" id="aa-search-input" name="search" placeholder="Search Products...">
 
 						<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
 							<i class="fs-12 fa fa-search" aria-hidden="true"></i>

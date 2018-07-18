@@ -2483,7 +2483,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 
-/* Algoloat search */
+/* Algolia search */
 
 .aa-input-container {
   display: inline-block;
@@ -2491,7 +2491,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .aa-input-search {
-  width: 300px;
+  width: 100%;
   border: 1px solid rgba(228, 228, 228, 0.6);
   padding: 12px 28px 12px 12px;
   box-sizing: border-box;
@@ -2508,7 +2508,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .aa-input-icon {
-  height: 16px;
+  height: 50px;
   width: 16px;
   position: absolute;
   top: 50%;
@@ -2521,7 +2521,7 @@ input.num-product::-webkit-inner-spin-button {
 .aa-dropdown-menu {
   background-color: #fff;
   border: 1px solid rgba(228, 228, 228, 0.6);
-  min-width: 300px;
+  min-width: 100%;
   margin-top: 10px;
   box-sizing: border-box;
 }
