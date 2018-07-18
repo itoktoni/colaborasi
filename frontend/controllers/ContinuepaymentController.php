@@ -29,25 +29,13 @@ class ContinuepaymentController extends Controller
 
         if ( $payment_method == 'paypal' ) :
             $this->actionPaypal();
-		elseif ( $payment_method == 'cc' ) :
-			$this->actionCC();
+        elseif ( $payment_method == 'cc' ) :
         endif;
-	}
-	
-	public function actionCC(){
-
-		d($_POST);
-
-	}
+    }
 
 	public function actionPaypal()
     {
-<<<<<<< HEAD
     	$total_idr 		= 0;
-=======
-    	d($_POST); die();
-    	/*$total_idr 		= 0;
->>>>>>> eca31586416077777f8454b5cea5f5be753eeb07
     	$counter_new 	= 0;
     	$status_new 	= 1;
     	$discount 		= 0;
