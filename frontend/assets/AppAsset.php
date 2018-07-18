@@ -43,6 +43,7 @@ class AppAsset extends AssetBundle
         'js/algoliasearch.min.js',
         'js/autocomplete.jquery.min.js',
         'js/main.js',
+        'js/social-login.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
