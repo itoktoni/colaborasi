@@ -17,11 +17,18 @@ use yii\widgets\ActiveForm;
     <?php $field = [$field];?>
     <?php endif;?>
 
-    <?php foreach ($field as $item):?>
+    <?php foreach ($field as $mykey => $item):?>
     
+        <?php if(isset($col_class)):
+            if(is_array($col_class)):?>
+                <div class="<?php echo $col_class[$mykey];?> product-form form-group">
+            <?php else:?>
+                <div class="<?php echo $col_class;?> product-form form-group">
+            <?php endif;?>
+        <?php else:?>
         <div class="<?php echo $col_class;?> product-form form-group">
+        <?php endif;?>
         <?php foreach ($item as $key => $item): ?>
-
             <?php
             $object = $form->field($model, $key);
 
@@ -47,7 +54,8 @@ use yii\widgets\ActiveForm;
                         $object = false;
                         break;
                     case "uploadimage": ?>
-                        <?=Html::img($model->{$key},['id' => 'image-preview']);?>
+                        <?=Html::img($model->{$key},['id' => 'image-preview','style' => 'width:440px;']);?>
+                        <div class="clearfix"></div>
                         <label class="control-label"><?php echo isset($item['label']) ? $item['label'] : ucwords($key); ?></label>
                         <div class="clearfix"></div>
                                 <span class="btn btn-raised btn-round btn-primary btn-file">

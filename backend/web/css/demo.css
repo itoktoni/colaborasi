@@ -417,3 +417,12 @@
     display:block;
     border-bottom: 1px #D2D2D2 solid;
 }
+
+#expandable_media{
+    overflow:hidden;
+
+}
+
+#expandable_media iframe {
+    width: 100% !important;
+}

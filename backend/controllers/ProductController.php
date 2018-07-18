@@ -3,8 +3,10 @@
 namespace backend\controllers;
 
 use backend\components\AuthController;
+use backend\components\CMS;
 use common\models\base\Product;
 use common\models\base\ProductCategory;
+use common\models\base\Productcontent;
 use common\models\base\Subcategory;
 use common\models\search\ProductSearch;
 use Yii;
@@ -41,7 +43,8 @@ class ProductController extends AuthController
         ];
     }
 
-    public function algolia(){
+    public function algolia()
+    {
 
         $client = new \AlgoliaSearch\Client('TP8H76V4RK', 'ae0afaa0a2f3f3ccb559691522805852');
         $index = $client->initIndex('team_product');
@@ -89,6 +92,29 @@ class ProductController extends AuthController
                 ProductCategory::insertBatch($subsave, $model->id);
             }
 
+            $contentsave = [];
+            if (isset(Yii::$app->request->post('Product')['embed_music']) && Yii::$app->request->post('Product')['embed_music']) {
+                foreach (Yii::$app->request->post('Product')['embed_music'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_MUSIC, $item, 1];
+                }
+            }
+
+            if (isset(Yii::$app->request->post('Product')['embed_video']) && Yii::$app->request->post('Product')['embed_video']) {
+                foreach (Yii::$app->request->post('Product')['embed_video'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_VIDEO, $item, 1];
+                }
+            }
+
+            if (isset(Yii::$app->request->post('Product')['embed_image']) && Yii::$app->request->post('Product')['embed_image']) {
+                foreach (Yii::$app->request->post('Product')['embed_image'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_IMAGE, $item, 1];
+                }
+            }
+
+            if ($contentsave) {
+                ProductContent::insertBatch($contentsave);
+            }
+
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($filename = $model->upload(Url::to('@uploadpath') . '\\' . $model->id . '\\', $model->slug)) {
                 // file is uploaded successfully
@@ -126,7 +152,7 @@ class ProductController extends AuthController
                 $algo = $this->algolia()->addObject([
                     'objectID' => $model->id,
                     'id' => $model->id,
-                    'slug' => Url::to('/'.$model->slug),
+                    'slug' => Url::to('/' . $model->slug),
                     'name' => $model->name,
                     'category' => $model->category,
                     'synopsis' => $model->synopsis,
@@ -155,7 +181,6 @@ class ProductController extends AuthController
             Yii::$app->session->setFlash('success', 'Product Created');
             return $this->redirect('/product/');
         }
-
         $content = $this->renderPartial('_content');
         return $this->render('create', [
             'model' => $model,
@@ -173,7 +198,7 @@ class ProductController extends AuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         $post = Yii::$app->request->post();
         if (!isset($_FILES['image'])) {
             $post['Product']['image'] = $model->image;
@@ -199,6 +224,29 @@ class ProductController extends AuthController
                 }
 
                 ProductCategory::insertBatch($subsave, $model->id);
+            }
+
+            $contentsave = [];
+            if (isset(Yii::$app->request->post('Product')['embed_music']) && Yii::$app->request->post('Product')['embed_music']) {
+                foreach (Yii::$app->request->post('Product')['embed_music'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_MUSIC, $item, 1];
+                }
+            }
+
+            if (isset(Yii::$app->request->post('Product')['embed_video']) && Yii::$app->request->post('Product')['embed_video']) {
+                foreach (Yii::$app->request->post('Product')['embed_video'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_VIDEO, $item, 1];
+                }
+            }
+
+            if (isset(Yii::$app->request->post('Product')['embed_image']) && Yii::$app->request->post('Product')['embed_image']) {
+                foreach (Yii::$app->request->post('Product')['embed_image'] as $item) {
+                    $contentsave[] = [$model->id, CMS::SOURCE_TYPE_EMBED, CMS::CONTENT_IMAGE, $item, 1];
+                }
+            }
+
+            if ($contentsave) {
+                ProductContent::insertBatch($contentsave);
             }
 
             $image = UploadedFile::getInstance($model, 'image');
@@ -266,15 +314,15 @@ class ProductController extends AuthController
                     'status' => $model->status,
                     'created_at' => $model->created_at,
                     'updated_at' => $model->updated_at,
-                    'objectID' => $model->objectID,
+                    'objectID' => $model->id,
             ]);
 
             Yii::$app->session->setFlash('success', 'Product Updated');
             return $this->redirect('/product/');
         }
 
-        $content = $this->renderPartial('_content');
-        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->where(['=','status', ProductCategory::STATUS_ACTIVE])->all();
+        $content = $this->renderPartial('_content', ['data' => Productcontent::find()->where(['product' => $model->id])->all()]);
+        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->where(['=', 'status', ProductCategory::STATUS_ACTIVE])->all();
         $cats = [];
 
         foreach ($active_category as $item) {
@@ -287,6 +335,19 @@ class ProductController extends AuthController
             'selected_subcategory' => $cats,
             'subcategory_list' => Subcategory::find()->where(['=', 'category', $model->category])->all(),
         ]);
+    }
+
+    public function actionContentdelete($id)
+    {
+        $content = ProductContent::findOne($id);
+        if ($content) {
+            $content->delete();
+            Yii::$app->session->setFlash('success', 'Product Content Deleted');
+        } else {
+            Yii::$app->session->setFlash('error', 'Failed to delete product content.');
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 /**
@@ -304,6 +365,16 @@ class ProductController extends AuthController
         $this->algolia()->deleteObjects([$model->id]);
         Yii::$app->session->setFlash('success', 'Product Deleted');
         return $this->redirect('/product');
+    }
+
+    /**
+     * Upload image
+     */
+    public function actionUploadimage()
+    {
+        if (Yii::$app->request->isAjax && Yii::$app->request->post()) {
+
+        }
     }
 
 /**

@@ -33,8 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ], 'status' => backend\components\CMS::StatusWidget(),
     ]
 ); ?>
-
-
     </div>
 </div>
 

@@ -8,6 +8,7 @@ use \godzie44\yii\behaviors\image\ImageBehavior;
 use yii\imagine\Image;
 use yii\behaviors\SluggableBehavior;
 use yii\helpers\FileHelper;
+use common\models\base\Productcontent;
 
 /**
  * This is the model class for table "product".
@@ -49,6 +50,10 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
     public $subcategory;
     public $content;
 
+    public $embed_video;
+    public $embed_music;
+    public $embed_image;
+
     /**
      * {@inheritdoc}
      */
@@ -87,7 +92,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             [['description'], 'string'],
             [['price', 'price_discount'], 'number'],
             [['brand', 'headline', 'product_view', 'status','discount_flag'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at','embed_video','embed_music','embed_image'], 'safe'],
             [['slug'], 'unique'],
             [['slug', 'synopsis', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 64],
@@ -122,6 +127,9 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             'product_download_path' => 'Product Download Path',
             'product_view' => 'Product View',
             'status' => 'Status',
+            'embed_video' => 'Embed Video',
+            'embed_music' => 'Embed Music',
+            'embed_image' => 'Embed Image',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -225,6 +233,20 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
    */
   public function getUniqueId(){
     return $this->id;
+  }
+
+
+  public function save_content(){
+
+
+    // foreach($this->embed_video as $item){
+
+    // }
+        // Yii::$app->db->createCommand()->batchInsert(Productcontent::className, ['product', 'embed_type', 'content_type','content'], [
+        //     [1, 'title1', '2015-04-10'],
+        //     [2, 'title2', '2015-04-11'],
+        //     [3, 'title3', '2015-04-12'],
+        // ])->execute();
   }
 
 

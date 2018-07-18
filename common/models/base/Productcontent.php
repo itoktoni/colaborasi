@@ -70,4 +70,10 @@ class Productcontent extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::className(), ['id' => 'product']);
     }
+
+    public static function insertBatch($data){
+        
+        $command = Yii::$app->db->createCommand()->batchInsert(self::tableName(), ['product', 'embed_type','content_type', 'content','status'], $data);
+        $command->execute();
+    }
 }
