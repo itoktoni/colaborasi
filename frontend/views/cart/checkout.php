@@ -5,7 +5,6 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\LinkPager;
 use frontend\components\CMS;
-
 $this->title = 'Checkout';
 
 $this->registerJsFile(
@@ -122,8 +121,6 @@ endif;
 
 					<span class="m-text21 w-size20 w-full-sm">
 						IDR <span id="total"><?php echo number_format($grandtotal,0,'','.');?></span> 
-						<input type="hidden" id="ongkos" name="ongkos">
-						<input type="hidden" id="jasa" name="jasa">
 					</span>
 				</div>
 			</div>
@@ -132,11 +129,14 @@ endif;
 
 				<form action="<?php echo Url::to('/continuepayment');?>" method="post">
 					<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
+					<input type="hidden" id="ongkos" name="ongkos">
+					<input type="hidden" id="jasa" name="jasa">
+
 					<h5 class="m-text20 p-b-24">
 						Shipping
 					</h5>
 
-					<input type="text" name="shipping_receiver" value="" placeholder="Full Name" class="sizefull s-text7">
+					<input type="text" name="shipping_receiver" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->name;?>" placeholder="Full Name" class="sizefull s-text7">
 					<hr style="padding:5px;">
 
 					<select  id="province" class="select form-control-lg col-lg-12" name="province">
@@ -154,13 +154,13 @@ endif;
 					</select>
 					<hr style="padding:5px;">
 
-					<input type="text" name="shipping_address" value="" placeholder="Address" class="sizefull s-text7">
+					<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address;?>" placeholder="Address" class="sizefull s-text7">
 					<hr style="padding:5px;">
 
 					<input type="text" name="shipping_mobile" value="" placeholder="Phone Number" class="sizefull s-text7">
 					<hr style="padding:5px;">
 
-					<input type="text" name="shipping_email" value="" placeholder="Email" class="sizefull s-text7">
+					<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email;?>" placeholder="Email" class="sizefull s-text7">
 					<hr style="padding:5px;">
 
 					<select id="courier" class="select form-control-lg col-lg-12" name="courier">
