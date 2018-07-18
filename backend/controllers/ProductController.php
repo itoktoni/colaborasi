@@ -120,9 +120,11 @@ class ProductController extends AuthController
                         $model->product_download_url = $product['url'];
                     }
                 }
+                // $model->objectID = $model->id;
                 $model->save(false);
 
-                $this->algolia()->addObject([
+                $algo = $this->algolia()->addObject([
+                    'objectID' => $model->id,
                     'id' => $model->id,
                     'slug' => Url::to('/'.$model->slug),
                     'name' => $model->name,
@@ -147,7 +149,6 @@ class ProductController extends AuthController
                     'created_at' => $model->created_at,
                     'updated_at' => $model->updated_at,
                 ]);
-
 
             }
 
@@ -241,7 +242,7 @@ class ProductController extends AuthController
             $client = new \AlgoliaSearch\Client('TP8H76V4RK', 'ae0afaa0a2f3f3ccb559691522805852');
             $index = $client->initIndex('team_product');
 
-            $this->algolia()->saveObjects([
+            $this->algolia()->saveObject([
                     'id' => $model->id,
                     'slug' => Url::to('/'.$model->slug),
                     'name' => $model->name,
@@ -265,7 +266,8 @@ class ProductController extends AuthController
                     'status' => $model->status,
                     'created_at' => $model->created_at,
                     'updated_at' => $model->updated_at,
-                ]);
+                    'objectID' => $model->objectID,
+            ]);
 
             Yii::$app->session->setFlash('success', 'Product Updated');
             return $this->redirect('/product/');
