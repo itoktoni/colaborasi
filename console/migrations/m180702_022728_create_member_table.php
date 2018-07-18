@@ -24,6 +24,7 @@ class m180702_022728_create_member_table extends Migration {
             'address' => $this->string(),
             'address_optional' => $this->string(),
             'email' => $this->string(64),
+            'phone_number' => $this->string(64),
             'balance' => $this->decimal(),
             'picture' => $this->string(),
             'social_media_type' => $this->tinyinteger(1)->notNull()->defaultValue(0),
