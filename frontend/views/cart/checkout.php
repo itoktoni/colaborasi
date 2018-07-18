@@ -183,7 +183,7 @@ endif;
 					<div class="payment-method">
 						<ul>
 							<li>
-								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
+								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked="">
 			                    <label for="payment_method_paypal">
 			                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
 			                    </label>
