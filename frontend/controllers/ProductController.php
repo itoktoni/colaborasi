@@ -7,6 +7,8 @@ use common\models\base\Subcategory;
 use common\models\base\Product;
 use common\models\base\Brand;
 use frontend\components\CMS;
+use yii\base\ErrorException;
+
 
 class ProductController extends \yii\web\Controller
 {
@@ -27,6 +29,10 @@ class ProductController extends \yii\web\Controller
 		$product 		= Product::find()
 							->where(['`product`.slug' => $slug])
 							->one();
+		if(empty($product)){
+
+			throw new \yii\web\NotFoundHttpException();
+		}					
 
 		$product_id 	= $product->id;
 		$cat_id			= $product->category;
