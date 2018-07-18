@@ -40,6 +40,8 @@ class AppAsset extends AssetBundle
         'vendors/parallax100/parallax100.js',
         'https://maps.googleapis.com/maps/api/js?key=AIzaSyC9gsbJtv4rbhXA0-Zy_cxsWiOeaFku9r4',
         'js/map-custom.js',
+        'js/algoliasearch.min.js',
+        'js/autocomplete.jquery.min.js',
         'js/main.js',
     ];
     public $depends = [

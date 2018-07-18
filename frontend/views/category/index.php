@@ -7,6 +7,9 @@ use yii\widgets\LinkPager;
 use frontend\components\CMS;
 
 $this->title = 'Shop';
+$this->registerJsFile(
+    '@web/js/algolia.js',
+    ['depends' => [frontend\assets\AppAsset::className()]]);
 
 ?>
 
@@ -46,8 +49,8 @@ $this->title = 'Shop';
 						<?php endforeach;?>
 					</ul>
 
-					<div class="search-product pos-relative bo4 of-hidden">
-						<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
+					<div class="panel-search search-product pos-relative bo4">
+						<input class="s-text7 size6 p-l-23 p-r-50" type="text" id="aa-search-input" name="search" placeholder="Search Products...">
 
 						<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
 							<i class="fs-12 fa fa-search" aria-hidden="true"></i>
@@ -134,3 +137,4 @@ $this->title = 'Shop';
 <!-- Container Selection -->
 <div id="dropDownSelect1"></div>
 <div id="dropDownSelect2"></div>
+

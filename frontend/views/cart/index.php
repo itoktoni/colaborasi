@@ -14,6 +14,20 @@ else :
 	$cart = '';
 endif;
 
+if( YII::$app->session->get('voucher') ):
+	$voucher 				= YII::$app->session->get('voucher');
+	$code 					= $voucher['code'];
+	$voucher_type 			= $voucher['voucher_type'];
+	$discount_type 			= $voucher['discount_type'];
+	$discount_counter 		= $voucher['discount_counter'];
+	$discount_prosentase 	= $voucher['discount_prosentase'];
+	$discount_price 		= $voucher['discount_price'];
+	$start_date 			= strtotime($voucher['start_date']);
+	$end_date 				= strtotime($voucher['end_date']);
+endif;
+
+$daytoday = time();
+
 ?>
 
 <!-- Title Page -->
@@ -138,13 +152,20 @@ endif;
 
 			<?php
 			//print_r($voucher);
-			if ( !empty( $voucher['discount_prosentase'] ) ) : 
+			/*if ( !empty( $voucher['discount_prosentase'] ) ) : 
 				$discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
 			elseif( !empty( $voucher['discount_price'] ) ) :
 				$discount = $voucher['discount_price'];
 			else :
 				$discount = 0;
+			endif;*/
+
+			if ( $discount_type == CMS::DISCOUNT_PERCENTAGE ) :
+				$discount = ($discount_prosentase / 100) * $subtotal;
+			elseif ( $discount_type == CMS::DISCOUNT_FIXED ) :
+				$discount = $discount_price;
 			endif;
+
 			?>
 
 			<!--  -->
@@ -180,7 +201,7 @@ endif;
 				</button> -->
 				<form action="<?php echo Url::to('/checkout');?>" method="post">
 					<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
-					<input type="submit" value="Proceed to Checkout" name="checkout" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+					<input type="submit" value="Proceed to Checkout" name="checkout" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
 				</form>
 			</div>
 		</div>

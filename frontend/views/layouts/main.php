@@ -62,7 +62,7 @@ AppAsset::register($this);
 <script>
 
 // Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
+Pusher.logToConsole = false;
 
 var pusher = new Pusher('b07270a223c7b4f48843', {
     cluster: 'ap1',

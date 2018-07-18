@@ -31,5 +31,9 @@ return [
         'cart/'                                     => 'cart/index',
         'cart'                                      => 'cart/index',
         'checkout'                                  => 'cart/checkout',
+        '/ongkir/province'                          => 'ongkir/province',
+        '/ongkir/city'                              => 'ongkir/city',
+        '/ongkir/sub'                               => 'ongkir/sub',
+        '/ongkir/cost'                              => 'ongkir/cost',
     ],
 ];
