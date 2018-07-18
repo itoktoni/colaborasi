@@ -15,13 +15,14 @@ use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use common\models\base\Member;
+use common\models\base\Headline;
 use common\models\base\Product;
 use common\models\base\Subscribe;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends \frontend\components\CartController
 {
     /**
      * {@inheritdoc}
@@ -412,18 +413,13 @@ class SiteController extends Controller
         $this->view->params['menu'] = 'home';
 
         $latest_product = Product::find()->limit(6)->orderBy(['created_at' => SORT_DESC])->all();   
-        if(!empty($this->session->get('cart'))){
-            $cart = $this->session->get('cart');
-        }
-        else{
-            $cart = [];
-        }
 
         return $this->render('index', 
             [
-                'latest_product'=> $latest_product,
-                'headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all(),
-                'cart'          => $cart
+                'latest_product'        => $latest_product,
+                'product_headline'      => Product::find()->limit(8)->where(['headline' => 1])->orderBy(['updated_at' => SORT_DESC])->all(),
+                'headline'              => Headline::find()->limit(8)->orderBy(['updated_at' => SORT_DESC])->all(),
+                'cart'                  => $this->cart,
             ]
         );
     }

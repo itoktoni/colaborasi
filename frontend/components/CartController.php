@@ -32,13 +32,31 @@ class CartController extends \yii\web\Controller
 
 		$this->view->params['menu'] = false;
 
-        $session = Yii::$app->session;
+        $this->session = Yii::$app->session;
         
-        $this->cart = Yii::$app->session->get('cart');
+		$this->cart = Yii::$app->session->get('cart');
+		if(!$this->cart){
+			$this->cart = [];
+		}
 
 		// if session is not open, open session
-		if ( !$session->isActive) { $session->open(); }
+		if ( !$this->session->isActive) { $this->session->open(); }
 
 		return parent::beforeAction($action);
+	}
+
+	/**
+	 * 
+	 */
+	public function getVoucher(){
+		if(Yii::$app->session->get('voucher')){
+			return Yii::$app->session->get('voucher');
+		}
+
+		return false;
+	}
+
+	public function getDiscount(){
+		
 	}
 }

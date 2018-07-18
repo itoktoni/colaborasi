@@ -10,6 +10,7 @@ return [
     'enableStrictParsing' => false,
     'showScriptName' => false,
     'rules' => [
+        '/'                                         => 'site/index',
         '/subscribe'                                => 'site/subscribe',
         '/password'                                 => 'site/password',
         '/github'                                   => 'site/github',
