@@ -120,9 +120,9 @@ class m180705_060243_create_product_table extends Migration
         );
 
         $rows = [
-            [1, 'apple', 'Apple', 'Apple Brand', 1],
-            [2, 'toshiba', 'Toshiba', 'Toshiba Brand', 1],
-            [3, 'xiaomi', 'Mi', 'Xiaomi Brand', 1],
+            [1, 'marvel', 'Marvel', 'Marvel', 1],
+            [2, 'universal-studio', 'Universal Studio', 'Universal Studio Brand', 1],
+            [3, 'pixar', 'Pixar', 'Pixar Brand', 1],
         ];
 
         $this->batchInsert('brand', [

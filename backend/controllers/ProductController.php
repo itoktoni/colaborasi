@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\components\AuthController;
 use common\models\base\Product;
+use common\models\base\Productcontent;
 use common\models\base\ProductCategory;
 use common\models\base\Subcategory;
 use common\models\search\ProductSearch;
@@ -41,7 +42,8 @@ class ProductController extends AuthController
         ];
     }
 
-    public function algolia(){
+    public function algolia()
+    {
 
         $client = new \AlgoliaSearch\Client('TP8H76V4RK', 'ae0afaa0a2f3f3ccb559691522805852');
         $index = $client->initIndex('team_product');
@@ -71,6 +73,16 @@ class ProductController extends AuthController
     public function actionCreate()
     {
         $model = new Product();
+        // var_dump(Yii::$app->request->post());
+        if (Yii::$app->request->post()) {
+            // $model = new Productcontent;
+            // $model->video = UploadedFile::getInstances($model, 'video');
+            var_dump(json_encode(Yii::$app->request->post()));
+
+            // $model->
+            die();
+            
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             // return $this->redirect('/product/');
@@ -124,7 +136,7 @@ class ProductController extends AuthController
 
                 $this->algolia()->addObject([
                     'id' => $model->id,
-                    'slug' => Url::to('/'.$model->slug),
+                    'slug' => Url::to('/' . $model->slug),
                     'name' => $model->name,
                     'category' => $model->category,
                     'synopsis' => $model->synopsis,
@@ -147,7 +159,6 @@ class ProductController extends AuthController
                     'created_at' => $model->created_at,
                     'updated_at' => $model->updated_at,
                 ]);
-
 
             }
 
@@ -172,7 +183,7 @@ class ProductController extends AuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         $post = Yii::$app->request->post();
         if (!isset($_FILES['image'])) {
             $post['Product']['image'] = $model->image;
@@ -242,37 +253,37 @@ class ProductController extends AuthController
             $index = $client->initIndex('team_product');
 
             $this->algolia()->saveObjects([
-                    'id' => $model->id,
-                    'slug' => Url::to('/'.$model->slug),
-                    'name' => $model->name,
-                    'category' => $model->category,
-                    'synopsis' => $model->synopsis,
-                    'description' => $model->description,
-                    'price' => $model->price,
-                    'price_discount' => $model->price_discount,
-                    'brand' => $model->brand,
-                    'discount_flag' => $model->discount_flag,
-                    'image' => $model->image,
-                    'image_path' => $model->image_path,
-                    'image_thumbnail' => $model->image_thumbnail,
-                    'image_portrait' => $model->image_portrait,
-                    'headline' => $model->headline,
-                    'meta_description' => $model->meta_description,
-                    'meta_keyword' => $model->meta_keyword,
-                    'product_download_url' => $model->product_download_url,
-                    'product_download_path' => $model->product_download_path,
-                    'product_view' => $model->product_view,
-                    'status' => $model->status,
-                    'created_at' => $model->created_at,
-                    'updated_at' => $model->updated_at,
-                ]);
+                'id' => $model->id,
+                'slug' => Url::to('/' . $model->slug),
+                'name' => $model->name,
+                'category' => $model->category,
+                'synopsis' => $model->synopsis,
+                'description' => $model->description,
+                'price' => $model->price,
+                'price_discount' => $model->price_discount,
+                'brand' => $model->brand,
+                'discount_flag' => $model->discount_flag,
+                'image' => $model->image,
+                'image_path' => $model->image_path,
+                'image_thumbnail' => $model->image_thumbnail,
+                'image_portrait' => $model->image_portrait,
+                'headline' => $model->headline,
+                'meta_description' => $model->meta_description,
+                'meta_keyword' => $model->meta_keyword,
+                'product_download_url' => $model->product_download_url,
+                'product_download_path' => $model->product_download_path,
+                'product_view' => $model->product_view,
+                'status' => $model->status,
+                'created_at' => $model->created_at,
+                'updated_at' => $model->updated_at,
+            ]);
 
             Yii::$app->session->setFlash('success', 'Product Updated');
             return $this->redirect('/product/');
         }
 
         $content = $this->renderPartial('_content');
-        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->where(['=','status', ProductCategory::STATUS_ACTIVE])->all();
+        $active_category = ProductCategory::find()->where(['=', 'product', $model->id])->where(['=', 'status', ProductCategory::STATUS_ACTIVE])->all();
         $cats = [];
 
         foreach ($active_category as $item) {
@@ -302,6 +313,16 @@ class ProductController extends AuthController
         $this->algolia()->deleteObjects([$model->id]);
         Yii::$app->session->setFlash('success', 'Product Deleted');
         return $this->redirect('/product');
+    }
+
+    /**
+     * Upload image
+     */
+    public function actionUploadimage()
+    {
+        if (Yii::$app->request->isAjax && Yii::$app->request->post()) {
+
+        }
     }
 
 /**

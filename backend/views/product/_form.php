@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     'back_url' => Url::to('/product/'),
     'back_text' => 'Back',
     'model' => $model,
-    // 'col_class' => 'col-md-12',
+    'col_class' => ['col-md-8','col-md-4'],
     'page' => 3,
     'form_option' => ['options' => ['enctype' => 'multipart/form-data']],
     'field' =>
@@ -41,13 +41,11 @@ use yii\widgets\ActiveForm;
                 'id' => 'id',
                 'name' => 'name',
             ],
-        ],
-        [
+       
             'image' => ['type' => 'uploadimage'],
-            'synopsis' => ['type' => 'tinymce', 'option' => ['maxlength' => true]],
-            'description' => ['type' => 'tinymce', 'option' => ['rows' => 6]],
-        ],
-        [
+            'synopsis' => ['type' => 'tinymce', 'option' => ['maxlength' => true,'rows' => 12]],
+            'description' => ['type' => 'tinymce', 'option' => ['rows' => 12]],
+        
             'price' => ['type' => 'text','option' => ['type' => 'number']],
             'discount_flag' => ['type' => 'checkbox','option' => ['label' => 'Discounted?']],
             'price_discount' => ['type' => 'text', 'option' => ['type' => 'number']], 
@@ -56,14 +54,12 @@ use yii\widgets\ActiveForm;
             'meta_description' => ['type' => 'text'],
             'meta_keyword' => ['type' => 'tags'],
             'status' => ['type' => 'status'],
-
+        ],
+        [
+            'content' => ['type' =>'html', 'content' => $content]
         ]
     ],
 ]); ?>
-
-<div class="col-md-12">
-Test Media Content
-</div>
 </div>
 
 <?php $this->registerJs("registerImagepreview('#product-image','#image-preview');");?>

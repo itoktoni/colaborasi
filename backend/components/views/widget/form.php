@@ -17,11 +17,18 @@ use yii\widgets\ActiveForm;
     <?php $field = [$field];?>
     <?php endif;?>
 
-    <?php foreach ($field as $item):?>
+    <?php foreach ($field as $mykey => $item):?>
     
+        <?php if(isset($col_class)):
+            if(is_array($col_class)):?>
+                <div class="<?php echo $col_class[$mykey];?> product-form form-group">
+            <?php else:?>
+                <div class="<?php echo $col_class;?> product-form form-group">
+            <?php endif;?>
+        <?php else:?>
         <div class="<?php echo $col_class;?> product-form form-group">
+        <?php endif;?>
         <?php foreach ($item as $key => $item): ?>
-
             <?php
             $object = $form->field($model, $key);
 
