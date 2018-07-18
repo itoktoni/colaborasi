@@ -27,7 +27,8 @@
         "godzie44/yii2-image-behavior": "^1.0",
         "yiisoft/yii2-imagine": "^2.1",
         "algolia/algoliasearch-client-php": "^1.27",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "stripe/stripe-php": "^6.10"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

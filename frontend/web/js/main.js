@@ -221,7 +221,7 @@
         dropdownParent: $('#dropDownSelect2')
     });
 
-    //buat seach aloglia
+    //buat search aloglia
 
     var client = algoliasearch('TP8H76V4RK', '2301f1d5e0f4569f9820e31d870e1aab');
     var index = client.initIndex('team_product');

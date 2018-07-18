@@ -5,6 +5,7 @@ use Yii;
 use common\models\base\Product;
 use common\models\base\Payments;
 use common\models\base\PaymentDetail;
+use common\models\base\Member;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -34,14 +35,29 @@ class ContinuepaymentController extends Controller
 
 	public function actionPaypal()
     {
-    	print_r($_POST); die();
-    	/*$total_idr 		= 0;
+    	$total_idr 		= 0;
     	$counter_new 	= 0;
     	$status_new 	= 1;
     	$discount 		= 0;
+        // $payment_insert = [];
+        // $payment_detail_insert          = [];
+        $payment_insert_value           = [];
+        $payment_detail_insert_value    = [];
+        $voucher_id     = $voucher_name  = $discount_type = '';
 
+        // get invoice ID
     	$invoice 		= CMS::getInvoiceCode('payment', 'invoice');
 
+        // get user
+        $user_id        = Yii::$app->user->id;
+        $user           = Member::find()->where(['id' => $user_id])->one();
+        $user_name      = $user->name;
+        $user_address   = $user->address;
+        $user_email     = $user->email;
+        $user_social_media_type = $user->social_media_type;
+        $user_social_media_id   = $user->social_media_id;
+
+        // get total order
     	Yii::$app->session->set('invoice', $invoice);
 
     	foreach ($_SESSION['cart'] as $key => $value) :
@@ -50,7 +66,19 @@ class ContinuepaymentController extends Controller
 
     	$total_usd = CMS::currencyConverter( 'IDR', 'USD', $total_idr );
 
+        /*$payment_insert[] = [
+            'invoice', 'payment_type', 'shipping_type', 
+            'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
+            'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
+            'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
+            'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
+            'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
+            'created_at', 'updated_at', 'payment_status', 'status'
+        ];*/
+
+        // get voucher
     	if ( !empty( $_SESSION['voucher'] ) ) :
+
     		$voucher_id 			= $_SESSION['voucher']['id'];
     		$voucher_code 			= $_SESSION['voucher']['code'];
     		$voucher_name 			= $_SESSION['voucher']['name'];
@@ -71,13 +99,42 @@ class ContinuepaymentController extends Controller
 			elseif ( $discount_type == CMS::DISCOUNT_FIXED ) :
 				$discount = $discount_price;
 			endif;
+
     	endif;
 
-    	$discount_usd 		= CMS::currencyConverter( 'IDR', 'USD', $discount );
-    	$grand_total_idr	= $total_idr - $discount;
-    	$grand_total_usd 	= CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
+        $discount_usd       = CMS::currencyConverter( 'IDR', 'USD', $discount );
 
-    	die();*/
+        $shipping_idr       = $_POST['total_ongkir'];
+        $shipping_usd       = CMS::currencyConverter( 'IDR', 'USD', $shipping_idr );
+        $grand_total_idr    = ($total_idr - $discount) + $shipping_idr;
+        $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
+
+        $payment_insert_value[]       = [
+            $invoice, CMS::PAYMENT_PAYPAL, CMS::SHIPPING_ON,
+            $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
+            $total_idr, $total_usd, $discount, $discount_usd, 
+            $voucher_id, $voucher_name, $discount_type, $discount,
+            $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
+            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['service'],
+            $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
+        ];
+
+        $insert_payment = Yii::$app->db
+                            ->createCommand()
+                            ->batchInsert('payment', [
+                                'invoice', 'payment_type', 'shipping_type', 
+                                'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
+                                'voucher', 'voucher_name', 'voucher_discount_type', 'voucher_discount_value',
+                                'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
+                                'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
+                                'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
+                                'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
+                                'created_at', 'updated_at', 'payment_status', 'status'
+                            ], $payment_insert_value)
+                            ->execute();
+
+    	die();
     }
 
     public function actionExecute()
