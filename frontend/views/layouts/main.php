@@ -82,8 +82,7 @@ channel.bind('my-event', function(data) {
 });
 </script>
 
-<script>
-    <!--Start of Tawk.to Script-->
+<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -96,6 +95,5 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
-</script>
 
 <?php $this->endPage() ?>

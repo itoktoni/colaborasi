@@ -28,7 +28,6 @@ class AppAsset extends AssetBundle
         'css/main.css',
     ];
     public $js = [
-        'https://js.pusher.com/4.0/pusher.min.js',
         'vendors/animsition/js/animsition.min.js',
         'vendors/bootstrap/js/popper.js',
         'vendors/bootstrap/js/bootstrap.min.js',
