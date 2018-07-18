@@ -10,7 +10,20 @@ $this->title = 'Checkout';
 
 $this->registerJsFile(
     '@web/js/ongkir.js',
-    ['depends' => [frontend\assets\AppAsset::className()]]);
+	['depends' => [frontend\assets\AppAsset::className()]]);
+	
+if (YII::$app->session->get('voucher')):
+    $voucher = YII::$app->session->get('voucher');
+    $code = $voucher['code'];
+    $voucher_type = $voucher['voucher_type'];
+    $discount_type = $voucher['discount_type'];
+    $discount_counter = $voucher['discount_counter'];
+    $discount_prosentase = $voucher['discount_prosentase'];
+    $discount_price = $voucher['discount_price'];
+    $start_date = strtotime($voucher['start_date']);
+    $end_date = strtotime($voucher['end_date']);
+endif;
+
 ?>
 
 <!-- Title Page -->
@@ -100,7 +113,7 @@ $this->registerJsFile(
 					<span class="m-text21 w-size20 w-full-sm">
 						IDR <span id="ongkir">0</span>
 					</span>
-				</div>
+				</div> 
 				<hr>
 				<div class="flex-w flex-sb-m p-t-12 p-b-30">
 					<span class="m-text22 w-size19 w-full-sm">
@@ -156,9 +169,15 @@ $this->registerJsFile(
 				<div class="payment-method">
 					<ul>
 						<li>
-							<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked="checked">
+							<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
 		                    <label for="payment_method_paypal">
-		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal-visa.png"); ?>">
+		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
+		                    </label>
+						</li>
+						<li>
+							<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
+		                    <label for="payment_method_paypal">
+		                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/cc.png"); ?>">
 		                    </label>
 						</li>
 					</ul>

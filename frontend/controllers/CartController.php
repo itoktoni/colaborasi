@@ -24,8 +24,6 @@ class CartController extends \yii\web\Controller
 
 	public function actionAdd($item = FALSE, $qty = 1)
 	{
-		// echo $qty;
-		// die();
 
 		if (!Yii::$app->request->post())
 		{
