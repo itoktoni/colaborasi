@@ -6,6 +6,7 @@ use common\models\base\Category;
 use common\models\base\Subcategory;
 use common\models\base\Product;
 use common\models\base\Brand;
+use common\models\base\ProductReview;
 use frontend\components\CMS;
 use yii\base\ErrorException;
 
@@ -14,12 +15,13 @@ class ProductController extends \yii\web\Controller
 {
 	public function init() {
 		parent::init();
+		$this->view->params['menu'] = 'shop';
 		Category::find()->orderBy(['name' => SORT_ASC]);
 	}
 
 	public function actionIndex( $slug = false )
 	{
-		$this->view->params['menu'] = 'shop';
+		
 		
 		if( !$slug )
 		{
@@ -89,5 +91,22 @@ class ProductController extends \yii\web\Controller
 			'related' 		=> $related,
 		]);
 
+	}
+
+	public function actionComment(){
+		$model = new ProductReview;
+		if(YII::$app->request->post() && !YII::$app->user->isGuest && $model->load(YII::$app->request->post()) && $model->check() && $model->save())
+		{
+			Yii::$app->session->setFlash('success', "Review submited, please wait for our team to review it");
+			$this->redirect(Yii::$app->request->referrer);
+		}
+		elseif(YII::$app->user->isGuest)
+		{
+			Yii::$app->session->setFlash('error', "Please login first");
+			$this->redirect('/login');
+		}else{
+			Yii::$app->session->setFlash('error', "You can't access this page directly");
+			$this->redirect('/');
+		}
 	}
 }

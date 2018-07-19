@@ -37,3 +37,4 @@ use common\models\base\Category;
 	</div>
 
 </div>
+<?php $this->registerJs("registerSlugify('#subcategory-name','#subcategory-slug');");

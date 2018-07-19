@@ -33,3 +33,4 @@ use yii\widgets\ActiveForm;
 	</div>
 
 </div>
+<?php $this->registerJs("registerSlugify('#brand-name','#brand-slug');");
