@@ -20,6 +20,8 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
+use kartik\mpdf\Pdf;
+use yii\mail;
 
 class ContinuepaymentController extends Controller
 {
@@ -32,6 +34,43 @@ class ContinuepaymentController extends Controller
         elseif ( $payment_method == 'cc' ) :
             $this->actionCC();
         endif;
+    }
+
+    public function actionSendemail(){
+
+        $invoice = 'PAY1807190007';
+
+        $header = Payments::find()->where(['invoice' => $invoice])->one();
+        $detail = PaymentDetail::find()
+        // ->leftJoin('product', 'product.product_id_category = category.category_id')
+        ->where(['payment' => $header->id])->all();
+
+        $content = $this->renderPartial('@app/views/pdf/so', [
+            'header' => $header,
+            'detail' => $detail,
+        ]);
+
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_UTF8,
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_FILE,
+            'filename' => 'files/so/'.$invoice . '.pdf',
+            'content' => $content,
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            'options' => ['title' => 'Laporan Harian']
+        ]);
+        $pdf->render();
+
+        Yii::$app->mailer->compose('@app/mail/html', [
+                     'header' => $header,
+                     'details' => $detail,
+                ])
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($header->user_email)
+                ->setSubject('Notification Order From System')
+                ->attach('../web/files/so/' . $invoice . '.pdf')
+                ->send();
     }
 
     public function actionCC(){
@@ -143,6 +182,9 @@ class ContinuepaymentController extends Controller
                     $payment_data->cc_month = $_POST['month'];
                     $payment_data->cc_year = $_POST['year'];
                     $payment_data->save();
+
+                    return $this->redirect(['/site/success']);
+
                 }
                 else{
                     Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
