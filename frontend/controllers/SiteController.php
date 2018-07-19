@@ -603,4 +603,29 @@ class SiteController extends \frontend\components\CartController
             'model' => $model,
         ]);
     }
+
+    /**
+     * Displays success page.
+     *
+     * @return mixed
+     */
+    public function actionSuccess()
+    {
+        $this->view->params['menu'] = 'success';
+        Yii::$app->session->set('cart', false);
+        Yii::$app->session->set('invoice', false);
+        Yii::$app->session->set('voucher', false);
+        return $this->render('success');
+    }
+
+    /**
+     * Displays failed page.
+     *
+     * @return mixed
+     */
+    public function actionFailed()
+    {
+        $this->view->params['menu'] = 'failed';
+        return $this->render('failed');
+    }
 }

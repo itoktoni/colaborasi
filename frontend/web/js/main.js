@@ -247,7 +247,7 @@
         console.log(suggestion);
     });
 
-    if ($('#payment_method_paypal').is(':checked')) {
+    if ($('#payment_method_balance').is(':checked')) {
         $('#cc').hide();
     }
 
@@ -285,6 +285,11 @@
 
     $(function () {
         $('#payment_method_paypal').click(function () {
+            if ($(this).is(':checked')) {
+                $('#cc').hide(1000);
+            }
+        });
+        $('#payment_method_balance').click(function () {
             if ($(this).is(':checked')) {
                 $('#cc').hide(1000);
             }

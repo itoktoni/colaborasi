@@ -1,16 +1,13 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
 use yii\widgets\LinkPager;
-use frontend\components\CMS;
 $this->title = 'Checkout';
 
 $this->registerJsFile(
     '@web/js/ongkir.js',
-	['depends' => [frontend\assets\AppAsset::className()]]);
-	
+    ['depends' => [frontend\assets\AppAsset::className()]]);
+
 if (YII::$app->session->get('voucher')):
     $voucher = YII::$app->session->get('voucher');
     $code = $voucher['code'];
@@ -27,7 +24,7 @@ endif;
 
  <script src="https://js.stripe.com/v2/"></script>
  <script type="text/javascript">
-     Stripe.setPublishableKey("<?php echo Yii::$app->params['stripe_publish'];?>");
+     Stripe.setPublishableKey("<?php echo Yii::$app->params['stripe_publish']; ?>");
  </script>
 
 <!-- Title Page -->
@@ -35,19 +32,19 @@ endif;
 	Checkout
 </h2>
 
-<?php 
-	$subtotal = $discount = $grandtotal = 0; 
-	if ( $cart ) :
-		foreach ($cart as $key => $item) :
-			$subtotal += $item['price'] * $item['qty'];
-		endforeach;
-	endif;
+<?php
+$subtotal = $discount = $grandtotal = 0;
+if ($cart):
+    foreach ($cart as $key => $item):
+        $subtotal += $item['price'] * $item['qty'];
+    endforeach;
+endif;
 ?>
 
 <!-- Cart -->
 <section class="cart bgwhite p-t-70 p-b-100">
 	<div class="container">
-		<form action="<?php echo Url::to('/continuepayment');?>" method="post">
+		<form action="<?php echo Url::to('/continuepayment'); ?>" method="post">
 		<!-- Total -->
 		<div class="row">
 			<div class="col-md-12">
@@ -65,11 +62,11 @@ endif;
 								</span>
 
 								<span class="m-text21 w-size20 w-full-sm">
-									IDR <?php echo number_format($subtotal,0,'','.');?>
+									IDR <?php echo number_format($subtotal, 0, '', '.'); ?>
 								</span>
 							</div>
 
-							<?php if( !YII::$app->session->get('voucher') ): ?>
+							<?php if (!YII::$app->session->get('voucher')): ?>
 
 							<!--  -->
 							<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
@@ -78,22 +75,22 @@ endif;
 								</span>
 
 								<span class="m-text21 w-size20 w-full-sm">
-									IDR <?php echo number_format($discount,0,'','.');?>
+									IDR <?php echo number_format($discount, 0, '', '.'); ?>
 								</span>
 							</div>
 
 							<?php else: ?>
 
 							<?php
-							//print_r($voucher);
-							if ( !empty( $voucher['discount_prosentase'] ) ) : 
-								$discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
-							elseif( !empty( $voucher['discount_price'] ) ) :
-								$discount = $voucher['discount_price'];
-							else :
-								$discount = 0;
-							endif;
-							?>
+//print_r($voucher);
+if (!empty($voucher['discount_prosentase'])):
+    $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
+elseif (!empty($voucher['discount_price'])):
+    $discount = $voucher['discount_price'];
+else:
+    $discount = 0;
+endif;
+?>
 
 							<!--  -->
 							<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
@@ -102,13 +99,13 @@ endif;
 								</span>
 
 								<span class="m-text21 w-size20 w-full-sm">
-									IDR <?php echo number_format($discount,0,'','.');?>
+									IDR <?php echo number_format($discount, 0, '', '.'); ?>
 								</span>
 							</div>
 
 							<?php endif;?>
 
-							<?php $grandtotal = $subtotal - $discount; ?>
+							<?php $grandtotal = $subtotal - $discount;?>
 
 							<!--  -->
 
@@ -120,7 +117,7 @@ endif;
 								<span class="m-text21 w-size20 w-full-sm">
 									IDR <span id="ongkir">0</span>
 								</span>
-							</div> 
+							</div>
 							<hr>
 							<div class="flex-w flex-sb-m p-t-12 p-b-30">
 								<span class="m-text22 w-size19 w-full-sm">
@@ -128,14 +125,22 @@ endif;
 								</span>
 
 								<span class="m-text21 w-size20 w-full-sm">
-									IDR <span id="total"><?php echo number_format($grandtotal,0,'','.');?></span> 
+									IDR <span id="total"><?php echo number_format($grandtotal, 0, '', '.'); ?></span>
 								</span>
 							</div>
 						</div>
-						<div id="cc" class="col-md-12 bo9 pt-3">
-							
+						<div id="shipping" class="col-md-12 bo9 pt-3">
+
 							<h5 class="m-text20 p-b-24">
-								Credit Card 
+								Shipping Option
+							</h5>
+
+                            <input name="shipping" type="checkbox"  class="s-text7"/><label class="ml-3">Ship Physical Item</label>
+						</div>
+						<div id="cc" class="col-md-12 mt-3 bo9 pt-3">
+
+							<h5 class="m-text20 p-b-24">
+								Credit Card
 							</h5>
 
                             <input type="text"  name="cardnumber" data-stripe="number" id="card" placeholder="Input Valid Card Number (4242424242424242)" class="form-control form-control-lg border">
@@ -161,7 +166,7 @@ endif;
 							Shipping
 						</h5>
 
-						<input type="text" name="shipping_receiver" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->name;?>" placeholder="Full Name" class="sizefull s-text7">
+						<input type="text" name="shipping_receiver" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->name; ?>" placeholder="Full Name" class="sizefull s-text7">
 						<hr style="padding:5px;">
 
 						<select  id="province" class="select form-control-lg col-lg-12" name="province">
@@ -170,7 +175,7 @@ endif;
 								<option value="<?php echo $p->province_id; ?>">
 									<?php echo $p->province; ?>
 								</option>
-							<?php endforeach; ?>
+							<?php endforeach;?>
 						</select>
 						<hr style="padding:5px;">
 
@@ -179,13 +184,13 @@ endif;
 						</select>
 						<hr style="padding:5px;">
 
-						<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address;?>" placeholder="Address" class="sizefull s-text7">
+						<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address; ?>" placeholder="Address" class="sizefull s-text7">
 						<hr style="padding:5px;">
 
 						<input type="text" name="shipping_mobile" value="" placeholder="Phone Number" class="sizefull s-text7">
 						<hr style="padding:5px;">
 
-						<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email;?>" placeholder="Email" class="sizefull s-text7">
+						<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email; ?>" placeholder="Email" class="sizefull s-text7">
 						<hr style="padding:5px;">
 
 						<select id="courier" class="select form-control-lg col-lg-12" name="courier">
@@ -195,7 +200,7 @@ endif;
 							<option value="pos">POS Indonesia</option>
 						</select>
 						<hr style="padding:5px;">
-						
+
 						<select name="service" class="select form-control-lg col-lg-12" id="service">
 						<option value="">Select Service..</option>
 						</select>
@@ -208,7 +213,13 @@ endif;
 						<div class="payment-method">
 							<ul>
 								<li>
-									<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked>
+									<input type="radio" data-order_button_text="Balance" value="balance" name="payment_method" class="input-radio" id="payment_method_balance" checked="">
+				                    <label for="payment_method_balance" style="font-size: 16px;">
+				                    	Onestopclick User Balance
+				                    </label>
+								</li>
+								<li>
+									<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
 									<label for="payment_method_paypal">
 										<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
 									</label>

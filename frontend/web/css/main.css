@@ -2550,3 +2550,7 @@ input.num-product::-webkit-inner-spin-button {
     padding-top: 5px;
     margin: 15px 5px;
 }
+
+.active-pagination a, div.item-pagination:hover a,div.item-pagination a:hover{
+color: #fff;
+}

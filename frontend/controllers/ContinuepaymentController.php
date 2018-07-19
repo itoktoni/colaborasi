@@ -39,41 +39,12 @@ class ContinuepaymentController extends Controller
         \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
         $token = $_POST['stripeToken'];
 
-        try {
-                $charge = \Stripe\Charge::create([
-                    'amount' => 999,
-                    'currency' => 'usd',
-                    'description' => 'description',
-                    'source' => $token,
-                    'receipt_email' => $_POST['shipping_email'],
-                ]);
-
-                if($charge->paid == true){
-                    d($charge);
-                }
-                else{
-                    Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
-                }
-        } catch (Exception $e) {
-
-            Yii::$app->session->setFlash('error', $e);
-
-        }
-
-      return $this->redirect(['card/checkout']);
-
-    }
-
-	public function actionPaypal()
-    {
-    	$total_idr 		= 0;
+        $total_idr 		= 0;
     	$counter_new 	= 0;
     	$status_new 	= 1;
     	$discount 		= 0;
-        // $payment_insert = [];
-        // $payment_detail_insert          = [];
         $payment_insert_value           = [];
-        $payment_detail_insert_value    = [];
+        $payment_detail = [];
         $voucher_id     = $voucher_name  = $discount_type = '';
 
         // get invoice ID
@@ -96,16 +67,6 @@ class ContinuepaymentController extends Controller
     	endforeach;
 
     	$total_usd = CMS::currencyConverter( 'IDR', 'USD', $total_idr );
-
-        /*$payment_insert[] = [
-            'invoice', 'payment_type', 'shipping_type', 
-            'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
-            'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
-            'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
-            'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
-            'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
-            'created_at', 'updated_at', 'payment_status', 'status'
-        ];*/
 
         // get voucher
     	if ( !empty( $_SESSION['voucher'] ) ) :
@@ -143,15 +104,153 @@ class ContinuepaymentController extends Controller
         $payment_insert_value[]       = [
             $invoice, CMS::PAYMENT_PAYPAL, CMS::SHIPPING_ON,
             $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
-            $total_idr, $total_usd, $discount, $discount_usd, 
             $voucher_id, $voucher_name, $discount_type, $discount,
+            $total_idr, $total_usd, $discount, $discount_usd, 
             $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
             $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['jasa'],
             $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];
 
-        $insert_payment = Yii::$app->db
+        if ( $this->insertPayment( $payment_insert_value ) ) :
+            $payment_id = CMS::getMaxID('payment');
+
+            foreach ($_SESSION['cart'] as $key => $value) :
+                $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+            endforeach;
+
+            Yii::$app->db
+                ->createCommand()
+                ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $payment_detail)
+                ->execute();
+        endif;
+
+        // try {
+        //         $charge = \Stripe\Charge::create([
+        //             'amount' => 999,
+        //             'currency' => 'usd',
+        //             'description' => 'description',
+        //             'source' => $token,
+        //             'receipt_email' => $_POST['shipping_email'],
+        //         ]);
+
+        //         if($charge->paid == true){
+        //             d($charge);
+        //         }
+        //         else{
+        //             Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
+        //         }
+        // } catch (Exception $e) {
+
+        //     Yii::$app->session->setFlash('error', $e);
+
+        // }
+
+      return $this->redirect(['card/checkout']);
+
+    }
+
+	public function actionPaypal()
+    {
+    	$total_idr 		= 0;
+    	$counter_new 	= 0;
+    	$status_new 	= 1;
+    	$discount 		= 0;
+        $payment_insert_value           = [];
+        $payment_detail = [];
+        $voucher_id     = $voucher_name  = $discount_type = '';
+
+        // get invoice ID
+    	$invoice 		= CMS::getInvoiceCode('payment', 'invoice');
+
+        // get user
+        $user_id        = Yii::$app->user->id;
+        $user           = Member::find()->where(['id' => $user_id])->one();
+        $user_name      = $user->name;
+        $user_address   = $user->address;
+        $user_email     = $user->email;
+        $user_social_media_type = $user->social_media_type;
+        $user_social_media_id   = $user->social_media_id;
+
+        // get total order
+    	Yii::$app->session->set('invoice', $invoice);
+
+    	foreach ($_SESSION['cart'] as $key => $value) :
+    		$total_idr 			= $total_idr + $value['price'];
+    	endforeach;
+
+    	$total_usd = CMS::currencyConverter( 'IDR', 'USD', $total_idr );
+
+        // get voucher
+    	if ( !empty( $_SESSION['voucher'] ) ) :
+
+    		$voucher_id 			= $_SESSION['voucher']['id'];
+    		$voucher_code 			= $_SESSION['voucher']['code'];
+    		$voucher_name 			= $_SESSION['voucher']['name'];
+    		$voucher_type 			= $_SESSION['voucher']['voucher_type'];
+    		$discount_type 			= $_SESSION['voucher']['discount_type'];
+    		$discount_counter 		= $_SESSION['voucher']['discount_counter'];
+    		$discount_prosentase 	= $_SESSION['voucher']['discount_prosentase'];
+    		$discount_price 		= $_SESSION['voucher']['discount_price'];
+
+    		if ( $voucher_type == CMS::VOUCHER_COUNTERBASED ) :
+    			$counter_new 		= $discount_counter - 1;
+    		elseif ( $voucher_type == CMS::VOUCHER_ONETIMEUSAGE ) :
+    			$status_new 		= 0;
+    		endif;
+
+    		if ( $discount_type == CMS::DISCOUNT_PERCENTAGE ) :
+				$discount = ($discount_prosentase / 100) * $total_idr;
+			elseif ( $discount_type == CMS::DISCOUNT_FIXED ) :
+				$discount = $discount_price;
+			endif;
+
+    	endif;
+
+        $discount_usd       = CMS::currencyConverter( 'IDR', 'USD', $discount );
+
+        $shipping_idr       = $_POST['total_ongkir'];
+        $shipping_usd       = CMS::currencyConverter( 'IDR', 'USD', $shipping_idr );
+        $grand_total_idr    = ($total_idr - $discount) + $shipping_idr;
+        $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
+
+        $payment_insert_value[]       = [
+            $invoice, CMS::PAYMENT_PAYPAL, CMS::SHIPPING_ON,
+            $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
+            $voucher_id, $voucher_name, $discount_type, $discount,
+            $total_idr, $total_usd, $discount, $discount_usd, 
+            $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
+            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['jasa'],
+            $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
+        ];
+
+        if ( $this->insertPayment( $payment_insert_value ) ) :
+            $payment_id = CMS::getMaxID('payment');
+
+            foreach ($_SESSION['cart'] as $key => $value) :
+                $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+            endforeach;
+
+            Yii::$app->db
+                ->createCommand()
+                ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $payment_detail)
+                ->execute();
+        endif;
+
+        $p          = new Paypal();
+        $response   = $p->teszt( $grand_total_usd, $invoice );
+
+        $url        = $response->links[1]->href;
+
+        header('Location: '.$url);
+
+    	die();
+    }
+
+    public function insertPayment( $data = [] )
+    {
+        $insert = Yii::$app->db
                             ->createCommand()
                             ->batchInsert('payment', [
                                 'invoice', 'payment_type', 'shipping_type', 
@@ -162,10 +261,19 @@ class ContinuepaymentController extends Controller
                                 'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
                                 'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
                                 'created_at', 'updated_at', 'payment_status', 'status'
-                            ], $payment_insert_value)
+                            ], $data)
                             ->execute();
 
-    	die();
+        return $insert;
+    }
+
+    public function insertPaymentdetail( $data = [] )
+    {
+        $insert = Yii::$app->db
+                ->createCommand()
+                ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $data)
+                ->execute();
+        return $insert;
     }
 
     public function actionExecute()
@@ -180,11 +288,15 @@ class ContinuepaymentController extends Controller
 
     	if ( isset($_GET['success']) && $_GET['success'] == 'true' ) :
 
-    		$payment_id = $_SESSION['payment_id'];
-    		$paymentId 	= $_GET['paymentId'];
-    		$payment 	= Payment::get($paymentId, $apiContext);
+    		$invoice      = $_SESSION['invoice'];
+            $payment_data = Payments::find()->where(['invoice' => $invoice])->one();
+            $payment_id   = $payment_data->id;
+            $total_idr    = $payment_data->total_net_rupiah;
 
-    		$execution 	= new PaymentExecution();
+    		$paymentId 	  = $_GET['paymentId'];
+    		$payment      = Payment::get($paymentId, $apiContext);
+
+    		$execution 	  = new PaymentExecution();
 			$execution->setPayerId($_GET['PayerID']);
 
 			try 
@@ -200,12 +312,16 @@ class ContinuepaymentController extends Controller
 		            $sale_id 			= $sale->getId();
 		            $amount 			= $transactions[0]->amount->total;
 
-		            $each[] 			= [$sale_id, $pi->email, $pi->payer_id, $payment->id, $payment_id, $amount, time()];
-
-		            Yii::$app->db->createCommand()->batchInsert('paypal_detail',['ltransaction_id', 'lpayer_email', 'lpayer_id', 'paypal_payment_id', 'payment_id', 'lamount', 'created_at'], $each)->execute();
-
-		            // header('Location: http://onestopclick.com');
-        			// die();
+		            Yii::$app->db->createCommand()
+                        ->update('payment', [
+                            'paypal_payment_id' => $payment->id, 
+                            'paypal_amount_dollar' => $amount, 
+                            'paypal_amount_rupiah' => $total_idr, 
+                            'paypal_payer_id' => $pi->payer_id, 
+                            'paypal_payer_email' => $pi->email, 
+                            'paypal_token' => $sale_id,
+                        ], ['invoice' => $invoice])
+                        ->execute();
 
         			return $this->redirect(['/site/success']);
             	}

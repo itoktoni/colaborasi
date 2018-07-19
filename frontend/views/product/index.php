@@ -98,6 +98,13 @@ $this->title = $product->name;
 			</div>
 				<?php endif;?>
 
+<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+<h3>Share This Product</h3>
+                    <a href="#" class="social-button bg1 bo-rad-23" id="fb-share"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="social-button bg1 bo-rad-23" id="tw-share"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="social-button bg1 bo-rad-23" id="gplus-share"><i class="fa fa-google"></i></a>
+</div>
+
 			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
 				<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
 					Additional information
@@ -112,16 +119,14 @@ $this->title = $product->name;
 				</div>
 			</div>
 
+
 			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
 				<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
 					Reviews (0)
 					<i class="down-mark fs-12 color1 fa fa-minus dis-none" aria-hidden="true"></i>
 					<i class="up-mark fs-12 color1 fa fa-plus" aria-hidden="true"></i>
 				</h5>
-				<h3>Share This Product</h3>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="fb-share"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="tw-share"><i class="fa fa-twitter"></i></a>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="gplus-share"><i class="fa fa-google"></i></a>
+
 
 				<div class="dropdown-content dis-none p-t-15 p-b-23">
 					<p class="s-text8">
@@ -129,6 +134,8 @@ $this->title = $product->name;
 					</p>
 				</div>
 			</div>
+
+
 		</div>
 	</div>
 </div>
@@ -136,13 +143,14 @@ $this->title = $product->name;
 <!-- Relate Product -->
 <section class="relateproduct bgwhite p-t-45 p-b-138">
 	<div class="container">
+		
+		<?php if (!empty($related)): ?>
+
 		<div class="sec-title p-b-60">
 			<h3 class="m-text5 t-center">
 				Related Products
 			</h3>
 		</div>
-
-		<?php if (!empty($related)): ?>
 
 		<!-- Slide2 -->
 		<div class="wrap-slick2">

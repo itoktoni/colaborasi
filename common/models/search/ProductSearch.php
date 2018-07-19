@@ -18,7 +18,7 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'brand', 'headline', 'product_view', 'status'], 'integer'],
+            [['id', 'brand', 'headline', 'product_view', 'status','category','subcategory'], 'integer'],
             [['slug', 'name', 'synopsis', 'description', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path', 'created_at', 'updated_at'], 'safe'],
             [['price', 'price_discount'], 'number'],
         ];
@@ -42,9 +42,19 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find()
-        ->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
+        $query = Product::find();
+
+        if(isset($params['subcategory']) && $params['subcategory'])
+        {
+            
+            $query->joinWith('productCategories');
+        }
+        
+        $query->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
         // add conditions that should always apply here
+
+        
+        
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -68,7 +78,7 @@ class ProductSearch extends Product
                 case "recent":
                 $dataProvider->setSort(['defaultOrder' => ['updated_at' => SORT_DESC]]);
                 break;                
-            }
+            } 
             
             unset($params['sort_order']);
         }
@@ -76,6 +86,10 @@ class ProductSearch extends Product
         
         $this->load($params,'');
 
+        if($this->subcategory){
+            $query->andFilterWhere(['product_category.sub_category' => $this->subcategory]);
+        }
+        
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -86,6 +100,7 @@ class ProductSearch extends Product
         $query->andFilterWhere([
             'id' => $this->id,
             'price' => $this->price,
+            'category' => $this->category,
             'price_discount' => $this->price_discount,
             'brand' => $this->brand,
             'headline' => $this->headline,
