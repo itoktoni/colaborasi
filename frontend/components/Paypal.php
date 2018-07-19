@@ -33,7 +33,7 @@ use PayPal\Rest\ApiContext;
 class paypal extends Component
 {
 
-    public function teszt($total,$payment_id)
+    public function teszt($total,$invoice)
     {
         $apiContext = new \PayPal\Rest\ApiContext(
             new \PayPal\Auth\OAuthTokenCredential(
@@ -49,25 +49,14 @@ class paypal extends Component
         // ### Itemized information
         // (Optional) Lets you specify item wise
         // information
-        /*$item1 = new Item();
-        $item1->setName('Ground Coffee 40 oz')
-            ->setCurrency('USD')
-            ->setQuantity(1)
-            ->setPrice(7.5);
-        $item2 = new Item();
-        $item2->setName('Granola bars')
-            ->setCurrency('USD')
-            ->setQuantity(5)
-            ->setPrice(2);*/
 
         $items = new Item();
-        $items->setName($payment_id)
+        $items->setName($invoice)
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice($total);
 
         $itemList = new ItemList();
-        // $itemList->setItems(array($item1, $item2));
         $itemList->setItems(array($items));
 
         // ### Additional payment details
@@ -75,9 +64,6 @@ class paypal extends Component
         // payment information such as tax, shipping
         // charges etc.
         $details = new Details();
-        /*$details->setShipping(1.2)
-            ->setTax(1.3)
-            ->setSubtotal(17.50);*/
         $details->setShipping(0)
             ->setTax(0)
             ->setSubtotal($total);
@@ -90,9 +76,6 @@ class paypal extends Component
         $amount->setCurrency("USD")
             ->setTotal($total)
             ->setDetails($details);
-        /*$amount->setCurrency("USD")
-            ->setTotal($amount)
-            ->setDetails($details);*/
 
         // ### Transaction
         // A transaction defines the contract of a
@@ -100,7 +83,6 @@ class paypal extends Component
         // is fulfilling it. 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
-            // ->setItemList($itemList)
             ->setDescription("Payment description")
             ->setInvoiceNumber(uniqid());
 
@@ -109,8 +91,8 @@ class paypal extends Component
         // payment approval/ cancellation.
         //$baseUrl = getBaseUrl();
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl("http://onestopclick.com/paypal/execute?success=true")
-            ->setCancelUrl("http://onestopclick.com/paypal/execute?success=false");
+        $redirectUrls->setReturnUrl("https://frontend.dev.co/continuepayment/execute?success=true")
+            ->setCancelUrl("https://frontend.dev.co/continuepayment/execute?success=false");
 
         // ### Payment
         // A Payment Resource; create one using
