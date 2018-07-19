@@ -47,7 +47,6 @@ class CategoryController extends \yii\web\Controller
 			
 			if ( $maincats && $subcategory )
 			{
-				
 				$subcheck 	= Subcategory::findOne( ['category' => $maincats->id, 'slug' => $subcategory] ); 
 				if (!$subcheck)
 				{
@@ -55,7 +54,7 @@ class CategoryController extends \yii\web\Controller
 				}
 				
 				$filter['category'] = $maincats->id;
-				$filter['subcategory'] = $subcheck;
+				$filter['subcategory'] = $subcheck->id;
 				$query = $item_list->search($filter);
 				
 			}
