@@ -84,7 +84,7 @@ class m180718_020529_create_payment_table extends Migration
         );
 
         $this->addForeignKey(
-            'fk-payment-user', 'payment', 'user', 'user', 'id', 'CASCADE'
+            'fk-payment-user', 'payment', 'user', 'member', 'id', 'CASCADE'
         );
 
     }
