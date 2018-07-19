@@ -125,10 +125,28 @@ $this->registerJsFile(
 				</div>
 
 				<!-- Pagination -->
-				<div class="pagination flex-m flex-w p-t-26">
-					<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>
-					<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
-				</div>
+
+				<?php
+echo yii\widgets\LinkPager::widget([
+	'pagination' => $pages,
+	'pageCssClass' => 'item-pagination flex-c-m trans-0-4',
+	'activePageCssClass' => 'active-pagination',
+	'prevPageLabel' => false,
+	'nextPageLabel' => false,
+	'linkContainerOptions'	=> 
+	[
+		'tag' => 'div',
+	],
+	'linkOptions' => [
+		'class' => '',
+		'tag' => ''
+	],
+    'options' => [
+		'tag' => 'div',
+        'class' => 'pagination flex-m flex-w p-t-26',
+    ],
+]);
+?>
 			</div>
 		</div>
 	</div>

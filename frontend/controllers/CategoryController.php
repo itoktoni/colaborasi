@@ -22,7 +22,9 @@ class CategoryController extends \yii\web\Controller
 
 		$this->view->params['menu'] = 'shop';
 
-		if ( $cats ) :
+		$item_list = new \common\models\search\ProductSearch;
+
+		if ($cats) {
 			$maincats = Category::findOne(['slug' => $cats]);
 
 			if ( !$maincats )
@@ -30,42 +32,34 @@ class CategoryController extends \yii\web\Controller
 				throw new \yii\web\NotFoundHttpException();
 			}
 
+			
+ 
 			if ( $maincats && $subcategory )
 			{
+				
 				$subcheck 	= Subcategory::findOne( ['category' => $maincats->id, 'slug' => $subcategory] ); 
-				if ( !$subcheck )
+				if (!$subcheck)
 				{
 					throw new \yii\web\NotFoundHttpException();
 				}
 
-				$item_list 	= Product::find()
-								->join( 'LEFT JOIN', 'product_category', 'product.id = product_category.product' )
-								->join( 'LEFT JOIN', 'sub_category', 'sub_category.id = product_category.sub_category' )
-								->where( ['sub_category.id' => $subcheck->id] ); 
+				$query = $item_list->search(['category' => $maincats->id,'subcategory' => $subcheck]);
+				
 			}
 			else
-			{
-				$item_list 	= Product::find()
-								->join('LEFT JOIN','category','category.id = product.category')
-								->where(['category.id' => $maincats->id]);
-			}
-			
-			$countQuery 	= clone $item_list;
-			$pages 			= new Pagination(['totalCount' => $countQuery->count()]);
-			$models 		= $item_list->offset($pages->offset)
-								->limit($pages->limit)
-								->all();
-		else :
-			$item_list = Product::find()
-				->join('LEFT JOIN','sub_category','product.category=sub_category.id')
-				->join('LEFT JOIN','category','category.id=sub_category.category');
-		endif;
+			{	
 
-		$countQuery = clone $item_list;
-		$pages 		= new Pagination(['totalCount' => $countQuery->count()]);
-		$models 	= $item_list->offset($pages->offset)
-						->limit($pages->limit)
-						->all();
+				$query = $item_list->search(['category' => $maincats->id]);
+			}
+		}
+		else 
+		{
+				$query = $item_list->search([]);
+		}
+
+		
+		$pages 		= $query->getPagination();
+		$models 	= $query->getModels();
 
 		return $this->render('index', [
 			'pages' 		=> $pages,

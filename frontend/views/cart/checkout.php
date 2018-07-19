@@ -126,12 +126,14 @@ endif;
 			</div>
 
 			<div class="p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 442px);">
-
+			
 				<form action="<?php echo Url::to('/continuepayment');?>" method="post">
+				<input name="shipping" type="checkbox"  class="s-text7"/><label>Ship Physical Item</label>
 					<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
 					<input type="hidden" id="ongkos" name="ongkos">
 					<input type="hidden" id="jasa" name="jasa">
 
+					
 					<h5 class="m-text20 p-b-24">
 						Shipping
 					</h5>
@@ -182,8 +184,15 @@ endif;
 
 					<div class="payment-method">
 						<ul>
+
 							<li>
-								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal" checked="">
+								<input type="radio" data-order_button_text="Balance" value="balance" name="payment_method" class="input-radio" id="payment_method_balance" checked>
+			                    <label for="payment_method_balance" style="font-size: 16px;">
+			                    	Onestopclick User Balance
+			                    </label>
+							</li>
+							<li>
+								<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
 			                    <label for="payment_method_paypal">
 			                    	<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
 			                    </label>

@@ -16,6 +16,7 @@ use common\models\base\Productcontent;
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property int $category
  * @property string $synopsis
  * @property string $description
  * @property string $price
@@ -36,7 +37,9 @@ use common\models\base\Productcontent;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property PaymentDetail[] $paymentDetails
  * @property Brand $brand0
+ * @property Category $category0
  * @property ProductCategory[] $productCategories
  * @property ProductContent[] $productContents
  */
@@ -69,7 +72,7 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'name',
                 'slugAttribute' => 'slug',
-                'immutable'=>true
+                'immutable' => true,
             ],
             [
                 'class' => ImageBehavior::className(),
@@ -88,15 +91,15 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
     public function rules()
     {
         return [
-            [['name', 'brand', 'status', 'category','subcategory', 'price'], 'required'],
+            [['slug', 'name', 'category', 'brand'], 'required'],
+            [['category', 'brand', 'discount_flag', 'headline', 'product_view', 'status'], 'integer'],
             [['description'], 'string'],
             [['price', 'price_discount'], 'number'],
-            [['brand', 'headline', 'product_view', 'status','discount_flag'], 'integer'],
-            [['created_at', 'updated_at','embed_video','embed_music','embed_image'], 'safe'],
-            [['slug'], 'unique'],
+            [['created_at', 'updated_at'], 'safe'],
             [['slug', 'synopsis', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 64],
             [['brand'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand' => 'id']],
+            [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
             [['image'], 'file', 'extensions' => 'png, jpg, jpeg'],
         ];
     }
@@ -110,12 +113,13 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             'id' => 'ID',
             'slug' => 'Slug',
             'name' => 'Name',
+            'category' => 'Category',
             'synopsis' => 'Synopsis',
             'description' => 'Description',
             'price' => 'Price',
-            'discount_flag' => 'Discount Flag',
             'price_discount' => 'Price Discount',
             'brand' => 'Brand',
+            'discount_flag' => 'Discount Flag',
             'image' => 'Image',
             'image_path' => 'Image Path',
             'image_thumbnail' => 'Image Thumbnail',
@@ -127,14 +131,10 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
             'product_download_path' => 'Product Download Path',
             'product_view' => 'Product View',
             'status' => 'Status',
-            'embed_video' => 'Embed Video',
-            'embed_music' => 'Embed Music',
-            'embed_image' => 'Embed Image',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
     }
-    
 
     /**
      * [upload description]
@@ -144,31 +144,34 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
      */
     public function upload($path, $filename = false)
     {
-        
-            if (!$this->image) {
-                return false;
-            }
 
-            FileHelper::createDirectory($path, $mode = 0775, $recursive = true);
+        if (!$this->image) {
+            return false;
+        }
 
-            if (!$filename) {
-                $filename = $this->image->BaseName;
-            }
+        FileHelper::createDirectory($path, $mode = 0775, $recursive = true);
 
-            $originFile = $path . $filename . '.' . $this->image->extension;
-            $this->image->saveAs($originFile);
-            $thumbnFile = $path . $filename . '-thumb.' . $this->image->extension;
-            $portrait = $path . $filename . '-portrait.' . $this->image->extension;
-            $headline = $path . $filename . '-headline.' . $this->image->extension;
+        if (!$filename) {
+            $filename = $this->image->BaseName;
+        }
 
-            Image::resize($originFile, 250, 250, false, true)->save($thumbnFile, ['quality' => 80]);
-            Image::resize($originFile, 500, 250, false, true)->save($portrait, ['quality' => 80]);
-            Image::resize($originFile, 750, 750, false, true)->save($headline, ['quality' => 100]);
-            // $this->save();
-            return ['filename' => $filename, 'extension' => '.' . $this->image->extension];
-        
+        $originFile = $path . $filename . '.' . $this->image->extension;
+        $this->image->saveAs($originFile);
+        $thumbnFile = $path . $filename . '-thumb.' . $this->image->extension;
+        $portrait = $path . $filename . '-portrait.' . $this->image->extension;
+        $headline = $path . $filename . '-headline.' . $this->image->extension;
+
+        Image::resize($originFile, 250, 250, false, true)->save($thumbnFile, ['quality' => 80]);
+        Image::resize($originFile, 500, 250, false, true)->save($portrait, ['quality' => 80]);
+        Image::resize($originFile, 750, 750, false, true)->save($headline, ['quality' => 100]);
+        // $this->save();
+        return ['filename' => $filename, 'extension' => '.' . $this->image->extension];
+
     }
 
+    /**
+     *
+     */
     public function product_upload($path, $filename = false)
     {
         if (!$this->product_download_url) {
@@ -189,9 +192,25 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getPaymentDetails()
+    {
+        return $this->hasMany(PaymentDetail::className(), ['product' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getBrand0()
     {
         return $this->hasOne(Brand::className(), ['id' => 'brand']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory0()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category']);
     }
 
     /**
@@ -210,44 +229,32 @@ class Product extends \yii\db\ActiveRecord implements CartInterface
         return $this->hasMany(ProductContent::className(), ['product' => 'id']);
     }
 
-       /**
+    /**
      * Returns the price for the cart item
      *
      * @return int
      */
-    public function getPrice(){
+    public function getPrice()
+    {
         return $this->price;
-      }
-  /**
-   * Returns the label for the cart item (displayed in cart etc)
-   *
-   * @return int|string
-   */
-  public function getLabel(){
-    return $this->name;
-  }
-  /**
-   * Returns unique id to associate cart item with product
-   *
-   * @return int|string
-   */
-  public function getUniqueId(){
-    return $this->id;
-  }
-
-
-  public function save_content(){
-
-
-    // foreach($this->embed_video as $item){
-
-    // }
-        // Yii::$app->db->createCommand()->batchInsert(Productcontent::className, ['product', 'embed_type', 'content_type','content'], [
-        //     [1, 'title1', '2015-04-10'],
-        //     [2, 'title2', '2015-04-11'],
-        //     [3, 'title3', '2015-04-12'],
-        // ])->execute();
-  }
-
+    }
+    /**
+     * Returns the label for the cart item (displayed in cart etc)
+     *
+     * @return int|string
+     */
+    public function getLabel()
+    {
+        return $this->name;
+    }
+    /**
+     * Returns unique id to associate cart item with product
+     *
+     * @return int|string
+     */
+    public function getUniqueId()
+    {
+        return $this->id;
+    }
 
 }
