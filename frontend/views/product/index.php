@@ -143,13 +143,14 @@ $this->title = $product->name;
 <!-- Relate Product -->
 <section class="relateproduct bgwhite p-t-45 p-b-138">
 	<div class="container">
+		
+		<?php if (!empty($related)): ?>
+
 		<div class="sec-title p-b-60">
 			<h3 class="m-text5 t-center">
 				Related Products
 			</h3>
 		</div>
-
-		<?php if (!empty($related)): ?>
 
 		<!-- Slide2 -->
 		<div class="wrap-slick2">
