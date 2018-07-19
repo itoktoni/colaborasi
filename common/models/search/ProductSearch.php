@@ -49,7 +49,7 @@ class ProductSearch extends Product
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 2,
             ],
         ]);
 
@@ -68,7 +68,7 @@ class ProductSearch extends Product
                 case "recent":
                 $dataProvider->setSort(['defaultOrder' => ['updated_at' => SORT_DESC]]);
                 break;                
-            }
+            } 
             
             unset($params['sort_order']);
         }
