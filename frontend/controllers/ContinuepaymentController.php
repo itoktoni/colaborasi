@@ -108,21 +108,7 @@ class ContinuepaymentController extends Controller
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];
 
-        $insert_payment = Yii::$app->db
-                            ->createCommand()
-                            ->batchInsert('payment', [
-                                'invoice', 'payment_type', 'shipping_type', 
-                                'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
-                                'voucher', 'voucher_name', 'voucher_discount_type', 'voucher_discount_value',
-                                'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
-                                'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
-                                'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
-                                'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
-                                'created_at', 'updated_at', 'payment_status', 'status'
-                            ], $payment_insert_value)
-                            ->execute();
-
-        if ( $insert_payment ) :
+        if ( $this->insertPayment( $payment_insert_value ) ) :
             $payment_id = CMS::getMaxID('payment');
 
             foreach ($_SESSION['cart'] as $key => $value) :
@@ -143,6 +129,34 @@ class ContinuepaymentController extends Controller
         header('Location: '.$url);
 
     	die();
+    }
+
+    public function insertPayment( $data = [] )
+    {
+        $insert = Yii::$app->db
+                            ->createCommand()
+                            ->batchInsert('payment', [
+                                'invoice', 'payment_type', 'shipping_type', 
+                                'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
+                                'voucher', 'voucher_name', 'voucher_discount_type', 'voucher_discount_value',
+                                'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
+                                'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
+                                'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
+                                'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
+                                'created_at', 'updated_at', 'payment_status', 'status'
+                            ], $data)
+                            ->execute();
+
+        return $insert;
+    }
+
+    public function insertPaymentdetail( $data = [] )
+    {
+        $insert = Yii::$app->db
+                ->createCommand()
+                ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $data)
+                ->execute();
+        return $insert;
     }
 
     public function actionExecute()
