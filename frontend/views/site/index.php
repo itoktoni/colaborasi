@@ -15,21 +15,25 @@ $this->title = 'Home';
             <div class="slick1">
                 <?php if ($headline): ?>
                 <?php $counter = 0;foreach ($headline as $item): $counter++;?>
-	                <div class="item-slick<?php $counter;?> item<?php $counter;?>-slick1" style="background-image: url(<?php echo $item->image; ?>);">
-	                    <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-	                        <span class="caption<?php $counter;?>-slide1 m-text1 t-center animated visible-false m-b-33" data-appear="fadeInDown">
-	                            <?php echo $item->title; ?>
-	                        </span>
+	                <div class="item-slick1 item1<?php $counter;?>-slick1" style="background-image: url(<?php echo $item->image; ?>);">
+                        <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+                            <h2 class="caption1-slide1 xl-text2 t-center bo14 p-b-6 animated visible-false m-b-22" data-appear="fadeInUp">
+                                <?php echo $item->title; ?>
+                            </h2>
 
-	                        <div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
-	                            <!-- Button -->
-	                            <a href="<?php echo $item->link; ?>" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
-	                                <?php echo $item->title; ?>
-	                            </a>
-	                        </div>
-	                    </div>
-	                </div>
-	                <?php endforeach;?>
+                            <span class="caption2-slide1 m-text1 t-center animated visible-false m-b-33" data-appear="fadeInDown">
+                                <?php echo $item->subtitle; ?>
+                            </span>
+
+                            <div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
+                                <!-- Button -->
+                                <a href="<?php echo $item->link; ?>" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+                                    Shop Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach;?>
 
                 <?php endif;?>
             </div>
