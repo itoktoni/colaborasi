@@ -6,5 +6,5 @@ return [
     'cloudinaryEmail' => 'guitar.tempo90@gmail.com',
     'cloudinaryName' => 'mitrais',
     'cloudinaryApiKey' => '666646573649328',
-    'cloudinarySecret' => 'PUzt-PoxtqGFatv5beaT5uPRrEA'
+    'cloudinarySecret' => 'PUzt-PoxtqGFatv5beaT5uPRrEA',
 ];

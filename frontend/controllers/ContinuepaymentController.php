@@ -30,7 +30,38 @@ class ContinuepaymentController extends Controller
         if ( $payment_method == 'paypal' ) :
             $this->actionPaypal();
         elseif ( $payment_method == 'cc' ) :
+            $this->actionCC();
         endif;
+    }
+
+    public function actionCC(){
+        
+        \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
+        $token = $_POST['stripeToken'];
+
+        try {
+                $charge = \Stripe\Charge::create([
+                    'amount' => 999,
+                    'currency' => 'usd',
+                    'description' => 'description',
+                    'source' => $token,
+                    'receipt_email' => $_POST['shipping_email'],
+                ]);
+
+                if($charge->paid == true){
+                    d($charge);
+                }
+                else{
+                    Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
+                }
+        } catch (Exception $e) {
+
+            Yii::$app->session->setFlash('error', $e);
+
+        }
+
+      return $this->redirect(['card/checkout']);
+
     }
 
 	public function actionPaypal()
@@ -115,7 +146,7 @@ class ContinuepaymentController extends Controller
             $total_idr, $total_usd, $discount, $discount_usd, 
             $voucher_id, $voucher_name, $discount_type, $discount,
             $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
-            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['service'],
+            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['jasa'],
             $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];

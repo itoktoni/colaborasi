@@ -247,6 +247,55 @@
         console.log(suggestion);
     });
 
+    if ($('#payment_method_paypal').is(':checked')) {
+        $('#cc').hide();
+    }
+
+    $('#cvc').change(function (e) {
+        var id;
+        Stripe.card.createToken({
+            number: $('#card').val(),
+            cvc: $('#cvc').val(),
+            exp_month: $('#month').val(),
+            exp_year: $('#year').val()
+        }, function (status, response) {
+
+            if (response.error) { // Problem!
+
+                swal({
+                    title: "Error Payment !",
+                    text: response.error.message,
+                    // timer: 3000,
+                    showConfirmButton: true,
+                    icon: "error",
+                });
+
+                $('#card').val('');
+                $('#cvc').val('');
+                $('#month').val('');
+                $('#year').val('');
+
+            } else { // Token was created!
+
+                $('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
+            }
+        });
+        return false;
+    });
+
+    $(function () {
+        $('#payment_method_paypal').click(function () {
+            if ($(this).is(':checked')) {
+                $('#cc').hide(1000);
+            }
+        });
+        $('#payment_method_cc').click(function () {
+            if ($(this).is(':checked')) {
+                $('#cc').show(1000);
+            }
+        });
+    });
+
 })(jQuery);
 
 function autoResize(id){

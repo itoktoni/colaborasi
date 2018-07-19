@@ -21,7 +21,7 @@ class m180705_060243_create_product_table extends Migration
             'slug' => $this->string()->notNull(),
             'name' => $this->string(64)->notNull(),
             'category' => $this->integer(64)->notNull(),
-            'synopsis' => $this->string(),
+            'synopsis' => $this->text(),
             'description' => $this->text(),
             'price' => $this->decimal(),
             'price_discount' => $this->decimal(),
