@@ -16,7 +16,11 @@ class CategoryController extends \yii\web\Controller
 	}
 
 	public function actionIndex( $cats = false, $subcategory = false )
-	{
+	{	
+
+		$this->enableCsrfValidation = false;
+
+
 		$maincats = false;
 		$subcheck = false;
 
@@ -32,8 +36,12 @@ class CategoryController extends \yii\web\Controller
 				throw new \yii\web\NotFoundHttpException();
 			}
 
-			
- 
+			$filter = [];
+
+			if(YII::$app->request->get()){
+				$filter = YII::$app->request->get();
+			}
+
 			if ( $maincats && $subcategory )
 			{
 				
@@ -42,26 +50,33 @@ class CategoryController extends \yii\web\Controller
 				{
 					throw new \yii\web\NotFoundHttpException();
 				}
-
-				$query = $item_list->search(['category' => $maincats->id,'subcategory' => $subcheck]);
+				
+				$filter['category'] = $maincats->id;
+				$filter['subcategory'] = $subcheck;
+				$query = $item_list->search($filter);
 				
 			}
 			else
 			{	
-
-				$query = $item_list->search(['category' => $maincats->id]);
+				$filter['category'] = $maincats->id;
+				$query = $item_list->search($filter);
 			}
 		}
 		else 
 		{
-				$query = $item_list->search([]);
+				$query = $item_list->search($filter);
 		}
 
 		
 		$pages 		= $query->getPagination();
-		$models 	= $query->getModels();
+		$models 	= $query;
+
+		$max = $item_list->getMax();
+		$min = $item_list->getMin();
 
 		return $this->render('index', [
+			'max' 			=> $max,
+			'min'			=> $min,
 			'pages' 		=> $pages,
 			'products' 		=> $models,
 			'category' 		=> $maincats,

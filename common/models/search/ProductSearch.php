@@ -12,6 +12,12 @@ use common\models\base\Product;
  */
 class ProductSearch extends Product
 {
+
+    public $min;
+    public $max;
+
+
+    public $result;
     /**
      * {@inheritdoc}
      */
@@ -19,6 +25,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'brand', 'headline', 'product_view', 'status','category','subcategory'], 'integer'],
+            [['min','max'], 'number'],
             [['slug', 'name', 'synopsis', 'description', 'image', 'image_path', 'image_thumbnail', 'image_portrait', 'meta_description', 'meta_keyword', 'product_download_url', 'product_download_path', 'created_at', 'updated_at'], 'safe'],
             [['price', 'price_discount'], 'number'],
         ];
@@ -52,10 +59,6 @@ class ProductSearch extends Product
         
         $query->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
         // add conditions that should always apply here
-
-        
-        
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -78,11 +81,26 @@ class ProductSearch extends Product
                 case "recent":
                 $dataProvider->setSort(['defaultOrder' => ['updated_at' => SORT_DESC]]);
                 break;                
+
+                case "popular":
+                $dataProvider->setSort(['defaultOrder' => ['product_view' => SORT_DESC]]);
+                break;                
+                
+                case "price_low":
+                $dataProvider->setSort(['defaultOrder' => ['price' => SORT_ASC]]);
+                break;                
+                case "price_high":
+                $dataProvider->setSort(['defaultOrder' => ['price' => SORT_DESC]]);
+                break;                
             } 
             
             unset($params['sort_order']);
         }
 
+        if(isset($params['min']) && isset($params['max']) && $params['min'] && $params['max']){
+            $query->andFilterWhere(['>=', 'price', $params['min']]);
+            $query->andFilterWhere(['<=', 'price', $params['max']]);
+        }
         
         $this->load($params,'');
 
@@ -122,7 +140,18 @@ class ProductSearch extends Product
             ->andFilterWhere(['like', 'meta_keyword', $this->meta_keyword])
             ->andFilterWhere(['like', 'product_download_url', $this->product_download_url])
             ->andFilterWhere(['like', 'product_download_path', $this->product_download_path]);
-
+        $this->result = $dataProvider;
         return $dataProvider;
+    }
+
+
+    public function getMax(){
+        // return $this->result->orderBy('price DESC')->one();
+        return $query = Product::find()->select(['price'])->orderBy('price DESC')->one();
+    }
+
+
+    public function getMin(){
+        return $query = Product::find()->select(['price'])->orderBy('price ASC')->one();
     }
 }

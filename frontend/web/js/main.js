@@ -261,3 +261,5 @@ function autoResize(id){
     document.getElementById(id).height=(newheight) + "px";
     document.getElementById(id).width=(newwidth) + "px"; 
 }
+
+

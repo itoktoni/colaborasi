@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'vendors/daterangepicker/daterangepicker.css',
         'vendors/slick/slick.css',
         'vendors/lightbox2/css/lightbox.min.css',
+        'vendors/noui/nouislider.css',
         'css/util.css',
         'css/main.css',
     ];
@@ -38,6 +39,7 @@ class AppAsset extends AssetBundle
         'vendors/lightbox2/js/lightbox.min.js',
         'vendors/sweetalert/sweetalert.min.js',
         'vendors/parallax100/parallax100.js',
+        'vendors/noui/nouislider.min.js',
         'https://maps.googleapis.com/maps/api/js?key=AIzaSyC9gsbJtv4rbhXA0-Zy_cxsWiOeaFku9r4',
         'js/map-custom.js',
         'js/algoliasearch.min.js',
