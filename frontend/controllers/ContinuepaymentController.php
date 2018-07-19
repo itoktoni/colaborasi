@@ -36,6 +36,7 @@ class ContinuepaymentController extends Controller
 
     public function actionCC(){
         
+        // d($_POST);
         \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
         $token = $_POST['stripeToken'];
 
@@ -102,7 +103,7 @@ class ContinuepaymentController extends Controller
         $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
 
         $payment_insert_value[]       = [
-            $invoice, CMS::PAYMENT_PAYPAL, CMS::SHIPPING_ON,
+            $invoice, CMS::PAYMENT_CC, CMS::SHIPPING_ON,
             $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 
@@ -125,26 +126,32 @@ class ContinuepaymentController extends Controller
                 ->execute();
         endif;
 
-        // try {
-        //         $charge = \Stripe\Charge::create([
-        //             'amount' => 999,
-        //             'currency' => 'usd',
-        //             'description' => 'description',
-        //             'source' => $token,
-        //             'receipt_email' => $_POST['shipping_email'],
-        //         ]);
+        try {
+                $charge = \Stripe\Charge::create([
+                    'amount' => $grand_total_idr, 
+                    'currency' => 'idr',
+                    'description' => $invoice,
+                    'source' => $token,
+                    'receipt_email' => $_POST['shipping_email'],
+                ]);
 
-        //         if($charge->paid == true){
-        //             d($charge);
-        //         }
-        //         else{
-        //             Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
-        //         }
-        // } catch (Exception $e) {
+                if($charge->paid == true){
+                    $invoice      = $_SESSION['invoice'];
+                    $payment_data = Payments::find()->where(['invoice' => $invoice])->one();
+                    $payment_data->cc_transaction_id = $charge->id;
+                    $payment_data->cc_number = $_POST['cardnumber'];
+                    $payment_data->cc_month = $_POST['month'];
+                    $payment_data->cc_year = $_POST['year'];
+                    $payment_data->save();
+                }
+                else{
+                    Yii::$app->session->setFlash('error', 'Payment Transaction Failed');
+                }
+        } catch (Exception $e) {
 
-        //     Yii::$app->session->setFlash('error', $e);
+            Yii::$app->session->setFlash('error', $e);
 
-        // }
+        }
 
       return $this->redirect(['card/checkout']);
 
