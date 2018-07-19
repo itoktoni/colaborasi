@@ -28,6 +28,13 @@ class CategoryController extends \yii\web\Controller
 
 		$item_list = new \common\models\search\ProductSearch;
 
+		$filter = [];
+
+		if(YII::$app->request->get()){
+			$filter = YII::$app->request->get();
+		}
+
+
 		if ($cats) {
 			$maincats = Category::findOne(['slug' => $cats]);
 
@@ -36,12 +43,8 @@ class CategoryController extends \yii\web\Controller
 				throw new \yii\web\NotFoundHttpException();
 			}
 
-			$filter = [];
-
-			if(YII::$app->request->get()){
-				$filter = YII::$app->request->get();
-			}
-
+			
+			
 			if ( $maincats && $subcategory )
 			{
 				
