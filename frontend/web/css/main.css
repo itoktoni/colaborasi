@@ -2319,6 +2319,12 @@ li.sale-noti > a {
   width: 100%;
   height: 100%;
 }
+.table-purchase-history .action_detail{
+  cursor: pointer;
+}
+.table-purchase-history .action_detail:hover{
+  color: #e65540;
+}
 
 .table-purchase-history .table-head th {
   font-family: Montserrat-Bold;

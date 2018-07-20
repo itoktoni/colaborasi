@@ -3,6 +3,10 @@
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
+$this->registerJsFile(
+    '@web/js/love.js',
+    ['depends' => [frontend\assets\AppAsset::className()]]);
+
 $this->title = $product->name;
 
 ?>
@@ -98,12 +102,23 @@ $this->title = $product->name;
 			</div>
 				<?php endif;?>
 
-<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
-<h3>Share This Product</h3>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="fb-share"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="tw-share"><i class="fa fa-twitter"></i></a>
-                    <a href="#" class="social-button bg1 bo-rad-23" id="gplus-share"><i class="fa fa-google"></i></a>
-</div>
+			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+				<h3>Share This Product</h3>
+				<a href="#" class="social-button bg1 bo-rad-23" id="fb-share"><i class="fa fa-facebook"></i></a>
+				<a href="#" class="social-button bg1 bo-rad-23" id="tw-share"><i class="fa fa-twitter"></i></a>
+				<a href="#" class="social-button bg1 bo-rad-23" id="gplus-share"><i class="fa fa-google"></i></a>
+				<div class="pull-right">
+					<?php
+					$link = 'black';
+					$icon = 'white'; 
+					if(!empty($love) && $love->status == 1){
+						$link = 'lightgrey';
+						$icon = 'red';
+					}
+					?>
+					<a id="link" href="#<?=$product->id?>" data="<?= empty($love) ? '0' : $love->status ?>" style="background:<?=$link?>" class="social-button bg1 bo-rad-23"><i id="love" class="fa fa-heart" style="color:<?=$icon ?>;"></i></a>
+				</div>	
+			</div>
 
 			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
 				<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
@@ -167,8 +182,6 @@ $this->title = $product->name;
 			<?php endforeach;?>
 
 				</div>
-
-
 			</div>
 
 

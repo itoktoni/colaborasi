@@ -41,13 +41,10 @@ class ProfileController extends \yii\web\Controller
 						->andwhere(['id' => Yii::$app->user->identity->id])
 						->one();
 
-		// $purchase 	= Payments::find()->all();
-
 		return $this->render('index', [
 			'fixed' 			=> $fixed, 
 			'updatepassword' 	=> $model, 
 			'updateprofile' 	=> $model,
-			// 'purchase' 			=> $purchase,
 		]);
 	}
 
@@ -86,7 +83,10 @@ class ProfileController extends \yii\web\Controller
 	public function actionPurchase()
 	{
 		$this->view->params['menu'] = 'purchase';
-		return $this->render('purchase');
+
+		$purchase 	= Payments::find()->all();
+
+		return $this->render('purchase', ['purchase' => $purchase]);
 	}
 
 	public function actionDownload()

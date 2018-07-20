@@ -50,7 +50,7 @@ endif;
 			<div class="col-md-12">
 				<div class="col-md-5" style="width: 442px;float: left;">
 					<div class="row">
-						<div class="col-md-12 bo9 mb-3">
+						<div class="col-md-12 bo9 mb-3 p-l-40 p-r-40 p-t-30 p-b-38">
 							<h5 class="m-text20 p-b-24">
 								Cart Totals
 							</h5>
@@ -82,15 +82,15 @@ endif;
 							<?php else: ?>
 
 							<?php
-//print_r($voucher);
-if (!empty($voucher['discount_prosentase'])):
-    $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
-elseif (!empty($voucher['discount_price'])):
-    $discount = $voucher['discount_price'];
-else:
-    $discount = 0;
-endif;
-?>
+							//print_r($voucher);
+							if (!empty($voucher['discount_prosentase'])):
+							    $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
+							elseif (!empty($voucher['discount_price'])):
+							    $discount = $voucher['discount_price'];
+							else:
+							    $discount = 0;
+							endif;
+							?>
 
 							<!--  -->
 							<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
@@ -129,13 +129,13 @@ endif;
 								</span>
 							</div>
 						</div>
-						<div id="shipping" class="col-md-12 bo9 pt-3">
+						<div id="shipping" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38">
 
 							<h5 class="m-text20 p-b-24">
 								Shipping Option
 							</h5>
 
-                            <input name="shipping" type="checkbox"  class="s-text7"/><label class="ml-3">Ship Physical Item</label>
+                            <input name="shipping" type="checkbox"  class="s-text7"/><label class="m-l-15 s-text7">Ship Physical Item</label>
 						</div>
 						<div id="cc" class="col-md-12 mt-3 bo9 pt-3">
 
@@ -162,7 +162,7 @@ endif;
 						<input type="hidden" id="ongkos" name="ongkos">
 						<input type="hidden" id="jasa" name="jasa">
 
-						<h5 class="m-text20 p-b-24">
+						<h5 class="m-text20 p-b-24 p-t-30">
 							Shipping
 						</h5>
 
@@ -212,7 +212,7 @@ endif;
 
 						<div class="payment-method">
 							<ul>
-								<li>
+								<li class="m-b-10">
 									<input type="radio" data-order_button_text="Balance" value="balance" name="payment_method" class="input-radio" id="payment_method_balance" checked="">
 				                    <label for="payment_method_balance" style="font-size: 16px;">
 				                    	Onestopclick User Balance

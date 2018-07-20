@@ -5,6 +5,7 @@ use Yii;
 use common\models\base\Category;
 use common\models\base\Subcategory;
 use common\models\base\Product;
+use common\models\base\Productlove;
 use common\models\base\Brand;
 use common\models\search\ProductReviewSearch;
 use frontend\components\CMS;
@@ -13,6 +14,7 @@ use yii\base\ErrorException;
 
 class ProductController extends \yii\web\Controller
 {
+	public $member;
 	public function init() {
 		parent::init();
 		$this->view->params['menu'] = 'shop';
@@ -21,7 +23,43 @@ class ProductController extends \yii\web\Controller
 
 	public function actionIndex( $slug = false )
 	{
-		
+		$request = Yii::$app->request;
+		if (YII::$app->user->isGuest) {
+			$this->member = "";
+		}
+		else{
+			$this->member = YII::$app->user->id;
+		}
+
+		if ($request->isAjax) {
+
+			if (YII::$app->user->isGuest) {
+				return 'error';
+			}
+
+			$product = yii::$app->request->post('product');
+            $value = yii::$app->request->post('value');
+
+			$update = Productlove::find()->where(['member' => $this->member, 'product' => $product])->one();
+			
+			if(empty($update)){
+				$save = new Productlove();
+				$save->member = $this->member;
+				$save->product = $product;
+				$save->status = 1;
+				$save->save();
+				return 1;
+			}
+            if ($value == "0") {
+                 	$update->status = 1;
+                	$update->save();
+                return 1;
+            } else {
+                	$update->status = 0;
+                	$update->save();
+                return 0;
+            }
+		}
 		
 		if( !$slug )
 		{
@@ -42,6 +80,10 @@ class ProductController extends \yii\web\Controller
 		$product_id 	= $product->id;
 		$cat_id			= $product->category;
 		$brand_id 		= $product->brand;
+
+		$counter = empty($product->product_view) ? 0 : $product->product_view;
+		$product->product_view = $counter + 1;
+		$product->save();
 
 		$category 		= Category::find()
 							->where(['id' => $cat_id])
@@ -76,19 +118,13 @@ class ProductController extends \yii\web\Controller
 			endif; 
 		endforeach;
 
-		
-
 		$related  = Product::find()
 							->andWhere(['product.category' => $cat_id])
 							->andWhere(['not like', 'product.id', $product_id])
 							->all();
 
-		if ( !$product )
-		{
-			throw new \yii\web\NotFoundHttpException();
-		}
-
 		$review = ProductReviewSearch::find()->where(['product' => $product_id]);
+		$love = Productlove::find()->where(['member' => $this->member, 'product' => $product_id])->one();
 
 		return $this->render('index', [
 			'product' 		=> $product, 
@@ -96,6 +132,7 @@ class ProductController extends \yii\web\Controller
 			'brand'			=> $listbrand,
 			'subcategory'	=> $subcategory,
 			'related' 		=> $related,
+			'love' 			=> $love,
 			'review'		=> $review
 		]);
 
