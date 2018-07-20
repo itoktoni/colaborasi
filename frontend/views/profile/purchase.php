@@ -68,35 +68,31 @@ $this->title = 'Purchase History';
 									<th class="w20">Status</th>
 									<th class="w15">See Detail</th>
 								</tr>
-
-								<?php foreach ($purchase as $key => $item) : ?>
-								<tr class="table-row">
-									<td class="w5 t-center"><?php echo ($key+1);?></td>
-									<td class="w30"><?php echo $item['invoice']; ?></td>
-									<td class="w15"><?php echo date('d M Y', strtotime($item['created_at']));?></td>
-									<td class="w15">IDR <?php echo number_format($item['total_net_rupiah'],0,'','.') ;?></td>
-									<td class="w20 c-blue">
-										<?php
-											if ($item['payment_status'] == 0) :
-												echo "Waiting Verification";
-											else :
-												echo "Confirmed";
-											endif;
-										?>
-									</td>
-									<td class="w15 action_detail" rel="<?php echo $item['id']; ?>">Details</td>
-								</tr>
-								<!-- <tr class="table-row">
-									<td colspan="6">
-										<div class="col-md-12 purchase-detail">
-											<p class="title"># ORDER LIST</p>
-											<div class="bo13 p-l-29 m-l-9 p-b-10">
-												Subtotal
-											</div>
-										</div>
-									</td>
-								</tr> -->
-								<?php endforeach;?>
+								<?php if ($purchase) : ?>
+									<?php foreach ($purchase as $key => $item) : ?>
+									<tr class="table-row">
+										<td class="w5 t-center"><?php echo ($key+1);?></td>
+										<td class="w30"><?php echo $item['invoice']; ?></td>
+										<td class="w15"><?php echo date('d M Y', strtotime($item['created_at']));?></td>
+										<td class="w15">IDR <?php echo number_format($item['total_net_rupiah'],0,'','.') ;?></td>
+										<td class="w20 c-blue">
+											<?php
+												if ($item['payment_status'] == 0) :
+													echo "Waiting Verification";
+												else :
+													echo "Confirmed";
+												endif;
+											?>
+										</td>
+										<td class="w15 action_detail" rel="<?php echo $item['id']; ?>">Details</td>
+									</tr>
+									<?php endforeach; else :?>
+									<tr class="table-row">
+										<td colspan="6">
+											<p class="p-l-20">No data available</p>
+										</td>
+									</tr>
+								<?php endif;?>
 
 							</table>
 						</div>
