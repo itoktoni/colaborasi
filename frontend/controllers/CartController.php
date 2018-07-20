@@ -119,7 +119,7 @@ class CartController extends \yii\web\Controller
 	public function actionVoucher(){
 		if(Yii::$app->request->post('voucher')){
 			$voucher = Voucher::find()
-						->select(['code', 'voucher_type', 'discount_type', 'discount_counter', 'discount_prosentase', 'discount_price', 'start_date', 'end_date'])
+						// ->select(['id','code','name','voucher_type', 'discount_type', 'discount_counter', 'discount_prosentase', 'discount_price', 'start_date', 'end_date'])
 						->andwhere(['code' => Yii::$app->request->post('voucher')])
 						->andwhere(['status' => Voucher::STATUS_ACTIVE])
 						->one();
@@ -129,14 +129,23 @@ class CartController extends \yii\web\Controller
 				if ( $voucher->voucher_type == CMS::VOUCHER_TIMELINE ) :
 					$start_date = strtotime($voucher->start_date);
 					$end_date = strtotime($voucher->end_date);
-					$datetoday = strtotime(date('d M Y', time()));
-
-					if ( ( $datetoday > $start_date || $datetoday == $start_date ) && ( $datetoday < $end_date || $datetoday == $end_date ) ) :
+					$datetoday = strtotime(date('d M Y H:i:s'));
+					if ( $datetoday >= $start_date  &&  $datetoday <= $end_date) :
 						Yii::$app->session->setFlash('success', 'Voucher '.$voucher->name.' Applied.');
 						Yii::$app->session->set('voucher', $voucher);
 					else :
 						Yii::$app->session->setFlash('error', 'Voucher is not found!');
 					endif;
+
+				elseif ($voucher->voucher_type == CMS::VOUCHER_COUNTERBASED ) :
+					if($voucher->discount_counter < 1){
+						Yii::$app->session->setFlash('error', 'Vouchers are all used');
+					}else{
+						Yii::$app->session->setFlash('success', 'Voucher '.$voucher->name.' Applied.');
+						Yii::$app->session->set('voucher', $voucher);
+					}
+
+
 				else : 
 
 					if (!$voucher) :

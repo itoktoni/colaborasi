@@ -63,13 +63,13 @@ endif;
 								<p>Welcome <?php echo Yii::$app->user->identity->name; ?></p>
 							</li>
 							<li>
-								<a href="<?php echo Url::to('/site/profile/'); ?>">Profile</a>
+								<a href="<?php echo Url::to('/profile'); ?>">Profile</a>
 							</li>
 							<li>
-								<a href="<?php echo Url::to('/site/downloads/'); ?>">Downloads</a>
+								<a href="<?php echo Url::to('/download'); ?>">Downloads</a>
 							</li>
 							<li>
-								<a href="<?php echo Url::to('/site/purchase-history/'); ?>">Purchase History</a>
+								<a href="<?php echo Url::to('/purchase'); ?>">Purchase History</a>
 							</li>
 							<li>
 								<?= Html::beginForm(['/site/logout'], 'post') ?>
