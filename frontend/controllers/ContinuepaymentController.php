@@ -6,6 +6,7 @@ use common\models\base\Product;
 use common\models\base\Payments;
 use common\models\base\PaymentDetail;
 use common\models\base\Member;
+use common\models\base\Voucher;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -13,6 +14,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\components\Paypal;
 use frontend\components\CMS;
+use yii\db\Expression;
 
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
@@ -25,15 +27,23 @@ use yii\mail;
 
 class ContinuepaymentController extends Controller
 {
+
+    public $voucher = false;
+    
     public function actionIndex()
     {
-        $payment_method = $_POST['payment_method'];
+        $payment_method = YII::$app->request->post('payment_method');
 
-        if ( $payment_method == 'paypal' ) :
-            $this->actionPaypal();
-        elseif ( $payment_method == 'cc' ) :
-            $this->actionCC();
-        endif;
+        if ( $payment_method == 'paypal' ){
+            return $this->actionPaypal();
+        }else if( $payment_method == 'cc' ){
+            return $this->actionCC();
+        }else if( $payment_method == 'balance'){
+            return $this->actionBalance();
+        };
+
+        Yii::$app->session->setFlash('error', "You cannot access that page directly");
+        $this->redirect(['/cart']);
     }
 
     public function actionSendemail(){
@@ -42,7 +52,6 @@ class ContinuepaymentController extends Controller
 
         $header = Payments::find()->where(['invoice' => $invoice])->one();
         $detail = PaymentDetail::find()
-        // ->leftJoin('product', 'product.product_id_category = category.category_id')
         ->where(['payment' => $header->id])->all();
 
         $content = $this->renderPartial('@app/views/pdf/so', [
@@ -73,19 +82,125 @@ class ContinuepaymentController extends Controller
                 ->send();
     }
 
+    
+    public function actionBalance(){
+        $total_idr 		= 0;
+    	$counter_new 	= 0;
+    	$status_new 	= 1;
+    	$discount 		= 0;
+        $payment_insert_value  = [];
+        $payment_detail = [];
+        $voucher_id     =   $voucher_name  = $discount_type = '';
+
+        // get invoice ID
+    	$invoice 		= CMS::getInvoiceCode('payment', 'invoice');
+
+         // get user
+         $user_id        = Yii::$app->user->id;
+         $user           = Member::find()->where(['id' => $user_id])->one();
+         $user_name      = $user->name;
+         $user_address   = $user->address;
+         $user_email     = $user->email;
+         $user_social_media_type = $user->social_media_type;
+         $user_social_media_id   = $user->social_media_id;
+
+          // get total order
+        Yii::$app->session->set('invoice', $invoice);
+        
+        foreach ($_SESSION['cart'] as $key => $value) :
+    		$total_idr 			= $total_idr + $value['price'];
+    	endforeach;
+
+    	$total_usd = CMS::currencyConverter( 'IDR', 'USD', $total_idr );
+
+        // get voucher
+    	if ( !empty( $_SESSION['voucher'] ) ) :
+            
+    		$voucher_id 			= $_SESSION['voucher']['id'];
+    		$voucher_code 			= $_SESSION['voucher']['code'];
+    		$voucher_name 			= $_SESSION['voucher']['name'];
+    		$voucher_type 			= $_SESSION['voucher']['voucher_type'];
+    		$discount_type 			= $_SESSION['voucher']['discount_type'];
+    		$discount_counter 		= $_SESSION['voucher']['discount_counter'];
+    		$discount_prosentase 	= $_SESSION['voucher']['discount_prosentase'];
+    		$discount_price 		= $_SESSION['voucher']['discount_price'];
+
+            if(!$this->__check_voucher($voucher_type, $voucher_id)){
+                return $this->redirect(['/checkout']);
+            }
+                
+    		if ( $discount_type == CMS::DISCOUNT_PERCENTAGE ) :
+				$discount = ($discount_prosentase / 100) * $total_idr;
+			elseif ( $discount_type == CMS::DISCOUNT_FIXED ) :
+				$discount = $discount_price;
+			endif;
+
+        endif;
+        
+        $discount_usd       = CMS::currencyConverter( 'IDR', 'USD', $discount );
+
+        $shipping_idr       = YII::$app->request->post('total_ongkir');
+        $shipping_usd       = CMS::currencyConverter( 'IDR', 'USD', $shipping_idr );
+        $grand_total_idr    = ($total_idr - $discount) + $shipping_idr;
+        $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
+
+
+        if($grand_total_idr > YII::$app->user->identity->balance){
+            Yii::$app->session->setFlash('error', "You don't have enough balance, please top up first");
+            return $this->redirect(['/checkout']);
+        }
+
+        $payment_insert_value[] = [
+            $invoice, CMS::PAYMENT_BALANCE, CMS::SHIPPING_ON,
+            $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
+            $voucher_id, $voucher_name, $discount_type, $discount,
+            $total_idr, $total_usd, $discount, $discount_usd, 
+            $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
+            YII::$app->request->post('province'), YII::$app->request->post('city'), YII::$app->request->post('courier'), YII::$app->request->post('jasa'),
+            YII::$app->request->post('shipping_receiver'), YII::$app->request->post('shipping_address'), YII::$app->request->post('shipping_mobile'), YII::$app->request->post('shipping_email'),
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
+        ];
+
+        if ( $this->insertPayment( $payment_insert_value ) ) :
+            $payment_id = CMS::getMaxID('payment');
+
+            foreach ($_SESSION['cart'] as $key => $value) :
+                $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+            endforeach;
+
+            
+            Yii::$app->db
+                ->createCommand()
+                ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $payment_detail)
+                ->execute();
+
+                $member = Member::find()->where(['id' => YII::$app->user->identity->id])->one();
+                $member->balance = $member->balance - $grand_total_idr;
+                $member->save(false);
+                if($this->voucher){
+                    $this->voucher->save(false);
+                }
+                return $this->redirect(['/payment-success']);
+        endif;
+
+      return $this->redirect(['/checkout']);
+
+
+    }
+
     public function actionCC(){
         
-        // d($_POST);
+        
         \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
-        $token = $_POST['stripeToken'];
+        $token = YII::$app->request->post('stripeToken');
 
         $total_idr 		= 0;
     	$counter_new 	= 0;
     	$status_new 	= 1;
     	$discount 		= 0;
-        $payment_insert_value           = [];
+        $payment_insert_value  = [];
         $payment_detail = [];
-        $voucher_id     = $voucher_name  = $discount_type = '';
+        $voucher_id     =   $voucher_name  = $discount_type = '';
 
         // get invoice ID
     	$invoice 		= CMS::getInvoiceCode('payment', 'invoice');
@@ -120,11 +235,9 @@ class ContinuepaymentController extends Controller
     		$discount_prosentase 	= $_SESSION['voucher']['discount_prosentase'];
     		$discount_price 		= $_SESSION['voucher']['discount_price'];
 
-    		if ( $voucher_type == CMS::VOUCHER_COUNTERBASED ) :
-    			$counter_new 		= $discount_counter - 1;
-    		elseif ( $voucher_type == CMS::VOUCHER_ONETIMEUSAGE ) :
-    			$status_new 		= 0;
-    		endif;
+            if(!$this->__check_voucher($voucher_type, $voucher_id)){
+                return $this->redirect(['/checkout']);
+            }
 
     		if ( $discount_type == CMS::DISCOUNT_PERCENTAGE ) :
 				$discount = ($discount_prosentase / 100) * $total_idr;
@@ -136,7 +249,7 @@ class ContinuepaymentController extends Controller
 
         $discount_usd       = CMS::currencyConverter( 'IDR', 'USD', $discount );
 
-        $shipping_idr       = $_POST['total_ongkir'];
+        $shipping_idr       = YII::$app->request->post('total_ongkir');
         $shipping_usd       = CMS::currencyConverter( 'IDR', 'USD', $shipping_idr );
         $grand_total_idr    = ($total_idr - $discount) + $shipping_idr;
         $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
@@ -147,8 +260,8 @@ class ContinuepaymentController extends Controller
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 
             $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
-            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['jasa'],
-            $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
+            YII::$app->request->post('province'), YII::$app->request->post('city'), YII::$app->request->post('courier'), YII::$app->request->post('jasa'),
+            YII::$app->request->post('shipping_receiver'), YII::$app->request->post('shipping_address'), YII::$app->request->post('shipping_mobile'), YII::$app->request->post('shipping_email'),
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];
 
@@ -171,19 +284,22 @@ class ContinuepaymentController extends Controller
                     'currency' => 'idr',
                     'description' => $invoice,
                     'source' => $token,
-                    'receipt_email' => $_POST['shipping_email'],
+                    'receipt_email' => YII::$app->request->post('shipping_email'),
                 ]);
 
                 if($charge->paid == true){
                     $invoice      = $_SESSION['invoice'];
                     $payment_data = Payments::find()->where(['invoice' => $invoice])->one();
                     $payment_data->cc_transaction_id = $charge->id;
-                    $payment_data->cc_number = $_POST['cardnumber'];
-                    $payment_data->cc_month = $_POST['month'];
-                    $payment_data->cc_year = $_POST['year'];
+                    $payment_data->cc_number = YII::$app->request->post('cardnumber');
+                    $payment_data->cc_month = YII::$app->request->post('month');
+                    $payment_data->cc_year = YII::$app->request->post('year');
                     $payment_data->save();
+                    if($this->voucher){
+                    $this->voucher->save(false);
+                    }
 
-                    return $this->redirect(['/site/success']);
+                    return $this->redirect(['/payment-success']);
 
                 }
                 else{
@@ -195,7 +311,7 @@ class ContinuepaymentController extends Controller
 
         }
 
-      return $this->redirect(['card/checkout']);
+      return $this->redirect(['/checkout']);
 
     }
 
@@ -242,12 +358,10 @@ class ContinuepaymentController extends Controller
     		$discount_prosentase 	= $_SESSION['voucher']['discount_prosentase'];
     		$discount_price 		= $_SESSION['voucher']['discount_price'];
 
-    		if ( $voucher_type == CMS::VOUCHER_COUNTERBASED ) :
-    			$counter_new 		= $discount_counter - 1;
-    		elseif ( $voucher_type == CMS::VOUCHER_ONETIMEUSAGE ) :
-    			$status_new 		= 0;
-    		endif;
-
+            if(!$this->__check_voucher($voucher_type, $voucher_id)){
+                return $this->redirect(['/checkout']);
+            }
+            
     		if ( $discount_type == CMS::DISCOUNT_PERCENTAGE ) :
 				$discount = ($discount_prosentase / 100) * $total_idr;
 			elseif ( $discount_type == CMS::DISCOUNT_FIXED ) :
@@ -258,7 +372,7 @@ class ContinuepaymentController extends Controller
 
         $discount_usd       = CMS::currencyConverter( 'IDR', 'USD', $discount );
 
-        $shipping_idr       = $_POST['total_ongkir'];
+        $shipping_idr       = YII::$app->request->post('total_ongkir');
         $shipping_usd       = CMS::currencyConverter( 'IDR', 'USD', $shipping_idr );
         $grand_total_idr    = ($total_idr - $discount) + $shipping_idr;
         $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
@@ -269,8 +383,8 @@ class ContinuepaymentController extends Controller
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 
             $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
-            $_POST['province'], $_POST['city'], $_POST['courier'], $_POST['jasa'],
-            $_POST['shipping_receiver'], $_POST['shipping_address'], $_POST['shipping_mobile'], $_POST['shipping_email'],
+            YII::$app->request->post('province'), YII::$app->request->post('city'), YII::$app->request->post('courier'), YII::$app->request->post('jasa'),
+            YII::$app->request->post('shipping_receiver'), YII::$app->request->post('shipping_address'), YII::$app->request->post('shipping_mobile'), YII::$app->request->post('shipping_email'),
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];
 
@@ -285,6 +399,10 @@ class ContinuepaymentController extends Controller
                 ->createCommand()
                 ->batchInsert('payment_detail',['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $payment_detail)
                 ->execute();
+                if($this->voucher){
+                    $this->voucher->save(false);
+                }
+                
         endif;
 
         $p          = new Paypal();
@@ -335,18 +453,18 @@ class ContinuepaymentController extends Controller
             )
         );
 
-    	if ( isset($_GET['success']) && $_GET['success'] == 'true' ) :
+    	if (YII::$app->request->get('success') && YII::$app->request->get('success') == 'true' ) :
 
     		$invoice      = $_SESSION['invoice'];
             $payment_data = Payments::find()->where(['invoice' => $invoice])->one();
             $payment_id   = $payment_data->id;
             $total_idr    = $payment_data->total_net_rupiah;
 
-    		$paymentId 	  = $_GET['paymentId'];
+    		$paymentId 	  = YII::$app->request->get('paymentId');
     		$payment      = Payment::get($paymentId, $apiContext);
 
     		$execution 	  = new PaymentExecution();
-			$execution->setPayerId($_GET['PayerID']);
+			$execution->setPayerId(YII::$app->request->get('PayerID'));
 
 			try 
 			{
@@ -372,7 +490,7 @@ class ContinuepaymentController extends Controller
                         ], ['invoice' => $invoice])
                         ->execute();
 
-        			return $this->redirect(['/site/success']);
+        			return $this->redirect(['/payment-success']);
             	}
             	catch (Exception $e)
             	{
@@ -385,5 +503,53 @@ class ContinuepaymentController extends Controller
 	        }
 
     	endif;
+    }
+
+    /**
+     *  wawa
+     */
+    private function __check_voucher($voucher_type, $voucher_id){
+        if ( $voucher_type == CMS::VOUCHER_COUNTERBASED ) :
+            $this->voucher = Voucher::find()
+            ->where(['id'=> $voucher_id])
+            ->andWhere(['>', 'counter', CMS::STATUS_ACTIVE])
+            ->andWhere(['>', 'counter', 1])
+            ->one();
+            if(!$this->voucher){
+                Yii::$app->session->setFlash('error', "Vouchers are all used");
+                return false;
+            }
+            
+            $this->voucher->counter -= 1;
+        elseif ( $voucher_type == CMS::VOUCHER_ONETIMEUSAGE ) :
+            $this->voucher = Voucher::find()
+            ->where(['id'=> $voucher_id])
+            ->andWhere(['status' =>  CMS::STATUS_ACTIVE])
+            ->one();
+            if(!$this->voucher){
+                Yii::$app->session->setFlash('error', "Voucher already used");
+                return false;
+            }
+
+            $this->voucher->status = 0;
+        elseif ( $voucher_type == CMS::VOUCHER_TIMELINE ) :
+            $this->voucher = Voucher::find()
+            ->where(['id'=> $voucher_id])
+            ->andWhere(['status' => CMS::STATUS_ACTIVE])
+            ->andWhere(['<', 'start_date', new Expression('NOW()')])
+            ->andWhere(['>', 'end_date', new Expression('NOW()')])
+            ->one();
+            if(!$this->voucher){
+                Yii::$app->session->setFlash('error', "Voucher Expired");
+                return false;
+            }
+        endif;
+
+        if(!$this->voucher){
+            Yii::$app->session->setFlash('error', "Voucher not found or already used");
+            return false;
+        }
+
+        return true;
     }
 }
