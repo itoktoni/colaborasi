@@ -17,6 +17,8 @@ class ProfileController extends \yii\web\Controller
 
 	public function actionIndex()
 	{
+		$this->view->params['menu'] = 'profile';
+
 		$model 		= new ChangePassword();
 		$message 	= '';
 
@@ -41,9 +43,9 @@ class ProfileController extends \yii\web\Controller
 			}
 		}
 
-		$fixed 		= User::find()
+		$fixed 		= Member::find()
 						->select('*')
-						->andwhere(['status' => User::STATUS_ACTIVE])
+						->andwhere(['status' => Member::STATUS_ACTIVE])
 						->andwhere(['id' => Yii::$app->user->identity->id])
 						->one();
 
@@ -58,6 +60,18 @@ class ProfileController extends \yii\web\Controller
 		]);
 
 		//return $this->render('index');
+	}
+
+	public function actionPurchase()
+	{
+		$this->view->params['menu'] = 'purchase';
+		return $this->render('purchase');
+	}
+
+	public function actionDownload()
+	{
+		$this->view->params['menu'] = 'download';
+		return $this->render('download');
 	}
 
 	public function actionAjaxdetail()
