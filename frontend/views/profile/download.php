@@ -65,7 +65,7 @@ $this->title = 'Downloads';
 									<th class="w10 t-center">#</th>
 									<th class="w45">Product</th>
 									<th class="w10">Expired At</th>
-									<th class="w10">Status</th>
+									<!-- <th class="w10">Status</th> -->
 									<th class="w15 t-center">See Detail</th>
 								</tr>
 								<?php $i=1;foreach($downloads as $item):?>
@@ -73,7 +73,7 @@ $this->title = 'Downloads';
 									<td class="w10 t-center"><?=$i;?></td>
 									<td class="w45"><?=$item->product_name;?></td>
 									<td class="w20"><?=($item->updated_at==$item->create_at)?'Undefined':\backend\components\CMS::format_date($item->expiration_date, 'd-m-Y H:i:s');?></td>
-									<td class="w10 c-blue"><?php echo ($item->status)?'Available':'Expired';?></td>
+									<!-- <td class="w10 c-blue"><?php echo ($item->status)?'Available':'Expired';?></td> -->
 									<td class="w15 t-center">
 										<a class="link-download" href="<?php echo Url::to(['/downloads']).'?key='.$item->key;?>"><img class="download" src="<?php echo Url::to('@web/images/icons/download.svg');?>"></a>
 									</td>
