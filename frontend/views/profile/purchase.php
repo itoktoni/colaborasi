@@ -69,14 +69,35 @@ $this->title = 'Purchase History';
 									<th class="w15">See Detail</th>
 								</tr>
 
+								<?php foreach ($purchase as $key => $item) : ?>
 								<tr class="table-row">
-									<td class="w5 t-center">1</td>
-									<td class="w30">PAY1806250001</td>
-									<td class="w15">20 July 2018</td>
-									<td class="w15">IDR 500.000</td>
-									<td class="w20 c-blue">Waiting Verification</td>
-									<td class="w15">Details</td>
+									<td class="w5 t-center"><?php echo ($key+1);?></td>
+									<td class="w30"><?php echo $item['invoice']; ?></td>
+									<td class="w15"><?php echo date('d M Y', strtotime($item['created_at']));?></td>
+									<td class="w15">IDR <?php echo number_format($item['total_net_rupiah'],0,'','.') ;?></td>
+									<td class="w20 c-blue">
+										<?php
+											if ($item['payment_status'] == 0) :
+												echo "Waiting Verification";
+											else :
+												echo "Confirmed";
+											endif;
+										?>
+									</td>
+									<td class="w15 action_detail" rel="<?php echo $item['id']; ?>">Details</td>
 								</tr>
+								<!-- <tr class="table-row">
+									<td colspan="6">
+										<div class="col-md-12 purchase-detail">
+											<p class="title"># ORDER LIST</p>
+											<div class="bo13 p-l-29 m-l-9 p-b-10">
+												Subtotal
+											</div>
+										</div>
+									</td>
+								</tr> -->
+								<?php endforeach;?>
+
 							</table>
 						</div>
 					</div>
