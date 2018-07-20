@@ -122,17 +122,53 @@ $this->title = $product->name;
 
 			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
 				<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
-					Reviews (0)
+					Product Review
 					<i class="down-mark fs-12 color1 fa fa-minus dis-none" aria-hidden="true"></i>
 					<i class="up-mark fs-12 color1 fa fa-plus" aria-hidden="true"></i>
 				</h5>
 
 
 				<div class="dropdown-content dis-none p-t-15 p-b-23">
-					<p class="s-text8">
-						Fusce ornare mi vel risus porttitor dignissim. Nunc eget risus at ipsum blandit ornare vel sed velit. Proin gravida arcu nisl, a dignissim mauris placerat
+
+
+			<?php if (!Yii::$app->user->isGuest): ?>
+				<form class="leave-comment" method="post" action="<?php echo Url::to('/product/comment'); ?>">
+				<br>
+
+				<select name="star">
+					<option value="5">5</option>
+					<option value="4">4</option>
+					<option value="3">3</option>
+					<option value="2">2</option>
+					<option value="1">1</option>
+				</select>
+				<div class="clearfix">&nbsp;</div>
+				<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+					   value="<?=Yii::$app->request->csrfToken?>"/>
+				<input id="form-token" type="hidden" name="product"
+           			value="<?php echo $product->id; ?>"/>
+					<textarea type="text" name="comment" class="dis-block s-text7 size20 bo4" style="border: 1px #e6e6e6 solid !important;"></textarea>
+					<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10 pull-right">
+						<button style="padding: 10px;" class="bg1 bo-rad-23 hov1 s-text1 trans-0-4">Submit Review</button>
+					</div>
+			</form>
+			<?php endif;?>
+			<div class="clearfix">&nbsp;</div>
+			<h5 class="m-text19 color0-hov trans-0-4">Reviews (<?php echo $review->count(); ?>)</h5>
+
+			<?php foreach ($review->all() as $item): ?>
+			<?php for($a = 0; $a < $item->star; $a++):?>
+				<i class="fa fa-star" id="star1"></i>
+			<?php endfor;?>
+			<p class="s-text8">
+						<?php echo $item->comment;?>
 					</p>
+					<div class="clearfix">&nbsp;</div>
+			<?php endforeach;?>
+
 				</div>
+
+
 			</div>
 
 
@@ -143,7 +179,7 @@ $this->title = $product->name;
 <!-- Relate Product -->
 <section class="relateproduct bgwhite p-t-45 p-b-138">
 	<div class="container">
-		
+
 		<?php if (!empty($related)): ?>
 
 		<div class="sec-title p-b-60">

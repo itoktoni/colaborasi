@@ -16,6 +16,13 @@ use Yii;
  */
 class ProductReview extends \yii\db\ActiveRecord
 {
+
+        
+    const STATUS_DELETED = -9;
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +38,7 @@ class ProductReview extends \yii\db\ActiveRecord
     {
         return [
             [['member', 'product', 'star', 'status'], 'integer'],
+            [['status'], 'safe'],
             [['comment'], 'string'],
         ];
     }

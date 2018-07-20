@@ -6,7 +6,7 @@ use common\models\base\Category;
 use common\models\base\Subcategory;
 use common\models\base\Product;
 use common\models\base\Brand;
-use common\models\base\ProductReview;
+use common\models\search\ProductReviewSearch;
 use frontend\components\CMS;
 use yii\base\ErrorException;
 
@@ -73,7 +73,9 @@ class ProductController extends \yii\web\Controller
 			endif; 
 		endforeach;
 
-		$related 		= Product::find()
+		
+
+		$related  = Product::find()
 							->andWhere(['product.category' => $cat_id])
 							->andWhere(['not like', 'product.id', $product_id])
 							->all();
@@ -83,20 +85,41 @@ class ProductController extends \yii\web\Controller
 			throw new \yii\web\NotFoundHttpException();
 		}
 
+		$review = ProductReviewSearch::find()->where(['product' => $product_id]);
+
 		return $this->render('index', [
 			'product' 		=> $product, 
 			'category'		=> $category,
 			'brand'			=> $listbrand,
 			'subcategory'	=> $subcategory,
 			'related' 		=> $related,
+			'review'		=> $review
 		]);
 
 	}
 
 	public function actionComment(){
-		$model = new ProductReview;
-		if(YII::$app->request->post() && !YII::$app->user->isGuest && $model->load(YII::$app->request->post()) && $model->check() && $model->save())
+		$model = new ProductReviewSearch;
+
+		if(YII::$app->request->post() && !YII::$app->user->isGuest)
 		{
+			
+			if(!$model->load(YII::$app->request->post(),'')){
+				Yii::$app->session->setFlash('error', "Please fill the form properly");
+				$this->redirect(Yii::$app->request->referrer);
+				return;
+			}
+			
+			if(!$model->check()){
+				Yii::$app->session->setFlash('error', "You already submit review");
+				$this->redirect(Yii::$app->request->referrer);
+				return;
+			}
+
+			$model->member = YII::$app->user->id;
+			$model->status = 1;
+			$model->save();
+
 			Yii::$app->session->setFlash('success', "Review submited, please wait for our team to review it");
 			$this->redirect(Yii::$app->request->referrer);
 		}

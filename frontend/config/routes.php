@@ -21,6 +21,7 @@ return [
         '/login'                                    => 'site/login',
         'category/<cats:(.*)>/<subcategory:(.*)>'   => 'category/index/',
         'category/<cats:(.*)>'                      => 'category/index/',
+        'product/comment'                           => 'product/comment/',
         'product/<slug:(.*)>'                       => 'product/index/',
         'cart/voucher'                              => 'cart/voucher',
         'cart/destroy'                              => 'cart/destroy',
