@@ -11,6 +11,7 @@ return [
     'showScriptName' => false,
     'rules' => [
         '/'                                         => 'site/index',
+        '/downloads'                                => 'profile/grab',
         '/subscribe'                                => 'site/subscribe',
         '/password'                                 => 'site/password',
         '/github'                                   => 'site/github',

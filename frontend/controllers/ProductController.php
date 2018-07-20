@@ -34,7 +34,10 @@ class ProductController extends \yii\web\Controller
 		if(empty($product)){
 
 			throw new \yii\web\NotFoundHttpException();
-		}					
+		}	
+		
+		$product->product_view += 1;
+		$product->save(false);
 
 		$product_id 	= $product->id;
 		$cat_id			= $product->category;

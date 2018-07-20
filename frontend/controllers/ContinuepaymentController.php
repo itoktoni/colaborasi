@@ -6,6 +6,7 @@ use common\models\base\Product;
 use common\models\base\Payments;
 use common\models\base\PaymentDetail;
 use common\models\base\Member;
+use common\models\base\MemberDownload;
 use common\models\base\Voucher;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -89,7 +90,7 @@ class ContinuepaymentController extends Controller
     	$status_new 	= 1;
     	$discount 		= 0;
         $payment_insert_value  = [];
-        $payment_detail = [];
+        $payment_detail = $product_download = [];
         $voucher_id     =   $voucher_name  = $discount_type = '';
 
         // get invoice ID
@@ -161,12 +162,15 @@ class ContinuepaymentController extends Controller
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1
         ];
 
-        if ( $this->insertPayment( $payment_insert_value ) ) :
+        if ( $this->insertPayment($payment_insert_value ) ) :
             $payment_id = CMS::getMaxID('payment');
 
             foreach ($_SESSION['cart'] as $key => $value) :
                 $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+                $product_download[] = $value['id'];
             endforeach;
+            $this->__generate_download_link($product_download);
+            
 
             
             Yii::$app->db
@@ -199,7 +203,7 @@ class ContinuepaymentController extends Controller
     	$status_new 	= 1;
     	$discount 		= 0;
         $payment_insert_value  = [];
-        $payment_detail = [];
+        $payment_detail = $product_download = [];
         $voucher_id     =   $voucher_name  = $discount_type = '';
 
         // get invoice ID
@@ -270,7 +274,9 @@ class ContinuepaymentController extends Controller
 
             foreach ($_SESSION['cart'] as $key => $value) :
                 $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+                $product_download[] = $value['id'];
             endforeach;
+            $this->__generate_download_link($product_download);
 
             Yii::$app->db
                 ->createCommand()
@@ -323,7 +329,7 @@ class ContinuepaymentController extends Controller
     	$status_new 	= 1;
     	$discount 		= 0;
         $payment_insert_value           = [];
-        $payment_detail = [];
+        $payment_detail = $product_download = [];
         $voucher_id     = $voucher_name  = $discount_type = '';
 
         // get invoice ID
@@ -394,7 +400,9 @@ class ContinuepaymentController extends Controller
 
             foreach ($_SESSION['cart'] as $key => $value) :
                 $payment_detail[]   = [$payment_id, $value['id'], $value['qty'], $value['name'], $value['price'], 0, $value['price'], 1];
+                $product_download[] = $value['id'];
             endforeach;
+            $this->__generate_download_link($product_download);
 
             Yii::$app->db
                 ->createCommand()
@@ -418,21 +426,19 @@ class ContinuepaymentController extends Controller
 
     public function insertPayment( $data = [] )
     {
-        $insert = Yii::$app->db
-                            ->createCommand()
-                            ->batchInsert('payment', [
-                                'invoice', 'payment_type', 'shipping_type', 
-                                'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
-                                'voucher', 'voucher_name', 'voucher_discount_type', 'voucher_discount_value',
-                                'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
-                                'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
-                                'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
-                                'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
-                                'created_at', 'updated_at', 'payment_status', 'status'
-                            ], $data)
-                            ->execute();
-
-        return $insert;
+        return Yii::$app->db
+        ->createCommand()
+        ->batchInsert('payment', [
+            'invoice', 'payment_type', 'shipping_type', 
+            'user', 'user_name', 'user_address', 'user_email', 'user_social_media_type', 'user_social_media_id',
+            'voucher', 'voucher_name', 'voucher_discount_type', 'voucher_discount_value',
+            'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 
+            'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar',
+            'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 
+            'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email',
+            'created_at', 'updated_at', 'payment_status', 'status'
+        ], $data)
+        ->execute();
     }
 
     public function insertPaymentdetail( $data = [] )
@@ -507,7 +513,8 @@ class ContinuepaymentController extends Controller
     }
 
     /**
-     *  wawa
+     * Check Voucher type and availability
+     * wawa
      */
     private function __check_voucher($voucher_type, $voucher_id){
         if ( $voucher_type == CMS::VOUCHER_COUNTERBASED ) :
@@ -552,5 +559,38 @@ class ContinuepaymentController extends Controller
         }
 
         return true;
+    }
+
+
+    /**
+     * private function Generate key to Member download table
+     * 
+     * return boolean
+     * 
+     * author : wawa
+     */
+    private function __generate_download_link($product = [])
+    {
+
+        $save = array();
+        $member = YII::$app->user->identity->id;
+        
+        foreach($product as $key => $item){
+            $save[] = [$this->__generateUniqueRandomString(), $item, $member, MemberDownload::STATUS_AVAILABLE];
+        }
+
+        Yii::$app->db->createCommand()
+        ->batchInsert(MemberDownload::tableName(), [
+            'key',
+            'product',
+            'member',
+            'status' 
+        ], $save)
+        ->execute();
+    }
+
+    private function __generateUniqueRandomString($length = 64) {
+			
+        return Yii::$app->getSecurity()->generateRandomString($length);
     }
 }
