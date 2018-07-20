@@ -38,5 +38,8 @@ return [
         '/ongkir/city'                              => 'ongkir/city',
         '/ongkir/sub'                               => 'ongkir/sub',
         '/ongkir/cost'                              => 'ongkir/cost',
+        '/profile'                                  => 'profile/index',
+        '/download'                                 => 'profile/download',
+        '/purchase'                                 => 'profile/purchase',
     ],
 ];

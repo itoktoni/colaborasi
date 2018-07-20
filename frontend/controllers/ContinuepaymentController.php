@@ -46,9 +46,9 @@ class ContinuepaymentController extends Controller
         $this->redirect(['/cart']);
     }
 
-    public function actionSendemail(){
+    public function actionSendemail($invoice){
 
-        $invoice = 'PAY1807190007';
+        // $invoice = 'PAY1807190007';
 
         $header = Payments::find()->where(['invoice' => $invoice])->one();
         $detail = PaymentDetail::find()
@@ -67,7 +67,7 @@ class ContinuepaymentController extends Controller
             'filename' => 'files/so/'.$invoice . '.pdf',
             'content' => $content,
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
-            'options' => ['title' => 'Laporan Harian']
+            'options' => ['title' => 'Invoice '.$invoice]
         ]);
         $pdf->render();
 
@@ -299,6 +299,7 @@ class ContinuepaymentController extends Controller
                     $this->voucher->save(false);
                     }
 
+                    $this->actionSendemail($invoice);
                     return $this->redirect(['/payment-success']);
 
                 }
@@ -409,7 +410,7 @@ class ContinuepaymentController extends Controller
         $response   = $p->teszt( $grand_total_usd, $invoice );
 
         $url        = $response->links[1]->href;
-
+        $this->actionSendemail($invoice);
         header('Location: '.$url);
 
     	die();
