@@ -129,8 +129,11 @@ $this->title = $product->name;
 
 				<div class="dropdown-content dis-none p-t-15 p-b-23">
 					<p class="s-text8">
-						Fusce ornare mi vel risus porttitor dignissim. Nunc eget risus at ipsum blandit ornare vel sed velit. Proin gravida arcu nisl, a dignissim mauris placerat
-					</p>
+					<?php if($content):?>
+					<?php foreach($content as $item):?>
+						<?php echo urldecode($item->content);?>
+					<?php endforeach;?>
+					<?php endif;?>
 				</div>
 			</div>
 

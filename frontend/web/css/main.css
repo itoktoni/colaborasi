@@ -2647,3 +2647,7 @@ input.num-product::-webkit-inner-spin-button {
 .active-pagination a, div.item-pagination:hover a,div.item-pagination a:hover{
 color: #fff;
 }
+
+.dropdown-content iframe{
+  width: 100%;
+}

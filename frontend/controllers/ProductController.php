@@ -5,6 +5,7 @@ use Yii;
 use common\models\base\Category;
 use common\models\base\Subcategory;
 use common\models\base\Product;
+use common\models\base\ProductContent;
 use common\models\base\Productlove;
 use common\models\base\Brand;
 use common\models\search\ProductReviewSearch;
@@ -123,6 +124,7 @@ class ProductController extends \yii\web\Controller
 							->andWhere(['not like', 'product.id', $product_id])
 							->all();
 
+		$content = ProductContent::find()->where(['product' => $product_id])->all();
 		$review = ProductReviewSearch::find()->where(['product' => $product_id]);
 		$love = Productlove::find()->where(['member' => $this->member, 'product' => $product_id])->one();
 
@@ -133,7 +135,8 @@ class ProductController extends \yii\web\Controller
 			'subcategory'	=> $subcategory,
 			'related' 		=> $related,
 			'love' 			=> $love,
-			'review'		=> $review
+			'review'		=> $review,
+			'content'		=> $content
 		]);
 
 	}
