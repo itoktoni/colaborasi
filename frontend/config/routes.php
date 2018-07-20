@@ -19,6 +19,7 @@ return [
         '/google'                                   => 'site/google',
         '/register'                                 => 'site/signup',
         '/login'                                    => 'site/login',
+        '/payment-success'                          => 'site/success',
         'category/<cats:(.*)>/<subcategory:(.*)>'   => 'category/index/',
         'category/<cats:(.*)>'                      => 'category/index/',
         'product/comment'                           => 'product/comment/',

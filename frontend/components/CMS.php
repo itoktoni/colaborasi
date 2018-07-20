@@ -15,6 +15,7 @@ class CMS {
     const DISCOUNT_PERCENTAGE = 1, DISCOUNT_FIXED = 2;
     const SHIPPING_ON = 1, SHIPPING_OFF = 0;
     const PAYMENT_BALANCE = 2, PAYMENT_PAYPAL = 1, PAYMENT_CC = 3;
+    const STATUS_ACTIVE = 1, STATUS_INACTIVE = 0, STATUS_DELETED = -9;
 
 	public static function getCategory(){
         return Category::find()->where(['status' => Category::STATUS_ACTIVE])->orderBy(['name' => SORT_ASC])->limit(3)->all();
