@@ -18,9 +18,10 @@ $this->registerJsFile(
 			<div class="row">
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
 					<div class="leftbar p-r-20 p-r-0-sm">
-					<h4 class="m-text14 p-b-7">
-								Search
-							</h4>
+						<h4 class="m-text14 p-b-7">
+							Search
+						</h4>
+
 						<form id="searchbox" method="get" action="">
 							<div class="panel-search search-product pos-relative bo4">
 								<input class="s-text7 size6 p-l-23 p-r-50" type="text" id="aa-search-input" name="name" placeholder="Search Products..." value="<?php echo YII::$app->request->get('name');?>">
@@ -37,39 +38,39 @@ $this->registerJsFile(
 							<div class="clearfix">&nbsp;</div>
 
 							<div class="filter-price p-t-22 p-b-50 bo3">
-							<div class="m-text15 p-b-17">
-								Price
-							</div>
+								<div class="m-text15 p-b-17">
+									Price
+								</div>
 
-							<div class="wra-filter-bar">
-								<div id="filter-bar"></div>
-							</div>
-							<input type="hidden" id="min" name="min" value="<?php echo YII::$app->request->get('min');?>"/>
-							<input type="hidden" id="max" name="max" value="<?php echo YII::$app->request->get('max');?>"/>
-							<div class="flex-sb-m flex-w p-t-16">								
-								<div class="s-text3 p-t-10 p-b-10">
-									Range: <br>IDR <span id="value-lower">0</span> - IDR <span id="value-upper">0</span>
+								<div class="wra-filter-bar">
+									<div id="filter-bar"></div>
+								</div>
+								<input type="hidden" id="min" name="min" value="<?php echo YII::$app->request->get('min');?>"/>
+								<input type="hidden" id="max" name="max" value="<?php echo YII::$app->request->get('max');?>"/>
+								<div class="flex-sb-m flex-w p-t-16">								
+									<div class="s-text3 p-t-10 p-b-10">
+										Range: <br>IDR <span id="value-lower">0</span> - IDR <span id="value-upper">0</span>
+									</div>
 								</div>
 							</div>
-						</div>
 
 							
-                            <button class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4 bo4">
+                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
 									Search</button>
 
 							<div class="clearfix">&nbsp;</div>
-</form>
+						</form>
 
 							
-							<h4 class="m-text14 p-b-7">
+							<h4 class="m-text14 p-b-7 m-t-30">
 								Categories
 							</h4>
 
 							<ul class="p-b-54">
 								<?php
-$sub = CMS::getSubCategory();
-foreach (CMS::getCategory() as $cats):
-?>
+									$sub = CMS::getSubCategory();
+									foreach (CMS::getCategory() as $cats):
+								?>
 									<li class="p-t-4 p-b-10">
 										<a href="<?php echo Url::to('/category/' . $cats->slug); ?>" class="s-text13">
 											<?php echo $cats->name; ?>
@@ -106,9 +107,9 @@ foreach (CMS::getCategory() as $cats):
 					<!-- Product -->
 					<div class="row">
 						<?php
-if ($products):
-    foreach ($products->getModels() as $product):
-    ?>
+						if ($products):
+						    foreach ($products->getModels() as $product):
+					    ?>
 							<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
 								<!-- Block2 -->
 								<div class="block2">
@@ -142,39 +143,39 @@ if ($products):
 									</div>
 								</div>
 							</div>
-							<?php
-endforeach;
-else:
-?>
+						<?php
+							endforeach;
+						else:
+						?>
 							<h1 style="text-align: center;">No Product Found</h1>
-							<?php
-endif;
-?>
+						<?php
+						endif;
+						?>
 					</div>
 
 					<!-- Pagination -->
 
 					<?php
-echo yii\widgets\LinkPager::widget([
-    'pagination' => $pages,
-    'pageCssClass' => 'item-pagination flex-c-m trans-0-4',
-    'activePageCssClass' => 'active-pagination',
-    'prevPageLabel' => false,
-    'nextPageLabel' => false,
-    'linkContainerOptions' =>
-    [
-        'tag' => 'div',
-    ],
-    'linkOptions' => [
-        'class' => '',
-        'tag' => '',
-    ],
-    'options' => [
-        'tag' => 'div',
-        'class' => 'pagination flex-m flex-w p-t-26',
-    ],
-]);
-?>
+					echo yii\widgets\LinkPager::widget([
+					    'pagination' => $pages,
+					    'pageCssClass' => 'item-pagination flex-c-m trans-0-4',
+					    'activePageCssClass' => 'active-pagination',
+					    'prevPageLabel' => false,
+					    'nextPageLabel' => false,
+					    'linkContainerOptions' =>
+					    [
+					        'tag' => 'div',
+					    ],
+					    'linkOptions' => [
+					        'class' => '',
+					        'tag' => '',
+					    ],
+					    'options' => [
+					        'tag' => 'div',
+					        'class' => 'pagination flex-m flex-w p-t-26',
+					    ],
+					]);
+					?>
 				</div>
 			</div>
 		</div>
@@ -186,30 +187,30 @@ echo yii\widgets\LinkPager::widget([
 
 	<?php $minz = (YII::$app->request->get('min'))?YII::$app->request->get('min'):0; $maxz = (YII::$app->request->get('max'))?YII::$app->request->get('max'):$max->price;?>
 	<?php $this->registerJs("var slider = document.getElementById('filter-bar');
-noUiSlider.create(slider, {
-	start: [".$minz.", ".$maxz."],
-	connect: true,
-	range: {
-		'min': ".$min->price.",
-		'max': ".$max->price."
-	},
-	step: 10000
-});
+	noUiSlider.create(slider, {
+		start: [".$minz.", ".$maxz."],
+		connect: true,
+		range: {
+			'min': ".$min->price.",
+			'max': ".$max->price."
+		},
+		step: 10000
+	});
 
-var skipValues = [
-	document.getElementById('value-lower'),
-	document.getElementById('value-upper')
-	];
+	var skipValues = [
+		document.getElementById('value-lower'),
+		document.getElementById('value-upper')
+		];
 
-	var hiddenValues = [
-		document.getElementById('min'),
-		document.getElementById('max')
-	]
+		var hiddenValues = [
+			document.getElementById('min'),
+			document.getElementById('max')
+		]
 
 
 
-	slider.noUiSlider.on('update', function( values, handle ) {
-	hiddenValues[handle].value = Math.round(values[handle]);
-	skipValues[handle].innerHTML = Math.round(values[handle]);
-});
-");
+		slider.noUiSlider.on('update', function( values, handle ) {
+		hiddenValues[handle].value = Math.round(values[handle]);
+		skipValues[handle].innerHTML = Math.round(values[handle]);
+	});
+	");
