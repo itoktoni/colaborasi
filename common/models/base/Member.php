@@ -13,6 +13,7 @@ use yii\web\IdentityInterface;
  * @property string $address
  * @property string $address_optional
  * @property string $email
+ * @property string $phone_number
  * @property string $balance
  * @property string $picture
  * @property int $social_media_type
@@ -49,7 +50,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['balance'], 'number'],
             [['social_media_type', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name', 'address', 'address_optional', 'picture', 'social_media_id', 'password', 'password_reset_token'], 'string', 'max' => 255],
+            [['name', 'address', 'address_optional', 'picture', 'social_media_id', 'password', 'password_reset_token', 'phone_number'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 64],
             [['password_reset_token'], 'unique'],
         ];
@@ -66,6 +67,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             'address' => 'Address',
             'address_optional' => 'Address Optional',
             'email' => 'Email',
+            'phone_number' => 'Phone Number',
             'balance' => 'Balance',
             'picture' => 'Picture',
             'social_media_type' => 'Social Media Type',
@@ -209,6 +211,20 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    public function setPhone($phone)
+    {
+        $this->phone_number = $phone;
+    }
 
 
 

@@ -325,6 +325,17 @@ iframe {
 }
 
 
+/*[ PROFILE PAGE ]
+///////////////////////////////////////////////////////////
+*/
+.form-profile .form-group{
+  height: 50px;
+}
+.form-profile label.control-label{
+  display: none;
+}
+
+
 /*[ LOADDING ]
 ///////////////////////////////////////////////////////////
 */
