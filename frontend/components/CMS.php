@@ -43,6 +43,13 @@ class CMS {
         return $default;
     }
 
+    public static function activeSidebar($source, $comparator, $stringreturn = 'active2', $default = false){
+        if($source == $comparator){
+            return $stringreturn;
+        }
+        return $default;
+    }
+
     public static function getCountCart() 
     {
         $session    = Yii::$app->session;

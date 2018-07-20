@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
+use frontend\components\CMS;
 
 $this->title = 'Downloads';
 
@@ -20,19 +21,19 @@ $this->title = 'Downloads';
 					</h4>
 					<ul class="p-b-54">
 						<li class="p-t-4">
-							<a href="<?php echo Url::to('/profile');?>" class="s-text13">
+							<a href="<?php echo Url::to('/profile');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'profile'); ?>">
 								Profile
 							</a>
 						</li>
 
 						<li class="p-t-4">
-							<a href="<?php echo Url::to('/purchase');?>" class="s-text13">
+							<a href="<?php echo Url::to('/purchase');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'purchase'); ?>">
 								Purchase History
 							</a>
 						</li>
 
 						<li class="p-t-4">
-							<a href="<?php echo Url::to('/download');?>" class="s-text13">
+							<a href="<?php echo Url::to('/download');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'download'); ?>">
 								Downloads
 							</a>
 						</li>
