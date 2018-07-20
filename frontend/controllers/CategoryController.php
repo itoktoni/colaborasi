@@ -20,6 +20,7 @@ class CategoryController extends \yii\web\Controller
 
 		$this->enableCsrfValidation = false;
 
+		// echo $cats.' '.$subcategory; die();
 
 		$maincats = false;
 		$subcheck = false;
@@ -42,12 +43,9 @@ class CategoryController extends \yii\web\Controller
 			{
 				throw new \yii\web\NotFoundHttpException();
 			}
-
-			
 			
 			if ( $maincats && $subcategory )
-			{
-				
+			{				
 				$subcheck 	= Subcategory::findOne( ['category' => $maincats->id, 'slug' => $subcategory] ); 
 				if (!$subcheck)
 				{
@@ -56,8 +54,7 @@ class CategoryController extends \yii\web\Controller
 				
 				$filter['category'] = $maincats->id;
 				$filter['subcategory'] = $subcheck;
-				$query = $item_list->search($filter);
-				
+				$query = $item_list->search($filter);				
 			}
 			else
 			{	
