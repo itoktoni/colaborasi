@@ -334,6 +334,9 @@ iframe {
 .form-profile label.control-label{
   display: none;
 }
+.form-profile input.readonly{
+  background-color: #eee;
+}
 
 
 /*[ LOADDING ]

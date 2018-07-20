@@ -62,7 +62,7 @@ $this->title = 'Profile';
 						</div>
 
 						<div class="bo4 of-hidden size25 m-b-20 float-l">
-							<?= $form->field($updateprofile, 'email')->textInput(['value' => $fixed->email, 'class' => 'sizefull s-text7 p-l-22 p-r-22', 'placeholder' => 'Email', 'readonly' => '']); ?>
+							<?= $form->field($updateprofile, 'email')->textInput(['value' => $fixed->email, 'class' => 'sizefull s-text7 p-l-22 p-r-22 readonly', 'placeholder' => 'Email', 'readonly' => '']); ?>
 						</div>
 
 						<div class="bo4 of-hidden size25 m-b-20 m-r-30 float-l">
@@ -74,7 +74,7 @@ $this->title = 'Profile';
 						</div>
 
 						<div class="w-size25">
-							<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+							<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4" type="submit">
 								Update
 							</button>
 						</div>
@@ -102,7 +102,7 @@ $this->title = 'Profile';
 
 						<div class="w-size4">
 							<!-- Button -->
-							<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+							<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4" type="submit">
 								Change Password
 							</button>
 						</div>
