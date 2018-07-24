@@ -44,7 +44,7 @@ endif;
 <!-- Cart -->
 <section class="cart bgwhite p-t-70 p-b-100">
 	<div class="container">
-		<form action="<?php echo Url::to('/continuepayment'); ?>" method="post">
+		<form action="<?php echo Url::to('/continuepayment'); ?>" method="post" id="form-payment">
 		<!-- Total -->
 		<div class="row">
 			<div class="col-md-12">
@@ -135,7 +135,7 @@ endif;
 								Shipping Option
 							</h5>
 
-                            <input name="shipping" type="checkbox"  class="s-text7"/><label class="m-l-15 s-text7">Ship Physical Item</label>
+                            <input name="shipping_type" value="1" type="checkbox"  class="s-text7"/><label class="m-l-15 s-text7">Ship Physical Item</label>
 						</div>
 						<div id="cc" class="col-md-12 mt-3 bo9 pt-3">
 

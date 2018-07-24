@@ -62,6 +62,8 @@ use common\models\base\Member;
  */
 class Payments extends \yii\db\ActiveRecord
 {
+
+    public $counter;
     /**
      * {@inheritdoc}
      */
@@ -78,7 +80,7 @@ class Payments extends \yii\db\ActiveRecord
         return [
             [['payment_type', 'shipping_type', 'user', 'user_social_media_type', 'voucher', 'voucher_discount_type', 'tax_amount', 'payment_status', 'status'], 'integer'],
             [['voucher_discount_value', 'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 'total_tax_rupiah', 'total_tax_dollar', 'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar'], 'number'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at','counter'], 'safe'],
             [['invoice', 'user_name', 'user_address', 'user_email', 'user_social_media_id', 'voucher_name', 'paypal_payment_id', 'paypal_amount_dollar', 'paypal_amount_rupiah', 'paypal_payer_id', 'paypal_payer_email', 'paypal_token', 'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email', 'cc_transaction_id', 'cc_number', 'cc_month', 'cc_year'], 'string', 'max' => 255],
             [['user'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['user' => 'id']],
             [['voucher'], 'exist', 'skipOnError' => true, 'targetClass' => Voucher::className(), 'targetAttribute' => ['voucher' => 'id']],

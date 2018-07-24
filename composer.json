@@ -29,7 +29,12 @@
         "algolia/algoliasearch-client-php": "^1.27",
         "paypal/rest-api-sdk-php": "*",
         "stripe/stripe-php": "^6.10",
-        "kartik-v/yii2-mpdf": "^1.0"
+        "kartik-v/yii2-mpdf": "^1.0",
+        "kartik-v/yii2-export": "*",
+        "kartik-v/yii2-date-range": "*",
+        "kartik-v/yii2-widget-typeahead": "*",
+        "kartik-v/yii2-field-range": "*",
+        "2amigos/yii2-chartjs-widget": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
