@@ -37,8 +37,8 @@ class paypal extends Component
     {
         $apiContext = new \PayPal\Rest\ApiContext(
             new \PayPal\Auth\OAuthTokenCredential(
-                'AS67obv6-6brdBi1keEpq1oOMxi4WhnFcHx4aItcXG8pc6y2WG5Jk1mJiHYpbZwhYxpEumP0GBKXIS1s',     // ClientID
-                'EIyGLVEjSXg2JQSjo72LGHNCGFNGWor6nZjwP2O75VPUx-Q7RVbixoSEgEzNNklLBwLdbqAA7fpg_asU'      // ClientSecret
+                'AcQ7K1xxsb08Rau-dOoC3VZ2hVRWhjlMMz-0ynDqWaBBY2qXoZuJ-O7k9ZakBYAk9jboQSSxjjaAG0Iw',     // ClientID
+                'EJk3DZMikLrssMBK_THeextkQd7vIMoGgklryCPqHuI4EN6gCBdOS-PcDj188-Zo1ZyJlCxbrQEStrJd'      // ClientSecret
             )
         );
 
