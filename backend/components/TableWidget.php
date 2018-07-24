@@ -10,7 +10,8 @@ class TableWidget extends Widget{
 	public $field 		= [];
 	public $class 		= 'table table-responsive';
 	public $action_url 	= '';
-    public $action 		= '';
+	public $action 		= '';
+	public $action_button = true;
     
     public $action_edit 		= true;
     public $action_delete 		= true;
@@ -44,6 +45,7 @@ class TableWidget extends Widget{
 	            'action_url' 		=> $this->action_url,
 				'action_edit' 		=> $this->action_edit,
 				'status_toggle' 	=> $this->status_toggle,
+				'action_button'		=> $this->action_button,
 				'status_toggle_url' => $this->status_toggle_url,
 	            'action_delete' 	=> $this->action_delete
 			]

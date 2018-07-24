@@ -59,6 +59,26 @@ class PaymentSearch extends Payments
             ],
         ]);
 
+        
+        /**
+         * Force Sorting
+         */
+        if (isset($params['sort_order']) && $params['sort_order']) {
+            switch ($params['sort_order']) {
+                case "asc":
+                    $dataProvider->setSort(['defaultOrder' => ['id' => SORT_ASC]]);
+                    break;
+                case "desc":
+                    $dataProvider->setSort(['defaultOrder' => ['id' => SORT_DESC]]);
+                    break;
+                case "recent":
+                    $dataProvider->setSort(['defaultOrder' => ['updated_at' => SORT_DESC]]);
+                    break;
+            }
+
+            unset($params['sort_order']);
+        }
+
         $this->load($params, '');
 
         if (!$this->validate()) {
@@ -67,14 +87,7 @@ class PaymentSearch extends Payments
             return $dataProvider;
         }
 
-        if ($this->price_range_start) {
-            if ($this->price_range_to) {
-                $query->where(['>=', 'total_net_rupiah', $this->price_range_start]);
-            } else {
-                $query->where(['between', 'total_net_rupiah', $this->price_range_start, $this->price_range_to]);
-            }
-        }
-
+        
         if ($this->date_range) {
             $date = explode(' to ', $this->date_range);
             if (!$this->__validateDate($date[0]) && !$this->__validateDate($date[1])) {
@@ -87,6 +100,15 @@ class PaymentSearch extends Payments
                 $query->where(['between', 'created_at', $date[0], $date[1]]);
             }
         }
+
+        if ($this->price_range_start) {
+            if (!$this->price_range_to) {
+                $query->andFilterWhere(['>=', 'total_net_rupiah', $this->price_range_start]);
+            } else {
+                $query->andFilterWhere(['between', 'total_net_rupiah', $this->price_range_start, $this->price_range_to]);
+            }
+        }
+
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -187,14 +209,6 @@ class PaymentSearch extends Payments
             return $dataProvider;
         }
 
-        if ($this->price_range_start) {
-            if ($this->price_range_to) {
-                $query->where(['>=', 'total_net_rupiah', $this->price_range_start]);
-            } else {
-                $query->where(['between', 'total_net_rupiah', $this->price_range_start, $this->price_range_to]);
-            }
-        }
-
         if ($this->date_range) {
             $date = explode(' to ', $this->date_range);
             if (!$this->__validateDate($date[0]) && !$this->__validateDate($date[1])) {
@@ -205,6 +219,15 @@ class PaymentSearch extends Payments
                 $query->where(['date(created_at)' => $date[0]]);
             } else {
                 $query->where(['between', 'date(created_at)', $date[0], $date[1]]);
+            }
+        }
+
+        
+        if ($this->price_range_start) {
+            if (!$this->price_range_to) {
+                $query->andFilterWhere(['>=', 'total_net_rupiah', $this->price_range_start]);
+            } else {
+                $query->andFilterWhere(['between', 'total_net_rupiah', $this->price_range_start, $this->price_range_to]);
             }
         }
 
