@@ -41,7 +41,7 @@ AppAsset::register($this);
 <script>
     swal({ title: "Success !",
         text: "<?=Yii::$app->session->getFlash('success')?>",
-        timer: 3000,
+        // timer: 3000,
         showConfirmButton: false,
         icon: "success",
     });
@@ -51,7 +51,7 @@ AppAsset::register($this);
 <script>
     swal({ title: "Error !",
         text: "<?=Yii::$app->session->getFlash('error')?>",
-        timer: 3000,
+        // timer: 3000,
         showConfirmButton: false,
         icon: "error",
     });
@@ -74,7 +74,7 @@ channel.bind('my-event', function(data) {
     
     swal({ title: "Information Notification !",
         text: data.message,
-        timer: 3000,
+        // timer: 3000,
         showConfirmButton: true,
         icon: "info",
     });
