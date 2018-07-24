@@ -286,8 +286,8 @@ class ContinuepaymentController extends Controller
 
         try {
                 $charge = \Stripe\Charge::create([
-                    'amount' => $grand_total_idr, 
-                    'currency' => 'idr',
+                    'amount' => $grand_total_usd, 
+                    'currency' => 'usd',
                     'description' => $invoice,
                     'source' => $token,
                     'receipt_email' => YII::$app->request->post('shipping_email'),
