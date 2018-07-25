@@ -84,7 +84,10 @@ class ProfileController extends \yii\web\Controller
 	{
 		$this->view->params['menu'] = 'purchase'; 
 
-		$purchase 	= Payments::find()->andWhere(['user' => YII::$app->user->identity->id])->all();
+		$purchase 	= Payments::find()
+		->andWhere(['user' => YII::$app->user->identity->id])
+		->orderBy(['created_at' => SORT_DESC])
+		->all();
 
 		return $this->render('purchase', ['purchase' => $purchase]);
 	}
