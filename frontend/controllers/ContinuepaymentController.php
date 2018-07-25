@@ -299,6 +299,12 @@ class ContinuepaymentController extends Controller
                 ->execute();
         endif;
 
+        if($grand_total_idr > 1000000){
+            Yii::$app->session->setFlash('error', 'For Testing, Total Max 1.000.000');
+            return $this->redirect(['/checkout']);
+
+        }
+
         try {
                 $charge = \Stripe\Charge::create([
                     'amount' => $grand_total_idr.'00', 
