@@ -20,7 +20,7 @@
                                                 </div>
                                                 <div style="margin:10px 2px">
                                                     <p style="font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0">
-                                                        Berdasarkan system, Anda  telah membuat Order dengan list item berikut :
+                                                        Berdasarkan system, Anda telah membuat Order dengan list item berikut :
                                                     </p>
                                                     <br>
                                                     <table border="0" cellpadding="5" cellspacing="0" id="m_-3784408755349078820templateList" width="100%" style="border-collapse:collapse;border-spacing:0;font-size:12px;border-bottom-color:#cccccc;border-bottom-width:1px;border-bottom-style:solid;margin:0 0 25px;padding:0" bgcolor="#FFFFFF">
@@ -130,7 +130,7 @@
 
                                                     <br>
                                                     <p style="font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0">
-                                                        Segera Lakukan Prepare barang karena pesanan sudah Lunas
+                                                        Terimakasih sudah order di System kami jika ada masalah 
                                                         <a href="" style="font-family:Arial,sans-serif;color:#a30046!important;line-height:1.5;text-decoration:none;font-size:14px;margin:0;padding:0" target="_blank" >
                                                             Hubungi Customer Service Kami
                                                         </a>

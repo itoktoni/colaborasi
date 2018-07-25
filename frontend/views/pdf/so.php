@@ -123,7 +123,7 @@
                                 </table>
 
                                 <p style="font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0">
-                                    Segera Lakukan Konfirmasi setelah melakukan transfer ATM
+                                    Terimakasih sudah order di System kami jika ada masalah 
                                     <a href="" style="font-family:Arial,sans-serif;color:#900135!important;line-height:1.5;text-decoration:none;font-size:14px;margin:0;padding:0" target="_blank" >
                                         Hubungi Customer Service Kami
                                     </a>
