@@ -446,27 +446,29 @@ class SiteController extends \frontend\components\CartController
         // d(true);
         if(Yii::$app->request->post()){
 
-            // d(Yii::$app->request->post());
+            $model = new Subscribe();
 
-            $email = Yii::$app->request->post('email');
-            if(empty($email)){
+            if ($model->validate()) {
                 
-                Yii::$app->session->setFlash('error', 'You Must Filled Email !');
-                return $this->redirect('/');
+                $update = Subscribe::find()->where(['email' => Yii::$app->request->post('email')])->one();
+                if (empty($update)) {
+                    $subscribe = new Subscribe();
+                    $subscribe->email =
+                    $subscribe->save();
+                    Yii::$app->session->setFlash('success', 'Success Add Subscribe Channel');
+                    return $this->redirect('/');
+
+                }
+
+            } else {
+                // validation failed: $errors is an array containing error messages
+                $errors = $model->errors;
+                if(count($errors['email'])){
+                    Yii::$app->session->setFlash('error', $errors['email'][0]);
+
+                }
 
             }
-
-            $update = Subscribe::find()->where(['email' => Yii::$app->request->post('email')])->one();
-            if(empty($update)){
-                $subscribe = new Subscribe();
-                $subscribe->email = 
-                $subscribe->save();
-                Yii::$app->session->setFlash('success', 'Success Add Subscribe Channel');
-                return $this->redirect('/');
-
-            }
-
-            Yii::$app->session->setFlash('error', 'You are Already Subscribe');
 
             return $this->redirect('/');
         }
@@ -490,6 +492,7 @@ class SiteController extends \frontend\components\CartController
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
+
         } else {
             $model->password = '';
 
