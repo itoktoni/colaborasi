@@ -447,10 +447,19 @@ class SiteController extends \frontend\components\CartController
         if(Yii::$app->request->post()){
 
             // d(Yii::$app->request->post());
+
+            $email = Yii::$app->request->post('email');
+            if(empty($email)){
+                
+                Yii::$app->session->setFlash('error', 'You Must Filled Email !');
+                return $this->redirect('/');
+
+            }
+
             $update = Subscribe::find()->where(['email' => Yii::$app->request->post('email')])->one();
             if(empty($update)){
                 $subscribe = new Subscribe();
-                $subscribe->email = Yii::$app->request->post('email');
+                $subscribe->email = 
                 $subscribe->save();
                 Yii::$app->session->setFlash('success', 'Success Add Subscribe Channel');
                 return $this->redirect('/');
