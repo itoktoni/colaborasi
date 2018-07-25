@@ -1,10 +1,6 @@
 <?php 
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
-use frontend\components\CMS;
 
 $this->title = 'Profile';
 ?>
@@ -13,46 +9,12 @@ $this->title = 'Profile';
 <section class="bgwhite p-t-55 p-b-65">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
-				<div class="leftbar p-r-20 p-r-0-sm">
-					<h4 class="m-text14 p-b-7">
-						Details
-					</h4>
-					<ul class="p-b-54">
-						<li class="p-t-4">
-							<a href="<?php echo Url::to('/profile');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'profile'); ?>">
-								Profile
-							</a>
-						</li>
-
-						<li class="p-t-4">
-							<a href="<?php echo Url::to('/purchase');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'purchase'); ?>">
-								Purchase History
-							</a>
-						</li>
-
-						<li class="p-t-4">
-							<a href="<?php echo Url::to('/download');?>" class="s-text13 <?php echo CMS::activeSidebar($this->params['menu'], 'download'); ?>">
-								Downloads
-							</a>
-						</li>
-
-						<li class="p-t-4">
-							<?= Html::beginForm(['/site/logout'], 'post') ?>
-                                <?= Html::submitButton(
-                                    'Logout',
-                                    ['class' => 's-text13']
-                                ) ?>
-                            <?= Html::endForm() ?>
-						</li>
-					</ul>
-				</div>
-			</div>
+			<?php echo Yii::$app->controller->renderPartial('sidebar'); ?>
 
 			<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
 				<div class="row">
 
-					<?php $form = ActiveForm::begin(['action' => '/profile', 'options' => ['class' => 'form-profile']]);?>
+					<?php $form = ActiveForm::begin(['action' => '/profile', 'options' => ['class' => 'form-profile']]); ?>
 						<h4 class="m-text14 p-b-36">
 							Account Detail
 						</h4>
@@ -78,9 +40,9 @@ $this->title = 'Profile';
 								Update
 							</button>
 						</div>
-					<?php Activeform::end();?>
+					<?php Activeform::end(); ?>
 
-					<?php $form = ActiveForm::begin(['action' => '/profile/changepassword', 'options' => ['class' => 'form-profile m-t-50', 'style' => 'width: 100%;']]);?>
+					<?php $form = ActiveForm::begin(['action' => '/profile/changepassword', 'options' => ['class' => 'form-profile m-t-50', 'style' => 'width: 100%;']]); ?>
 						<h4 class="m-text14 p-b-36">
 							Change Password
 						</h4>
@@ -106,7 +68,7 @@ $this->title = 'Profile';
 								Change Password
 							</button>
 						</div>
-					<?php Activeform::end();?>
+					<?php Activeform::end(); ?>
 
 				</div>
 			</div>

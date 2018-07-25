@@ -1,12 +1,13 @@
 <?php
+
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require __DIR__.'/../../common/config/params.php',
+    require __DIR__.'/../../common/config/params-local.php',
+    require __DIR__.'/params.php',
+    require __DIR__.'/params-local.php'
 );
 
-$route = require __DIR__ . '/routes.php';
+$route = require __DIR__.'/routes.php';
 
 return [
     'id' => 'app-frontend',
@@ -52,7 +53,7 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'urlManager' => $route, 
+        'urlManager' => $route,
     ],
     'params' => $params,
 ];

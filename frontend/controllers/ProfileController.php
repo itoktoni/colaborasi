@@ -1,155 +1,180 @@
 <?php
 
 namespace frontend\controllers;
+
 use yii;
 use common\models\base\Member;
 use common\models\base\MemberDownload;
 use common\models\base\Payments;
-use common\models\base\PaymentDetail;
-use yii\helpers\Url;
+use frontend\models\TopupForm;
 use frontend\models\ChangePassword;
 
 class ProfileController extends \yii\web\Controller
 {
-	public function behavior()
-	{
-		$this->layout = 'main';
-	}
+    public function behavior()
+    {
+        $this->layout = 'main';
+    }
 
-	public function actionIndex()
-	{
-		$this->view->params['menu'] = 'profile';
+    /**
+     * Index page from profile page.
+     * routes : profile.
+     */
+    public function actionIndex()
+    {
+        menu($this, 'profile');
 
-		$model 		= new ChangePassword();
-		$message 	= '';
+        $model = new ChangePassword();
+        $message = '';
 
-		if ( Yii::$app->request->post() )
-		{
-			if ( $model->load(Yii::$app->request->post()) && $model->updateprofile() ) 
-			{
-				Yii::$app->session->setFlash('success', "Profile Updated!");
-			} 
-			else 
-			{
-				Yii::$app->session->setFlash('error', "Error While Updating Profile!");
-			}
-		}
+        if (Yii::$app->request->post()) {
+            if ($model->load(Yii::$app->request->post()) && $model->updateprofile()) {
+                Yii::$app->session->setFlash('success', 'Profile Updated!');
+            } else {
+                Yii::$app->session->setFlash('error', 'Error While Updating Profile!');
+            }
+        }
 
-		$fixed 		= Member::find()
-						->select('*')
-						->andwhere(['status' => Member::STATUS_ACTIVE])
-						->andwhere(['id' => Yii::$app->user->identity->id])
-						->one();
+        $fixed = Member::find()
+                        ->select('*')
+                        ->andwhere(['status' => Member::STATUS_ACTIVE])
+                        ->andwhere(['id' => Yii::$app->user->identity->id])
+                        ->one();
 
-		return $this->render('index', [
-			'fixed' 			=> $fixed, 
-			'updatepassword' 	=> $model, 
-			'updateprofile' 	=> $model,
-		]);
-	}
+        return $this->render('index', [
+            'fixed' => $fixed,
+            'updatepassword' => $model,
+            'updateprofile' => $model,
+        ]);
+    }
 
-	public function actionChangepassword()
-	{
-		$this->view->params['menu'] = 'profile';
+    public function actionTopup()
+    {
+        menu($this, 'topup');
 
-		$model 		= new ChangePassword();
-		$message 	= '';
+        return $this->render('topup', [
+            'topup' => new TopupForm(),
+        ]);
+    }
 
-		if ( Yii::$app->request->post() )
-		{
-			if ( $model->load(Yii::$app->request->post()) && $model->updatepassword() ) 
-			{
-				Yii::$app->session->setFlash('success', "Password Changed!");
-			} 
-			else 
-			{
-				Yii::$app->session->setFlash('error', "Error While Changing Password!");
-			}
-		}
+    /**
+     * Change password post action.
+     */
+    public function actionChangepassword()
+    {
+        menu($this, 'profile');
 
-		$fixed 		= Member::find()
-						->select('*')
-						->andwhere(['status' => Member::STATUS_ACTIVE])
-						->andwhere(['id' => Yii::$app->user->identity->id])
-						->one();
+        $model = new ChangePassword();
+        $message = '';
 
-		return $this->render('index', [
-			'fixed' 			=> $fixed, 
-			'updatepassword' 	=> $model, 
-			'updateprofile' 	=> $model,
-		]);
-	}
+        if (Yii::$app->request->post()) {
+            if ($model->load(Yii::$app->request->post()) && $model->updatepassword()) {
+                Yii::$app->session->setFlash('success', 'Password Changed!');
+            } else {
+                Yii::$app->session->setFlash('error', 'Error While Changing Password!');
+            }
+        }
 
-	public function actionPurchase()
-	{
-		$this->view->params['menu'] = 'purchase'; 
+        $fixed = Member::find()
+                        ->select('*')
+                        ->andwhere(['status' => Member::STATUS_ACTIVE])
+                        ->andwhere(['id' => Yii::$app->user->identity->id])
+                        ->one();
 
-		$purchase 	= Payments::find()
-		->andWhere(['user' => YII::$app->user->identity->id])
-		->orderBy(['created_at' => SORT_DESC])
-		->all();
+        return $this->render('index', [
+            'fixed' => $fixed,
+            'updatepassword' => $model,
+            'updateprofile' => $model,
+        ]);
+    }
 
-		return $this->render('purchase', ['purchase' => $purchase]);
-	}
+    /**
+     * action purchase.
+     * routes : purchase.
+     */
+    public function actionPurchase()
+    {
+        menu($this, 'purchase');
 
-	public function actionDownload()
-	{	
-		$downloads = MemberDownload::find()->select(['key', 'expiration_date','member_download.create_at','member_download.updated_at', 'member_download.status', 'product.name product_name'])->join('left join', 'product','member_download.product=product.id')->where(['member' => YII::$app->user->identity->id])->orderBy(['member_download.id' => SORT_DESC])->all();
-		$this->view->params['menu'] = 'download';
-		return $this->render('download', ['downloads' => $downloads]);
-	}
+        $purchase = Payments::find()
+        ->andWhere(['user' => YII::$app->user->identity->id])
+        ->orderBy(['created_at' => SORT_DESC])
+        ->all();
 
-	public function actionGrab()
-	{	
+        return $this->render('purchase', ['purchase' => $purchase]);
+    }
 
-		$access_token = Yii::$app->request->get('key');
+    /**
+     * action Download
+     * routes : downloads.
+     */
+    public function actionDownload()
+    {
+        $downloads = MemberDownload::find()->select(['key', 'expiration_date', 'member_download.create_at', 'member_download.updated_at', 'member_download.status', 'product.name product_name'])->join('left join', 'product', 'member_download.product=product.id')->where(['member' => YII::$app->user->identity->id])->orderBy(['member_download.id' => SORT_DESC])->all();
+        menu($this, 'download');
 
-		if(!$access_token){
-			throw new yii\web\ForbiddenHttpException;
-		}
+        return $this->render('download', ['downloads' => $downloads]);
+    }
 
+    /**
+     * action Grab
+     * routes : downloads/{file}.
+     */
+    public function actionGrab()
+    {
+        $access_token = Yii::$app->request->get('key');
 
-		$download_link = MemberDownload::find()
-		->select(['member_download.*', 'product.name product_name','product.product_download_url download_url'])
-		->join('left join', 'product','member_download.product=product.id')
-		->where(['member' => YII::$app->user->identity->id,'key' => $access_token])->one();
+        if (!$access_token) {
+            throw new yii\web\ForbiddenHttpException();
+        }
 
-		if($download_link)
-		{
-			if($download_link->status > 0){
-				$download_link->expiration_date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +1 day'));
-				$download_link->status = 0;
-				$download_link->save();
-			}
+        $download_link = MemberDownload::find()
+        ->select(['member_download.*', 'product.name product_name', 'product.product_download_url download_url'])
+        ->join('left join', 'product', 'member_download.product=product.id')
+        ->where(['member' => YII::$app->user->identity->id, 'key' => $access_token])->one();
 
-			if(!$download_link->status && strtotime(date('Y-m-d H:i:s')) > strtotime($download_link->expiration_date)){
-				$download_link->save();
-				throw new yii\web\ForbiddenHttpException;
-			}
-			
-			
-			if(!$download_link->download_url){
-				throw new yii\web\NotFoundHttpException;
-			}
-			$dl = explode("/",$download_link->download_url);
-			$url = count($dl)-1;
-			$idz = count($dl)-2;
-			return $this->redirect(str_replace($dl[$idz].'/'.$dl[$url],'fl_attachment/'.$dl[$idz].'/'.$dl[$url], $download_link->download_url));
-		}else{
-			throw new yii\web\ForbiddenHttpException;
-		}		
-	}
+        if ($download_link) {
+            if ($download_link->status > 0) {
+                $download_link->expiration_date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +1 day'));
+                $download_link->status = 0;
+                $download_link->save();
+            }
 
-	public function object_to_array($data){
-	    if (is_array($data) || is_object($data))
-	    {
-	        $result = array();
-	        foreach ($data as $key => $value)
-	        {
-	            $result[$key] = $this->object_to_array($value);
-	        }
-	        return $result;
-	    }
-	    return $data;
-	}
+            if (!$download_link->status && strtotime(date('Y-m-d H:i:s')) > strtotime($download_link->expiration_date)) {
+                $download_link->save();
+                throw new yii\web\ForbiddenHttpException();
+            }
+
+            if (!$download_link->download_url) {
+                throw new yii\web\NotFoundHttpException();
+            }
+            $dl = explode('/', $download_link->download_url);
+            $url = count($dl) - 1;
+            $idz = count($dl) - 2;
+
+            return $this->redirect(str_replace($dl[$idz].'/'.$dl[$url], 'fl_attachment/'.$dl[$idz].'/'.$dl[$url], $download_link->download_url));
+        } else {
+            throw new yii\web\ForbiddenHttpException();
+        }
+    }
+
+    /**
+     * This one is helper, i donno what is this.
+     * someone please explain this thing.
+     *
+     * @param [type] $data
+     */
+    public function object_to_array($data)
+    {
+        if (is_array($data) || is_object($data)) {
+            $result = array();
+            foreach ($data as $key => $value) {
+                $result[$key] = $this->object_to_array($value);
+            }
+
+            return $result;
+        }
+
+        return $data;
+    }
 }
