@@ -2,21 +2,21 @@
 
 namespace backend\controllers;
 
+use common\models\base\Payments;
 use Yii;
-use common\models\base\Brand;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use backend\components\AuthController;
 
 /**
- * BrandController implements the CRUD actions for Brand model.
+ * PaymentController implements the CRUD actions for Payments model.
  */
-class BrandController extends AuthController
+class PaymentController extends AuthController
 {
     public function init()
     {
-        $this->view->params['menu'] = 'categories';
-        $this->view->params['submenu'] = 'brand';
+        $this->view->params['menu'] = 'report';
+        $this->view->params['submenu'] = 'payment';
     }
 
     /**
@@ -35,34 +35,42 @@ class BrandController extends AuthController
     }
 
     /**
-     * Lists all Brand models.
+     * Lists all Payments models.
      *
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchmodel = new \common\models\search\BrandSearch();
+        $data = [];
+
+        $searchmodel = new \common\models\base\PaymentSearch();
         $query = $searchmodel->search(Yii::$app->request->get());
         $data['pages'] = $query->getPagination();
-        $data['dataProvider'] = $query->getModels();
+        $data['dataProvider'] = $query;
+        $chartdata = new \common\models\base\PaymentSearch();
+        $data['chartdata'] = $chartdata->getchart(Yii::$app->request->get());
+        $productdata = new \common\models\search\DownloadSearch();
+        $data['productchart'] = $productdata->getchart(Yii::$app->request->get());
+        // $data['brandchart'] = $chartdata->getchart(Yii::$app->request->get());
+        // $data['chartdata'] = \common\models\Payment::find()->select(['COUNT(*) counter'])->where(['created_at' => $date[0]])->groupBy(['date(created_at)'])->all();
 
         return $this->render('index', $data);
     }
 
     /**
-     * Creates a new Brand model.
+     * Creates a new Payments model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Brand();
+        $model = new Payments();
 
-        if ($model->load(post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Brand Created');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Payments Created');
 
-            return $this->redirect(['/brand/']);
+            return $this->redirect(['/payments/']);
         }
 
         return $this->render('create', [
@@ -71,7 +79,7 @@ class BrandController extends AuthController
     }
 
     /**
-     * Updates an existing Brand model.
+     * Updates an existing Payments model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param int $id
@@ -84,10 +92,10 @@ class BrandController extends AuthController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Brand Updated');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Payments Updated');
 
-            return $this->redirect('/brand/');
+            return $this->redirect('/payments/');
         }
 
         return $this->render('update', [
@@ -96,7 +104,7 @@ class BrandController extends AuthController
     }
 
     /**
-     * Deletes an existing Brand model.
+     * Deletes an existing Payments model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param int $id
@@ -110,24 +118,24 @@ class BrandController extends AuthController
         $model = $this->findModel($id);
         $model->status = -9;
         $model->save(false);
-        Yii::$app->session->setFlash('success', 'Brand Deleted');
+        Yii::$app->session->setFlash('success', 'Payments Deleted');
 
-        return $this->redirect('/brand');
+        return $this->redirect('/payments');
     }
 
     /**
-     * Finds the Brand model based on its primary key value.
+     * Finds the Payments model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param int $id
      *
-     * @return Brand the loaded model
+     * @return Payments the loaded model
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Brand::findOne($id)) !== null) {
+        if (($model = Payments::findOne($id)) !== null) {
             return $model;
         }
 

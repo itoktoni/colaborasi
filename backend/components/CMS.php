@@ -15,12 +15,15 @@ class CMS
     const STATUS_INACTIVE = 0, STATUS_ACTIVE = 1, STATUS_DELETED = -9;
     const TOPUP_REJECTED = -1, TOPUP_WAITING = 0, TOPUP_USER_CONFIRMED = 1, TOPUP_ADMIN_CONFIRMED = 2, TOPUP_FINISH = 3;
     const REVIEW_ACCEPTED = 1, REVIEW_WAITING = 0, REVIEW_DELETED = -9;
-    const PAYMENT_BALANCE = 2, PAYMENT_PAYPAL = 1, PAYMENT_CC = 1;
+    const PAYMENT_BALANCE = 2, PAYMENT_PAYPAL = 1, PAYMENT_CC = 3;
     const BANK_BCA = 1, BANK_MANDIRI = 2;
+    const SHIPPING_ON = 1, SHIPPING_OFF = 0;
     const DISCOUNT_PERCENTAGE = 1, DISCOUNT_FIXED = 2;
     const SORT_ASCENDING = 'asc', SORT_DESCENDING = 'desc', SORT_RECENT = 'recent';
     const CONTENT_VIDEO = 1, CONTENT_MUSIC = 2, CONTENT_IMAGE = 3;
     const SOURCE_TYPE_EMBED = 1, SOURCE_TYPE_SERVER = 2;
+    const SOCIAL_MEDIA_TYPE_FACEBOOK = 1,SOCIAL_MEDIA_TYPE_TWITTER = 2,SOCIAL_MEDIA_TYPE_GOOGLE = 3,SOCIAL_MEDIA_TYPE_GITHUB = 4;
+    const PAYMENT_STATUS_WAITING = 0, PAYMENT_STATUS_CONFIRMED = 1;
 
     /**
      * [getMenu description]
@@ -79,8 +82,25 @@ class CMS
 
     public static function statusTopup()
     {
-        [CMS::TOPUP_REJECTED => "Rejected", CMS::TOPUP_WAITING => "Waiting for Payment", CMS::TOPUP_USER_CONFIRMED => "Confirmed by User", CMS::TOPUP_ADMIN_CONFIRMED => "Confirmed by Admin", CMS::TOPUP_FINISH => "Confirmed by Finished"];
+        return [CMS::TOPUP_REJECTED => "Rejected", CMS::TOPUP_WAITING => "Waiting for Payment", CMS::TOPUP_USER_CONFIRMED => "Confirmed by User", CMS::TOPUP_ADMIN_CONFIRMED => "Confirmed by Admin", CMS::TOPUP_FINISH => "Confirmed by Finished"];
     }
+
+    public static function getShipping($var){
+        return self::shipping()[$var];
+    }
+
+    public static function shipping(){
+        return [self::SHIPPING_ON => 'With Shipping', self::SHIPPING_OFF => 'No Shipping'];
+    }
+
+
+    public static function getPaymentStatus($var){
+        return self::paymentStatus()[$var];
+    }
+    public static function paymentStatus(){
+        return [self::PAYMENT_STATUS_WAITING => 'Waiting for Confirmation', self::PAYMENT_STATUS_CONFIRMED => 'Confirmed'];
+    }
+    
 
     /**
      * [paymentType description]
@@ -88,7 +108,7 @@ class CMS
      */
     public static function paymentType()
     {
-        return [CMS::PAYMENT_BALANCE => 'Balance', CMS::PAYMENT_PAYPAL => 'Paypal'];
+        return [CMS::PAYMENT_BALANCE => 'Balance', CMS::PAYMENT_PAYPAL => 'Paypal', self::PAYMENT_CC => 'Credit Card'];
     }
 
     /**
@@ -129,6 +149,17 @@ class CMS
     {
         return [CMS::BANK_BCA => 'BCA', CMS::BANK_MANDIRI => 'Mandiri'];
     }
+
+    public static function getSocialMediaType($var){
+        return (isset(CMS::socialmediaType()[$var])) ? CMS::socialmediaType()[$var] : false;
+    }
+
+    public static function socialmediaType()
+    {
+        return [ self::SOCIAL_MEDIA_TYPE_FACEBOOK => 'Facebook',self::SOCIAL_MEDIA_TYPE_TWITTER => 'Twitter',self::SOCIAL_MEDIA_TYPE_GOOGLE => 'Google',self::SOCIAL_MEDIA_TYPE_GITHUB => 'Github'];
+    }
+
+
 
     public static function status($deleted = false)
     {

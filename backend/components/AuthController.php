@@ -66,8 +66,8 @@ class AuthController extends Controller {
          * check in cache if this roles exists,
          * this script prevent over query to database
          */
-        if (!Yii::$app->cache->exists('roles_' . Yii::$app->user->identity->roles))
-        {
+        // if (!Yii::$app->cache->exists('roles_' . Yii::$app->user->identity->roles))
+        // {
             $permission = Permission::find()
                     ->joinWith('feature0', false, 'inner join')
                     ->leftjoin('feature_group', '`feature`.`feature_group` = `feature_group`.`id`')
@@ -90,13 +90,13 @@ class AuthController extends Controller {
             }
 
             $data = ['group' => $group, 'menu' => $menu, 'list' => $list];
-            Yii::$app->cache->add('roles_' . Yii::$app->user->identity->roles, $data, 360);
-        }
-        else
-        {
-//            echo 'cache';
-            $data = Yii::$app->cache->get('roles_' . Yii::$app->user->identity->roles);
-        }
+            // Yii::$app->cache->add('roles_' . Yii::$app->user->identity->roles, $data, 360);
+//         }
+//         else
+//         {
+// //            echo 'cache';
+//             $data = Yii::$app->cache->get('roles_' . Yii::$app->user->identity->roles);
+//         }
 
 
         /**

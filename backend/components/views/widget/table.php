@@ -9,7 +9,9 @@ use yii\helpers\Url;
             <?php foreach ($header as $item): ?>
             <th><?php echo $item; ?></th>
 			<?php endforeach;?>
+			<?php if($action_button):?>
 			<th class="text-right">Action</th>
+<?php endif;?>
         </tr>
     </thead>
 
@@ -31,6 +33,8 @@ use yii\helpers\Url;
 					</td>
 				<?php endif;?>	
 			<?php endforeach;?>
+
+			<?php if($action_button):?>
             <td class="td-actions text-right">
             	<?php if (YII::$app->cms->check_permission()): ?>
             		<?php if ($action_edit): ?>
@@ -45,6 +49,7 @@ use yii\helpers\Url;
                 	<?php endif;?>
                 <?php endif;?>
             </td>
+			<?php endif;?>
         </tr>
     	<?php endforeach;?>
     	<?php else :?>

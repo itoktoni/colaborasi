@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use yii\widgets\LinkPager;
+
 $this->title = 'Checkout';
 
 $this->registerJsFile(
@@ -44,7 +44,7 @@ endif;
 <!-- Cart -->
 <section class="cart bgwhite p-t-70 p-b-100">
 	<div class="container">
-		<form action="<?php echo Url::to('/continuepayment'); ?>" method="post">
+		<form action="<?php echo Url::to('/continuepayment'); ?>" method="post" id="form-payment">
 		<!-- Total -->
 		<div class="row">
 			<div class="col-md-12">
@@ -82,15 +82,15 @@ endif;
 							<?php else: ?>
 
 							<?php
-							//print_r($voucher);
-							if (!empty($voucher['discount_prosentase'])):
-							    $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
-							elseif (!empty($voucher['discount_price'])):
-							    $discount = $voucher['discount_price'];
-							else:
-							    $discount = 0;
-							endif;
-							?>
+                            //print_r($voucher);
+                            if (!empty($voucher['discount_prosentase'])):
+                                $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
+                            elseif (!empty($voucher['discount_price'])):
+                                $discount = $voucher['discount_price'];
+                            else:
+                                $discount = 0;
+                            endif;
+                            ?>
 
 							<!--  -->
 							<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
@@ -103,9 +103,9 @@ endif;
 								</span>
 							</div>
 
-							<?php endif;?>
+							<?php endif; ?>
 
-							<?php $grandtotal = $subtotal - $discount;?>
+							<?php $grandtotal = $subtotal - $discount; ?>
 
 							<!--  -->
 
@@ -129,15 +129,19 @@ endif;
 								</span>
 							</div>
 						</div>
-						<div id="shipping" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38">
+						<div id="shipping" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38 mb-3">
 
 							<h5 class="m-text20 p-b-24">
 								Shipping Option
 							</h5>
 
-                            <input name="shipping" type="checkbox"  class="s-text7"/><label class="m-l-15 s-text7">Ship Physical Item</label>
+                            <!-- <input name="shipping_type" value="1" type="checkbox"  class="s-text7"/><label class="m-l-15 s-text7">Ship Physical Item</label> -->
+                            <label class="label-shipping-option">Ship Physical Item(s)
+                            	<input type="checkbox" name="shipping_type" class="input-shipping-option" checked="checked" value="1">
+                            	<span class="checkmark"></span>
+                            </label>
 						</div>
-						<div id="cc" class="col-md-12 mt-3 bo9 pt-3">
+						<div id="cc" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38">
 
 							<h5 class="m-text20 p-b-24">
 								Credit Card
@@ -156,55 +160,57 @@ endif;
 					</div>
 				</div>
 
-				<div id="payment" class="col-md-7" style="float: left;width: calc(100% - 442px);">
+				<div id="payment" class="col-md-7 bo9 m-l-20 p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 422px);">
 
-						<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
-						<input type="hidden" id="ongkos" name="ongkos">
-						<input type="hidden" id="jasa" name="jasa">
+						<div id="shipping-process" style="">
+							<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
+							<input type="hidden" id="ongkos" name="ongkos">
+							<input type="hidden" id="jasa" name="jasa">
 
-						<h5 class="m-text20 p-b-24 p-t-30">
-							Shipping
-						</h5>
+							<h5 class="m-text20 p-b-24">
+								Shipping
+							</h5>
 
-						<input type="text" name="shipping_receiver" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->name; ?>" placeholder="Full Name" class="sizefull s-text7">
-						<hr style="padding:5px;">
+							<input type="text" name="shipping_receiver" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->name; ?>" placeholder="Full Name" class="sizefull s-text7">
+							<hr style="padding:5px;">
 
-						<select  id="province" class="select form-control-lg col-lg-12" name="province">
-							<option value="">Select Province</option>
-							<?php foreach ($province as $p): ?>
-								<option value="<?php echo $p->province_id; ?>">
-									<?php echo $p->province; ?>
-								</option>
-							<?php endforeach;?>
-						</select>
-						<hr style="padding:5px;">
+							<select  id="province" class="select form-control-lg col-lg-12" name="province">
+								<option value="">Select Province</option>
+								<?php foreach ($province as $p): ?>
+									<option value="<?php echo $p->province_id; ?>">
+										<?php echo $p->province; ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<hr style="padding:5px;">
 
-						<select name="city" class="select form-control-lg col-lg-12" id="city">
-							<option value="">Select City</option>
-						</select>
-						<hr style="padding:5px;">
+							<select name="city" class="select form-control-lg col-lg-12" id="city">
+								<option value="">Select City</option>
+							</select>
+							<hr style="padding:5px;">
 
-						<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address; ?>" placeholder="Address" class="sizefull s-text7">
-						<hr style="padding:5px;">
+							<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address; ?>" placeholder="Address" class="sizefull s-text7">
+							<hr style="padding:5px;">
 
-						<input type="text" name="shipping_mobile" value="" placeholder="Phone Number" class="sizefull s-text7">
-						<hr style="padding:5px;">
+							<input type="text" name="shipping_mobile" value="" placeholder="Phone Number" class="sizefull s-text7">
+							<hr style="padding:5px;">
 
-						<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email; ?>" placeholder="Email" class="sizefull s-text7">
-						<hr style="padding:5px;">
+							<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email; ?>" placeholder="Email" class="sizefull s-text7">
+							<hr style="padding:5px;">
 
-						<select id="courier" class="select form-control-lg col-lg-12" name="courier">
-							<option>Select Courier...</option>
-							<option value="jne">JNE</option>
-							<option value="tiki">TIKI</option>
-							<option value="pos">POS Indonesia</option>
-						</select>
-						<hr style="padding:5px;">
+							<select id="courier" class="select form-control-lg col-lg-12" name="courier">
+								<option value="">Select Courier...</option>
+								<option value="jne">JNE</option>
+								<option value="tiki">TIKI</option>
+								<option value="pos">POS Indonesia</option>
+							</select>
+							<hr style="padding:5px;">
 
-						<select name="service" class="select form-control-lg col-lg-12" id="service">
-						<option value="">Select Service..</option>
-						</select>
-						<hr style="padding:5px;">
+							<select name="service" class="select form-control-lg col-lg-12" id="service">
+							<option value="">Select Service..</option>
+							</select>
+							<hr style="padding:5px;">
+						</div>
 
 						<h5 class="m-text20 p-b-10 p-t-30">
 							PAYMENT
@@ -213,28 +219,31 @@ endif;
 						<div class="payment-method">
 							<ul>
 								<li class="m-b-10">
-									<input type="radio" data-order_button_text="Balance" value="balance" name="payment_method" class="input-radio" id="payment_method_balance" checked="">
-				                    <label for="payment_method_balance" style="font-size: 16px;">
+				                    <label for="payment_method_balance" style="font-size: 16px;padding-left: 45px;" class="label-payment-option">
 				                    	Onestopclick User Balance
+										<input type="radio" data-order_button_text="Balance" value="balance" name="payment_method" class="input-radio" id="payment_method_balance" checked="">
+										<span class="checkmark"></span>
 				                    </label>
 								</li>
 								<li>
-									<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
-									<label for="payment_method_paypal">
-										<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
+									<label for="payment_method_paypal" class="label-payment-option">
+										<img class="image-payment" src="<?php echo Url::to('@web/images/icons/paypal2.png'); ?>">
+										<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
+										<span class="checkmark"></span>
 									</label>
 								</li>
 								<li>
-									<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
-									<label for="payment_method_paypal">
-										<img class="image-payment" src="<?php echo Url::to("@web/images/icons/cc.png"); ?>">
+									<label for="payment_method_cc" class="label-payment-option">
+										<img class="image-payment" src="<?php echo Url::to('@web/images/icons/cc.png'); ?>">
+										<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
+										<span class="checkmark"></span>
 									</label>
 								</li>
 							</ul>
 						</div>
 
 						<div class="size12 trans-0-4 m-t-30 m-b-10 m-r-10" style="float: left;">
-							<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
+							<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam; ?>" value="<?=Yii::$app->request->csrfToken; ?>"/>
 							<input type="submit" value="Continue" name="continue_payment" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
 						</div>
 

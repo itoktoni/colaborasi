@@ -151,8 +151,9 @@ class ContinuepaymentController extends Controller
             return $this->redirect(['/checkout']);
         }
 
+        
         $payment_insert_value[] = [
-            $invoice, CMS::PAYMENT_BALANCE, CMS::SHIPPING_ON,
+            $invoice, CMS::PAYMENT_BALANCE, (YII::$app->request->post('shipping_type'))?CMS::SHIPPING_ON:CMS::SHIPPING_OFF,
             $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 
@@ -196,7 +197,21 @@ class ContinuepaymentController extends Controller
         
         
         \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
-        $token = YII::$app->request->post('stripeToken');
+        $token = \Stripe\Token::create(array(
+            "card" => array(
+              "number" => YII::$app->request->post('cardnumber'),
+              "exp_month" => YII::$app->request->post('month'),
+              "exp_year" => YII::$app->request->post('year'),
+              "cvc" => YII::$app->request->post('cvc')
+            )
+        ));
+
+        if($token){
+            $token = $token->id;
+        }else{
+            Yii::$app->session->setFlash('error', 'Invalid Token');
+            return $this->redirect(['/checkout']);
+        }
 
         $total_idr 		= 0;
     	$counter_new 	= 0;
@@ -259,7 +274,7 @@ class ContinuepaymentController extends Controller
         $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
 
         $payment_insert_value[]       = [
-            $invoice, CMS::PAYMENT_CC, CMS::SHIPPING_ON,
+            $invoice, CMS::PAYMENT_CC, (YII::$app->request->post('shipping_type'))?CMS::SHIPPING_ON:CMS::SHIPPING_OFF,
             $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 
@@ -286,8 +301,8 @@ class ContinuepaymentController extends Controller
 
         try {
                 $charge = \Stripe\Charge::create([
-                    'amount' => $grand_total_usd, 
-                    'currency' => 'usd',
+                    'amount' => $grand_total_idr.'00', 
+                    'currency' => 'idr',
                     'description' => $invoice,
                     'source' => $token,
                     'receipt_email' => YII::$app->request->post('shipping_email'),
@@ -385,7 +400,7 @@ class ContinuepaymentController extends Controller
         $grand_total_usd    = CMS::currencyConverter( 'IDR', 'USD', $grand_total_idr );
 
         $payment_insert_value[]       = [
-            $invoice, CMS::PAYMENT_PAYPAL, CMS::SHIPPING_ON,
+            $invoice, CMS::PAYMENT_PAYPAL, (YII::$app->request->post('shipping_type'))?CMS::SHIPPING_ON:CMS::SHIPPING_OFF,
             $user_id, $user_name, $user_address, $user_email, $user_social_media_type, $user_social_media_id,
             $voucher_id, $voucher_name, $discount_type, $discount,
             $total_idr, $total_usd, $discount, $discount_usd, 

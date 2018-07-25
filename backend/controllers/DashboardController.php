@@ -15,8 +15,9 @@ class DashboardController extends AuthController {
      */
     public function actionIndex()
     {
+        menu($this,'dashboard','');
     	$this->view->params['menu'] 	= 'dashboard';
-		$this->view->params['submenu'] 	= '';
+        // $this->view->params['submenu'] 	= '';
         return $this->render('index');
     }
 

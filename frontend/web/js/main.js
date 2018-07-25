@@ -251,37 +251,37 @@
         $('#cc').hide();
     }
 
-    $('#cvc').change(function (e) {
-        var id;
-        Stripe.card.createToken({
-            number: $('#card').val(),
-            cvc: $('#cvc').val(),
-            exp_month: $('#month').val(),
-            exp_year: $('#year').val()
-        }, function (status, response) {
+    // $('#cvc').change(function (e) {
+    //     var id;
+    //     Stripe.card.createToken({
+    //         number: $('#card').val(),
+    //         cvc: $('#cvc').val(),
+    //         exp_month: $('#month').val(),
+    //         exp_year: $('#year').val()
+    //     }, function (status, response) {
 
-            if (response.error) { // Problem!
+    //         if (response.error) { // Problem!
 
-                swal({
-                    title: "Error Payment !",
-                    text: response.error.message,
-                    // timer: 3000,
-                    showConfirmButton: true,
-                    icon: "error",
-                });
+    //             swal({
+    //                 title: "Error Payment !",
+    //                 text: response.error.message,
+    //                 // timer: 3000,
+    //                 showConfirmButton: true,
+    //                 icon: "error",
+    //             });
 
-                $('#card').val('');
-                $('#cvc').val('');
-                $('#month').val('');
-                $('#year').val('');
+    //             $('#card').val('');
+    //             $('#cvc').val('');
+    //             $('#month').val('');
+    //             $('#year').val('');
 
-            } else { // Token was created!
+    //         } else { // Token was created!
 
-                $('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
-            }
-        });
-        return false;
-    });
+    //             $('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
+    //         }
+    //     });
+    //     return false;
+    // });
 
     $(function () {
         $('#payment_method_paypal').click(function () {
@@ -299,6 +299,15 @@
                 $('#cc').show(1000);
             }
         });
+    });
+
+    $(".input-shipping-option").change(function() {
+        if(this.checked) {
+            $('#shipping-process').slideDown(300);
+        }
+        else {
+            $('#shipping-process').slideUp(300);
+        }
     });
 
 })(jQuery);

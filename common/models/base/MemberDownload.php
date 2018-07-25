@@ -19,6 +19,7 @@ use Yii;
 class MemberDownload extends \yii\db\ActiveRecord
 {
     public $product_name;
+    public $counter;
     public $download_url;
     const STATUS_AVAILABLE = 1,STATUS_EXPIRED = 0;
 

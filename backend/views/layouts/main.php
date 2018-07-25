@@ -99,7 +99,6 @@ AppAsset::register($this);
      
             swal({ title: 'Success !',
                 text: '".Yii::$app->session->getFlash('success')."',
-                timer: 3000,
                 showConfirmButton: true,
                 icon: 'success',
             });

@@ -3,12 +3,18 @@ use yii\helpers\Html;
 use yii\helpers\Url;?>
 
     <div class="row">
+    
         <div class="col-md-12">
-                <form action="<?php echo $action; ?>" method="<?php echo $method; ?>">
-                    <?php foreach ($field as $key => $item):?>
+        <div class="card" style="padding: 30px 15px;">
+                <form action="<?php echo $action; ?>" method="<?php echo $method; ?>" id="<?php echo $id;?>">
+                    <?php foreach ($field as $key => $item): ?>
 
+                        <?php if (isset($item['columnCss'])): ?>
+                        <div class="<?php echo $item['columnCss']; ?>">
+                        <?php else: ?>
                         <div class="col-md-3">
-                            <?php if (!is_array($item)):?>
+                        <?php endif;?>
+                            <?php if (!is_array($item)): ?>
 
                             <div class="form-group is-empty">
                                 <input type="text" name="<?php echo $key; ?>" class="<?php echo $class; ?>" placeholder="Find <?=ucwords($key);?>" value="<?php echo $item; ?>"
@@ -30,12 +36,12 @@ use yii\helpers\Url;?>
                                     <?php echo (isset($item['placeholder'])) ? ucwords($item['placeholder']) : 'Select ' . ucwords((isset($item['placeholder'])) ? $item['name'] : $key); ?>
                                 </option>
                                 <?php
-                                if (!isset($item['value'])):
-                                    $item['value'] = (isset($item['name'])) ? Yii::$app->request->get($item['name']) : Yii::$app->request->get($key);
-                                endif;
-                                foreach ($item['item'] as $key => $e):
-                                ?>
-                                    <option value="<?php echo $key; ?>" <?php echo ($item['value']== $key) ? 'selected' : ''; ?>>
+if (!isset($item['value'])):
+    $item['value'] = (isset($item['name'])) ? Yii::$app->request->get($item['name']) : Yii::$app->request->get($key);
+endif;
+foreach ($item['item'] as $key => $e):
+?>
+                                    <option value="<?php echo $key; ?>" <?php echo ($item['value'] == $key && $item['value'] != '') ? 'selected' : ''; ?>>
                                         <?php echo $e; ?>
                                     </option>
                                     <?php endforeach;?>
@@ -68,7 +74,7 @@ use yii\helpers\Url;?>
                             <?php endif;?>
                             <?php endif;?>
                         </div>
-                        <?php if (isset($item['clearfix']) && $item['clearfix']):?>
+                        <?php if (isset($item['clearfix']) && $item['clearfix']): ?>
                             <div class="clearfix">&nbsp;</div>
                             <?php endif;?>
                         <?php endforeach;?>
@@ -76,7 +82,7 @@ use yii\helpers\Url;?>
                         <?php if ($status): ?>
                         <div class="col-md-2">
                             <div class="form-group is-empty" style="margin-top:11px;">
-                                <?php echo Html::dropDownList('sort_order', Yii::$app->request->get('sort_order', $defaultValue = null), (!$sort_field) ? backend\components\CMS::sort() : $status_field, ['prompt' => 'No Sort', 'class' => 'selectpicker','data-size' => '7','data-style' => 'select-with-transition']); ?>
+                                <?php echo Html::dropDownList('sort_order', Yii::$app->request->get('sort_order', $defaultValue = null), (!$sort_field) ? backend\components\CMS::sort() : $status_field, ['prompt' => 'No Sort', 'class' => 'selectpicker', 'data-size' => '7', 'data-style' => 'select-with-transition']); ?>
                             </div>
                         </div>
                         <?php endif;?>
@@ -85,17 +91,17 @@ use yii\helpers\Url;?>
                         <?php if ($status): ?>
                         <div class="col-md-2">
                             <div class="form-group is-empty" style="margin-top:11px;">
-                                <?php echo Html::dropDownList('status', Yii::$app->request->get('status', $defaultValue = null), (!$status_field) ? backend\components\CMS::status() : $status_field, ['prompt' => 'All Status', 'class' => 'selectpicker','data-size' => '7','data-style' => 'select-with-transition']); ?>
+                                <?php echo Html::dropDownList('status', Yii::$app->request->get('status', $defaultValue = null), (!$status_field) ? backend\components\CMS::status() : $status_field, ['prompt' => 'All Status', 'class' => 'selectpicker', 'data-size' => '7', 'data-style' => 'select-with-transition']); ?>
                             </div>
                         </div>
                         <?php endif;?>
                         <div class="clearfix"></div>
                         <div class="col-md-12  text-right">
                             <a href="<?php echo Url::to('/' . Yii::$app->request->pathinfo); ?>" class="btn btn-sm btn-default" rel="tooltip" title="" data-original-title="Reset Search"><i class="material-icons">sync</i></a>
-                                
                             <button type="submit" class="btn btn-sm btn-primary" rel="tooltip" title="" data-original-title="Search"><i class="material-icons">search</i></button>
                         </div>
                 </form>
         </div>
+    </div>
     </div>
     <div class="clearfix">&nbsp;</div>

@@ -11,6 +11,7 @@ class SearchWidget extends Widget{
 	public $container_class = 'col-md-3';
 	public $method 			= 'get';
 	public $action 			= '';
+	public $id				= 'form-search';
 
 	public $source 			= false;
 
@@ -36,6 +37,7 @@ class SearchWidget extends Widget{
 	public function run(){
 		return $this->render('widget\search', 
 			[
+				'id'			=> $this->id,
 				'field' 		=> $this->field,
 				'class' 		=> $this->class,
 				'method'		=> $this->method,
