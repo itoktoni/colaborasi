@@ -82,9 +82,9 @@ class ProfileController extends \yii\web\Controller
 
 	public function actionPurchase()
 	{
-		$this->view->params['menu'] = 'purchase';
+		$this->view->params['menu'] = 'purchase'; 
 
-		$purchase 	= Payments::find()->all();
+		$purchase 	= Payments::find()->andWhere(['user' => YII::$app->user->identity->id])->all();
 
 		return $this->render('purchase', ['purchase' => $purchase]);
 	}
