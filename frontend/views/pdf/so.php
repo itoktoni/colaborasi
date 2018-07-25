@@ -47,6 +47,7 @@
                                             <span style="text-align: right;font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0"><?php echo $header['user_email']; ?></span>
                                         </td>
                                     </tr>
+                                    <?php if($header['shipping_address']):?>
                                     <tr>
                                         <td align="left" colspan="2" valign="top" style="border-collapse:collapse;border-spacing:0;font-family:Arial,sans-serif;color:#555;line-height:1.5;border-bottom-color:#cccccc;border-bottom-width:1px;border-bottom-style:solid;margin:0;padding:5px 10px" bgcolor="#FFFFFF">
                                             <span style="font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0">Alamat</span>
@@ -55,6 +56,7 @@
                                             <span style="text-align: right;font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0"><?php echo $header['shipping_address']; ?></span>
                                         </td>
                                     </tr>
+                                    <?php endif;?>
                                     <tr>
                                         <th colspan="4" style="border-bottom-style:none;color:#ffffff;padding-left:10px;padding-right:10px" bgcolor="#900135"></th>
                                     </tr>
@@ -95,7 +97,7 @@
                                             </td>
                                         </tr>
                                     <?php endfor; ?>
-
+                                    <?php if(!empty($header['total_shipping_rupiah'])):?>
                                     <tr>
                                         <th colspan="4" style="border-bottom-style:none;color:#ffffff;padding-left:10px;padding-right:10px" bgcolor="#900135"></th>
                                     </tr>
@@ -107,6 +109,7 @@
                                             <span style="text-align: right;font-family:Arial,sans-serif;color:#555;line-height:1.5;font-size:14px;margin:0;padding:0"><?php echo number_format($header['total_shipping_rupiah']); ?></span>
                                         </td>
                                     </tr>
+                                    <?php endif;?>
                                     <tr>
                                         <th colspan="1" style="text-align: left;border-bottom-style:none;color:#ffffff;padding-left:10px;padding-right:10px" bgcolor="#900135">
                                     <h2 style="font-family:Arial,sans-serif;color:#ffffff;line-height:1.5;font-size:14px;margin:0;padding:5px 0">
