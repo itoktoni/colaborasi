@@ -59,7 +59,8 @@ class BrandController extends Controller
     {
         $model = new Brand();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        
+        if ($model->load(post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Brand Created');
             return $this->redirect(['/brand/']);
         }
@@ -80,7 +81,7 @@ class BrandController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Brand Updated');
             return $this->redirect('/brand/');
         }
