@@ -192,7 +192,7 @@ endif;
 							<input type="text" name="shipping_address" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->address; ?>" placeholder="Address" class="sizefull s-text7">
 							<hr style="padding:5px;">
 
-							<input type="text" name="shipping_mobile" value="" placeholder="Phone Number" class="sizefull s-text7">
+							<input type="text" name="shipping_mobile" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->phone_number; ?>" placeholder="Phone Number" class="sizefull s-text7">
 							<hr style="padding:5px;">
 
 							<input type="text" name="shipping_email" value="<?php echo Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->email; ?>" placeholder="Email" class="sizefull s-text7">
