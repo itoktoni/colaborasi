@@ -448,6 +448,10 @@ iframe {
   background: white;
 }
 
+.order-list .list:nth-child(2n+1){
+  margin-right: 30px;
+}
+
 
 /*[ PROFILE PAGE ]
 ///////////////////////////////////////////////////////////
@@ -2471,6 +2475,10 @@ li.sale-noti > a {
 
 .table-purchase-history .table-row .column-2 {
   font-size: 15px;
+}
+
+.table-purchase-history .detail-item{
+  display: none;
 }
 
 /* ------------------------------------ */
