@@ -283,6 +283,8 @@
     //     return false;
     // });
 
+    /*[ Payment method selection ]
+    ===========================================================*/
     $(function () {
         $('#payment_method_paypal').click(function () {
             if ($(this).is(':checked')) {
@@ -301,12 +303,28 @@
         });
     });
 
+
+    /*[ Shipping Checkbox selection ]
+    ===========================================================*/
     $(".input-shipping-option").change(function() {
         if(this.checked) {
             $('#shipping-process').slideDown(300);
         }
         else {
             $('#shipping-process').slideUp(300);
+        }
+    });
+
+    /*[ Purchase Detail ]
+    ===========================================================*/
+    $('.action_detail').click(function() {
+        var invoice = $(this).attr('rel');
+        $('.detail-item').slideUp();
+        // console.log(invoice);
+        if($('tr.' + invoice).is(':visible')){
+            $('tr.' + invoice).slideUp(300);
+        }else{
+            $('tr.' + invoice).slideDown(300);
         }
     });
 
