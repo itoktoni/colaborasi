@@ -47,6 +47,8 @@ class Subscribe extends \yii\db\ActiveRecord
     {
         return [
             [['email'], 'required'],
+            [['email'], 'email'],
+            [['email'], 'unique'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }

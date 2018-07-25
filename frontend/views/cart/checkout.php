@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use yii\widgets\LinkPager;
+
 $this->title = 'Checkout';
 
 $this->registerJsFile(
@@ -82,15 +82,15 @@ endif;
 							<?php else: ?>
 
 							<?php
-							//print_r($voucher);
-							if (!empty($voucher['discount_prosentase'])):
-							    $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
-							elseif (!empty($voucher['discount_price'])):
-							    $discount = $voucher['discount_price'];
-							else:
-							    $discount = 0;
-							endif;
-							?>
+                            //print_r($voucher);
+                            if (!empty($voucher['discount_prosentase'])):
+                                $discount = ($voucher['discount_prosentase'] / 100) * $subtotal;
+                            elseif (!empty($voucher['discount_price'])):
+                                $discount = $voucher['discount_price'];
+                            else:
+                                $discount = 0;
+                            endif;
+                            ?>
 
 							<!--  -->
 							<div class="flex-w flex-sb-m p-b-12 bo10 p-t-12">
@@ -103,9 +103,9 @@ endif;
 								</span>
 							</div>
 
-							<?php endif;?>
+							<?php endif; ?>
 
-							<?php $grandtotal = $subtotal - $discount;?>
+							<?php $grandtotal = $subtotal - $discount; ?>
 
 							<!--  -->
 
@@ -180,7 +180,7 @@ endif;
 									<option value="<?php echo $p->province_id; ?>">
 										<?php echo $p->province; ?>
 									</option>
-								<?php endforeach;?>
+								<?php endforeach; ?>
 							</select>
 							<hr style="padding:5px;">
 
@@ -227,14 +227,14 @@ endif;
 								</li>
 								<li>
 									<label for="payment_method_paypal" class="label-payment-option">
-										<img class="image-payment" src="<?php echo Url::to("@web/images/icons/paypal2.png"); ?>">
+										<img class="image-payment" src="<?php echo Url::to('@web/images/icons/paypal2.png'); ?>">
 										<input type="radio" data-order_button_text="PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
 										<span class="checkmark"></span>
 									</label>
 								</li>
 								<li>
 									<label for="payment_method_cc" class="label-payment-option">
-										<img class="image-payment" src="<?php echo Url::to("@web/images/icons/cc.png"); ?>">
+										<img class="image-payment" src="<?php echo Url::to('@web/images/icons/cc.png'); ?>">
 										<input type="radio" data-order_button_text="Credit Card" value="cc" name="payment_method" class="input-radio" id="payment_method_cc">
 										<span class="checkmark"></span>
 									</label>
@@ -243,7 +243,7 @@ endif;
 						</div>
 
 						<div class="size12 trans-0-4 m-t-30 m-b-10 m-r-10" style="float: left;">
-							<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
+							<input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam; ?>" value="<?=Yii::$app->request->csrfToken; ?>"/>
 							<input type="submit" value="Continue" name="continue_payment" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4 size15">
 						</div>
 

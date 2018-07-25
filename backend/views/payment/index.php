@@ -258,7 +258,10 @@ echo SearchWidget::widget(
 			<?php $data[] = $item->counter;?>
 		<?php endforeach;?>
 
-        
+        <?php if(count($data) == 1):
+                $data[] = $item->counter;
+                $labels[] = $item->created_at;
+        endif;?>
         <?= \dosamigos\chartjs\ChartJs::widget([
 				'type' => 'line',
 				'id' => 'chart',
@@ -271,6 +274,43 @@ echo SearchWidget::widget(
 					'datasets' => [
 						[
 							'label' => "Payment",
+							'backgroundColor' => "rgba(156,39,176,0.2)",
+							'borderColor' => "rgba(179,181,198,1)",
+							'pointBackgroundColor' => "rgba(179,181,198,1)",
+							'pointBorderColor' => "#fff",
+							'pointHoverBackgroundColor' => "#fff",
+							'pointHoverBorderColor' => "rgba(179,181,198,1)",
+							'data' => $data
+						],
+					]
+				]
+			]);
+			?>
+             <?php 
+            $labels = $data = [];
+            foreach($productchart->getModels() as $item):?>
+                <?php $labels[] = $item->create_at;?>
+                <?php $data[] = $item->counter;?>
+            <?php endforeach;?>
+
+            <?php if(count($data) == 1):
+                $data[] = $item->create_at;
+                $labels[] = $item->counter;
+            endif;?>
+
+            <div class="clearfix">&nbsp;</div>
+            <?= \dosamigos\chartjs\ChartJs::widget([
+				'type' => 'line',
+				'id' => 'chart_product',
+				'options' => [
+					'height' => 400,
+					'width' => 400
+				],
+				'data' => [
+					'labels' => $labels,
+					'datasets' => [
+						[
+							'label' => "Product",
 							'backgroundColor' => "rgba(156,39,176,0.2)",
 							'borderColor' => "rgba(179,181,198,1)",
 							'pointBackgroundColor' => "rgba(179,181,198,1)",
