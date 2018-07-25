@@ -17,6 +17,8 @@ class PaymentSearch extends Payments
     public $counter;
     public $price_range_start;
     public $price_range_to;
+    public $product;
+    public $brand;
 
     /**
      * {@inheritdoc}
@@ -24,8 +26,8 @@ class PaymentSearch extends Payments
     public function rules()
     {
         return [
-            [['id', 'payment_type', 'shipping_type', 'user', 'user_social_media_type', 'voucher', 'voucher_discount_type', 'tax_amount', 'payment_status', 'status'], 'integer'],
-            [['invoice', 'user_name', 'user_address', 'user_email', 'user_social_media_id', 'voucher_name', 'paypal_payment_id', 'paypal_amount_dollar', 'paypal_amount_rupiah', 'paypal_payer_id', 'paypal_payer_email', 'paypal_token', 'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email', 'cc_transaction_id', 'cc_number', 'cc_month', 'cc_year', 'created_at', 'updated_at', 'date_range', 'price_range_start', 'price_range_to'], 'safe'],
+            [['id', 'payment_type', 'shipping_type', 'user', 'user_social_media_type', 'voucher_discount_type', 'tax_amount', 'payment_status', 'status'], 'integer'],
+            [['voucher','invoice', 'user_name', 'user_address', 'user_email', 'user_social_media_id', 'voucher_name', 'paypal_payment_id', 'paypal_amount_dollar', 'paypal_amount_rupiah', 'paypal_payer_id', 'paypal_payer_email', 'paypal_token', 'shipping_province', 'shipping_city', 'shipping_courier', 'shipping_courier_service', 'shipping_receiver', 'shipping_address', 'shipping_phone_number', 'shipping_email', 'cc_transaction_id', 'cc_number', 'cc_month', 'cc_year', 'created_at', 'updated_at', 'date_range', 'price_range_start', 'price_range_to','product','brand'], 'safe'],
             [['voucher_discount_value', 'total_bruto', 'total_bruto_dollar', 'total_discount_rupiah', 'total_discount_dollar', 'total_tax_rupiah', 'total_tax_dollar', 'total_shipping_rupiah', 'total_shipping_dollar', 'total_net_rupiah', 'total_net_dollar'], 'number'],
         ];
     }
@@ -88,6 +90,7 @@ class PaymentSearch extends Payments
         }
 
         
+        
         if ($this->date_range) {
             $date = explode(' to ', $this->date_range);
             if (!$this->__validateDate($date[0]) && !$this->__validateDate($date[1])) {
@@ -95,11 +98,42 @@ class PaymentSearch extends Payments
             }
 
             if ($date[0] === $date[1]) {
-                $query->where(['date(created_at)' => $date[0]]);
+                $query->where(['date(payment.created_at)' => $date[0]]);
             } else {
-                $query->where(['between', 'created_at', $date[0], $date[1]]);
+                $query->where(['between', 'payment.created_at', $date[0], $date[1]]);
+            }
+        }else{
+            $query->where(['date(payment.created_at)' => new \yii\db\Expression('date(NOW())')]);
+        }
+
+        if ($this->product) {
+            if($product = Product::findOne(['name' => $this->product])){
+                $query->join('right join', 'payment_detail','payment.id=payment_detail.payment');
+                $query->andFilterWhere(['=','payment_detail.product', $product->id]);
             }
         }
+
+        if ($this->voucher) {
+            
+            if($voucher = Voucher::findOne(['name' => $this->voucher])){
+                
+                $query->join('left join', 'voucher','voucher.id=payment.voucher');
+                $query->andFilterWhere(['=','payment.voucher', $voucher->id]);
+                
+            }
+        }
+
+        if ($this->brand) {
+            
+            if($brand = Brand::findOne(['name' => $this->brand])){
+                if(!$this->product){
+                    $query->join('right join', 'payment_detail','payment.id=payment_detail.payment');
+                }
+                $query->join('left join', 'product','payment_detail.product=product.id');
+                $query->andFilterWhere(['=','product.brand', $brand->id]);
+            }
+        }
+
 
         if ($this->price_range_start) {
             if (!$this->price_range_to) {
@@ -117,7 +151,7 @@ class PaymentSearch extends Payments
             'shipping_type' => $this->shipping_type,
             'user' => $this->user,
             'user_social_media_type' => $this->user_social_media_type,
-            'voucher' => $this->voucher,
+            // 'voucher' => $this->voucher,
             'voucher_discount_type' => $this->voucher_discount_type,
             'voucher_discount_value' => $this->voucher_discount_value,
             'tax_amount' => $this->tax_amount,
@@ -131,8 +165,8 @@ class PaymentSearch extends Payments
             'total_shipping_dollar' => $this->total_shipping_dollar,
             'total_net_rupiah' => $this->total_net_rupiah,
             'total_net_dollar' => $this->total_net_dollar,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'payment.created_at' => $this->created_at,
+            'payment.updated_at' => $this->updated_at,
             'payment_status' => $this->payment_status,
             'status' => $this->status,
         ]);
@@ -220,6 +254,8 @@ class PaymentSearch extends Payments
             } else {
                 $query->where(['between', 'date(created_at)', $date[0], $date[1]]);
             }
+        }else{
+            $query->where(['date(created_at)' => new \yii\db\Expression('date(NOW())')]);
         }
 
         
