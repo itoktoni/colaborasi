@@ -301,6 +301,15 @@
         });
     });
 
+    $(".input-shipping-option").change(function() {
+        if(this.checked) {
+            $('#shipping-process').slideDown(300);
+        }
+        else {
+            $('#shipping-process').slideUp(300);
+        }
+    });
+
 })(jQuery);
 
 function autoResize(id){
