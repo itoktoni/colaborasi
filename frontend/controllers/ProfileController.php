@@ -161,8 +161,8 @@ class ProfileController extends \yii\web\Controller
                 $download_link->save();
             }
 
-            if (!$download_link->status && strtotime(date('Y-m-d H:i:s')) > strtotime($download_link->expiration_date)) {
-                $download_link->save();
+            if (!$download_link->status && date('Y-m-d H:i:s') > strtotime($download_link->expiration_date)) {
+                $download_link->status = -9;
                 throw new yii\web\ForbiddenHttpException();
             }
 

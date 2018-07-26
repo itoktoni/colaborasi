@@ -2,7 +2,6 @@
 
 namespace common\models\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\base\Voucher;
@@ -34,7 +33,7 @@ class VoucherSearch extends Voucher
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -43,7 +42,7 @@ class VoucherSearch extends Voucher
     public function search($params)
     {
         $query = Voucher::find()
-        ->where(['>=',self::tableName().'.status',self::STATUS_INACTIVE]);
+        ->where(['>=', self::tableName().'.status', self::STATUS_INACTIVE]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -53,7 +52,7 @@ class VoucherSearch extends Voucher
             ],
         ]);
 
-        $this->load($params,'');
+        $this->load($params, '');
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

@@ -171,6 +171,8 @@ class ContinuepaymentController extends Controller
             $this->voucher->save(false);
         }
 
+        $this->actionSendemail($invoice);
+
         return $this->redirect(['/payment-success']);
         endif;
 

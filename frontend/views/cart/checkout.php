@@ -129,7 +129,7 @@ endif;
 								</span>
 							</div>
 						</div>
-						<div id="shipping" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38 mb-3">
+						<div id="shipping" style="display:none;" class="col-md-12 bo9 p-l-40 p-r-40 p-t-30 p-b-38 mb-3">
 
 							<h5 class="m-text20 p-b-24">
 								Shipping Option
@@ -162,7 +162,7 @@ endif;
 
 				<div id="payment" class="col-md-7 bo9 m-l-20 p-l-40 p-r-40 p-t-30 p-b-38" style="float: left;width: calc(100% - 422px);">
 
-						<div id="shipping-process" style="">
+						<div id="shipping-process" style="display:none;">
 							<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
 							<input type="hidden" id="ongkos" name="ongkos">
 							<input type="hidden" id="jasa" name="jasa">

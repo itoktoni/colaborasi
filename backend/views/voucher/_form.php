@@ -13,23 +13,23 @@ use yii\widgets\ActiveForm;
 
 	<div class="col-md-4">
 
-		<?php $form = ActiveForm::begin();?>
+		<?php $form = ActiveForm::begin(); ?>
 
-	    <?=$form->field($model, 'name')->textInput(['maxlength' => true])?>
+	    <?=$form->field($model, 'name')->textInput(['maxlength' => true]); ?>
 
-        <?=$form->field($model, 'code')->textInput(['maxlength' => true])?>
+        <?=$form->field($model, 'code')->textInput(['maxlength' => true]); ?>
 
-        <?=$form->field($model, 'description')->textarea(['rows' => 6])?>
+        <?=$form->field($model, 'description')->textarea(['rows' => 6]); ?>
 
-        <?=$form->field($model, 'voucher_type')->dropdownList(Yii::$app->cms->voucher_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Voucher Type']);?>
+        <?=$form->field($model, 'voucher_type')->dropdownList(Yii::$app->cms->voucher_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Voucher Type']); ?>
 
-        <?=$form->field($model, 'discount_type')->dropdownList(Yii::$app->cms->discount_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Discount Type']);?>
+        <?=$form->field($model, 'discount_type')->dropdownList(Yii::$app->cms->discount_type(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Discount Type']); ?>
 
-        <?=$form->field($model, 'discount_counter', ['options' => ['style' => 'display:none;']])->textInput(['type' => 'number'])?>
+        <?=$form->field($model, 'discount_counter', ['options' => ['style' => 'display:none;']])->textInput(['type' => 'number']); ?>
 
-        <?=$form->field($model, 'discount_prosentase', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0, 'max' => 100])->label('Discount Percentage')?>
+        <?=$form->field($model, 'discount_prosentase', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number', 'min' => 0, 'max' => 100])->label('Discount Percentage'); ?>
 
-        <?=$form->field($model, 'discount_price', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number'])->label('Discount Amount')?>
+        <?=$form->field($model, 'discount_price', ['options' => ['style' => 'display:none;']])->textInput(['maxlength' => true, 'type' => 'number'])->label('Discount Amount'); ?>
 
         <div class="form-group field-voucher-start_date" style="display:none;">
             <label class="control-label" for="voucher-start_date">Start Date</label>
@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <?=$form->field($model, 'start_date')->textInput(['class' => 'form-control pull-right datepicker-date'])->label(false);?>
+                <?=$form->field($model, 'start_date')->textInput(['class' => 'form-control pull-right datepicker-date'])->label(false); ?>
             </div>
             <div class="help-block"></div>
         </div>
@@ -47,20 +47,20 @@ use yii\widgets\ActiveForm;
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <?=$form->field($model, 'end_date')->textInput(['class' => 'form-control pull-right datepicker-date'])->label(false);?>
+                <?=$form->field($model, 'end_date')->textInput(['class' => 'form-control pull-right datepicker-date'])->label(false); ?>
             </div>
             <div class="help-block"></div>
         </div>
 
-        <?=$form->field($model, 'status')->dropdownList(Yii::$app->cms->status(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Status'])?>
+        <?=$form->field($model, 'status')->dropdownList(Yii::$app->cms->status(), ['class' => 'selectpicker', 'data-style' => 'select-with-transition', 'title' => 'Choose Status']); ?>
 
 
 	    <div class="form-group">
-            <?=Html::a('Back', Url::to('/voucher/'), ['class' => 'btn btn-fill btn-primary']);?>
-            <?=Html::submitButton('Save', ['class' => 'btn btn-fill btn-success'])?>
+            <?=Html::a('Back', Url::to('/voucher/'), ['class' => 'btn btn-fill btn-primary']); ?>
+            <?=Html::submitButton('Save', ['class' => 'btn btn-fill btn-success']); ?>
 		</div>
 
-		<?php ActiveForm::end();?>
+		<?php ActiveForm::end(); ?>
 
 	</div>
 
@@ -91,14 +91,10 @@ function toggleHide(target){
         $('.field-voucher-end_date').show();
     }else if($(target).val() == 1){
         $('.field-voucher-discount_counter').hide();
-        $('#voucher-start_date').val('');
-        $('#voucher-end_date').val('');
         $('#voucher-discount_counter').val('0');
-        $('.field-voucher-start_date').hide();
-        $('.field-voucher-end_date').hide();
+        $('.field-voucher-start_date').show();
+        $('.field-voucher-end_date').show();
     }else if($(target).val() == 3){
-        $('#voucher-start_date').val('');
-        $('#voucher-end_date').val('');
         $('.field-voucher-discount_counter').show();
         $('.field-voucher-start_date').hide();
         $('.field-voucher-end_date').hide();
