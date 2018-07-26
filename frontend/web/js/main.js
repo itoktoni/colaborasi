@@ -252,6 +252,7 @@
 
     if ($('#payment_method_balance').is(':checked')) {
         $('#cc').hide();
+        $('#cek_payment').val('true');
     }
 
     $('#cvc').change(function (e) {
@@ -278,8 +279,12 @@
                 $('#month').val('');
                 $('#year').val('');
 
+                 $('#cek_payment').val('false');
+                
+
             } else { // Token was created!
 
+                 $('#cek_payment').val('true');
                 //$('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
             }
         });
@@ -292,19 +297,67 @@
         $('#payment_method_paypal').click(function () {
             if ($(this).is(':checked')) {
                 $('#cc').hide(1000);
+                $('#cek_payment').val('true');
             }
         });
         $('#payment_method_balance').click(function () {
             if ($(this).is(':checked')) {
                 $('#cc').hide(1000);
+                 $('#cek_payment').val('true');
             }
         });
         $('#payment_method_cc').click(function () {
             if ($(this).is(':checked')) {
                 $('#cc').show(1000);
+                 $('#cek_payment').val('false');
             }
         });
     });
+
+        $(document).ready(function () {
+            $('#form-payment').submit(function (e) {
+
+                var id;
+                Stripe.card.createToken({
+                    number: $('#card').val(),
+                    cvc: $('#cvc').val(),
+                    exp_month: $('#month').val(),
+                    exp_year: $('#year').val()
+                }, function (status, response) {
+
+                    if (response.error) { // Problem!
+
+                        swal({
+                            title: "Error Payment !",
+                            text: response.error.message,
+                            // timer: 3000,
+                            showConfirmButton: true,
+                            icon: "error",
+                        });
+
+                        $('#card').val('');
+                        $('#cvc').val('');
+                        $('#month').val('');
+                        $('#year').val('');
+
+                        $('#cek_payment').val('false');
+                         e.preventDefault(); // to stop form submitting
+
+
+                    } else { // Token was created!
+
+                        $('#cek_payment').val('true');
+                        //$('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
+                    }
+                });
+
+                var cek = $('#cek_payment').val();
+                if(cek == 'false'){
+                    
+                    e.preventDefault(); // to stop form submitting
+                }
+            });
+        });
 
 
     /*[ Shipping Checkbox selection ]

@@ -166,6 +166,7 @@ endif;
 							<input type="hidden" id="total-ongkir" name="total_ongkir" value="0">
 							<input type="hidden" id="ongkos" name="ongkos">
 							<input type="hidden" id="jasa" name="jasa">
+							<input type="hidden" id="cek_payment" name="cek_payment">
 
 							<h5 class="m-text20 p-b-24">
 								Shipping
