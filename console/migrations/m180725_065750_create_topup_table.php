@@ -19,7 +19,7 @@ class m180725_065750_create_topup_table extends Migration
             'create_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'update_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'expire_at' => $this->timestamp(),
-            'status' => $this->timestamp(),
+            'status' => $this->tinyinteger(),
         ]);
     }
 

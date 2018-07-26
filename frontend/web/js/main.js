@@ -44,7 +44,10 @@
     /*[ Show header dropdown ]
     ===========================================================*/
     $('.js-show-header-dropdown').on('click', function(){
-        $(this).parent().find('.header-dropdown')
+        $(this).parent().find('.header-dropdown');
+        if($('.js-show-login-popup').parent().find('.login-dropdown').hasClass('show-login-popup')){
+            $('.js-show-login-popup').parent().find('.login-dropdown').toggleClass('show-login-popup');
+        }
     });
 
     var menu = $('.js-show-header-dropdown');

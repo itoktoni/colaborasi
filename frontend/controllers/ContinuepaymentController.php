@@ -147,7 +147,7 @@ class ContinuepaymentController extends Controller
             $shipping_idr, $shipping_usd, $grand_total_idr, $grand_total_usd,
             YII::$app->request->post('province'), YII::$app->request->post('city'), YII::$app->request->post('courier'), YII::$app->request->post('jasa'),
             YII::$app->request->post('shipping_receiver'), YII::$app->request->post('shipping_address'), YII::$app->request->post('shipping_mobile'), YII::$app->request->post('shipping_email'),
-            date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 0, 1,
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 1, 1,
         ];
 
         if ($this->insertPayment($payment_insert_value)):
@@ -290,10 +290,10 @@ class ContinuepaymentController extends Controller
                 ->execute();
         endif;
 
-        if($grand_total_idr > 1000000){
+        if ($grand_total_idr > 1000000) {
             Yii::$app->session->setFlash('error', 'For Testing, Total Max 1.000.000');
-            return $this->redirect(['/checkout']);
 
+            return $this->redirect(['/checkout']);
         }
 
         try {
@@ -312,6 +312,7 @@ class ContinuepaymentController extends Controller
                 $payment_data->cc_number = YII::$app->request->post('cardnumber');
                 $payment_data->cc_month = YII::$app->request->post('month');
                 $payment_data->cc_year = YII::$app->request->post('year');
+                $payment_data->payment_status = 1;
                 $payment_data->save();
                 if ($this->voucher) {
                     $this->voucher->save(false);
@@ -500,6 +501,7 @@ class ContinuepaymentController extends Controller
                             'paypal_payer_id' => $pi->payer_id,
                             'paypal_payer_email' => $pi->email,
                             'paypal_token' => $sale_id,
+                            'payment_status' => 1,
                         ], ['invoice' => $invoice])
                         ->execute();
 
