@@ -289,11 +289,10 @@ class ContinuepaymentController extends Controller
                 ->batchInsert('payment_detail', ['payment', 'product', 'qty', 'product_name', 'product_origin_price', 'product_discount_price', 'product_sell_price', 'status'], $payment_detail)
                 ->execute();
         endif;
-
-        if($grand_total_idr > 1000000){
-            Yii::$app->session->setFlash('error', 'For Testing, Total Max 1.000.000');
+        // d($grand_total_idr);
+        if($grand_total_idr > 999999){
+            Yii::$app->session->setFlash('error', 'For Testing, Total Max Payment 999.999,99');
             return $this->redirect(['/checkout']);
-
         }
 
         try {
