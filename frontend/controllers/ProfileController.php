@@ -6,6 +6,7 @@ use yii;
 use common\models\base\Member;
 use common\models\base\MemberDownload;
 use common\models\base\Payments;
+use common\models\base\Topup;
 use frontend\models\TopupForm;
 use frontend\models\ChangePassword;
 
@@ -14,6 +15,21 @@ class ProfileController extends \yii\web\Controller
     public function behavior()
     {
         $this->layout = 'main';
+    }
+
+    /**
+     * Check if that user is logged in ffs.
+     *
+     * @param [type] $action
+     */
+    public function beforeAction($action)
+    {
+        if (YII::$app->user->isGuest) {
+            flash_error('You have to login to access this page');
+            $this->redirect('/');
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -51,9 +67,14 @@ class ProfileController extends \yii\web\Controller
     public function actionTopup()
     {
         menu($this, 'topup');
+        $model = new TopupForm();
+        if (post() && $model->load(post()) && $model->save()) {
+            flash_success('Request Added');
+        }
 
         return $this->render('topup', [
-            'topup' => new TopupForm(),
+            'topup' => $model,
+            'topup_history' => Topup::find()->where(['member' => YII::$app->user->identity->id])->all(),
         ]);
     }
 

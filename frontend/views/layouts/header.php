@@ -2,13 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Menu;
 use frontend\components\CMS;
 
-if ( isset($_SESSION['cart']) ) :
-	$cart = $_SESSION['cart'];
+if (isset($_SESSION['cart'])) :
+    $cart = $_SESSION['cart'];
 else :
-	$cart = '';
+    $cart = '';
 endif;
 
 ?>
@@ -49,12 +48,12 @@ endif;
 			<!-- Header Icon -->
 			<div class="header-icons">
 				<div class="header-wrapicon1 dis-block">
-					<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
+					<img src="<?php echo Url::to('@web/images/icons/icon-header-01.png'); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
 
 					<!-- Login Popup -->
 					<div class="login-popup login-dropdown">
 						<ul>
-							<?php if ( Yii::$app->user->isGuest ) : ?>
+							<?php if (Yii::$app->user->isGuest) : ?>
 							<li>
 								<a href="<?php echo Url::to(['site/login']); ?>">Login</a>
 							</li>
@@ -62,8 +61,15 @@ endif;
 							<li style="border-bottom: 0;text-transform: uppercase;">
 								<p>Welcome <?php echo Yii::$app->user->identity->name; ?></p>
 							</li>
+							<li style="border-bottom: 0;text-transform: uppercase;">
+								<span>Your Balance : </span>
+								<span><strong><?php echo number_format(Yii::$app->user->identity->balance); ?></strong></span>
+							</li>
 							<li>
 								<a href="<?php echo Url::to('/profile'); ?>">Profile</a>
+							</li>
+							<li>
+								<a href="<?php echo Url::to('/topup'); ?>">Topup</a>
 							</li>
 							<li>
 								<a href="<?php echo Url::to('/download'); ?>">Downloads</a>
@@ -72,12 +78,12 @@ endif;
 								<a href="<?php echo Url::to('/purchase'); ?>">Purchase History</a>
 							</li>
 							<li>
-								<?= Html::beginForm(['/site/logout'], 'post') ?>
+								<?= Html::beginForm(['/site/logout'], 'post'); ?>
                                     <?= Html::submitButton(
                                         'Logout',
                                         ['class' => 'link-logout']
-                                    ) ?>
-                                <?= Html::endForm() ?> 
+                                    ); ?>
+                                <?= Html::endForm(); ?> 
 							</li>
 							<?php endif; ?> 
 						</ul>
@@ -87,48 +93,48 @@ endif;
 				<span class="linedivide1"></span>
 
 				<div class="header-wrapicon2">
-					<img src="<?php echo Url::to("@web/images/icons/icon-header-02.png"); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
-					<span class="header-icons-noti"><?php echo CMS::getCountCart();?></span>
+					<img src="<?php echo Url::to('@web/images/icons/icon-header-02.png'); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<span class="header-icons-noti"><?php echo CMS::getCountCart(); ?></span>
 
 					<!-- Header cart noti -->
 					<div class="header-cart header-dropdown">
 
 						<?php 
-							$subtotal = 0; 
-							if ( $cart ) :
-						?>
+                            $subtotal = 0;
+                            if ($cart) :
+                        ?>
 						<ul class="header-cart-wrapitem">
 							<?php foreach ($cart as $key => $item) : ?>
 								<li class="header-cart-item" style="position: relative;">
 									<div class="header-cart-item-img">
-										<img src="<?php echo $item['image'];?>" alt="IMG">
+										<img src="<?php echo $item['image']; ?>" alt="IMG">
 									</div>
 
 									<div class="header-cart-item-txt">
-										<a href="<?php echo Url::to('/product/'.$item['slug']);?>" class="header-cart-item-name">
-											<?php echo $item['name'];?>
+										<a href="<?php echo Url::to('/product/'.$item['slug']); ?>" class="header-cart-item-name">
+											<?php echo $item['name']; ?>
 										</a>
 
 										<span class="header-cart-item-info">
-											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
+											<?php echo $item['qty']; ?> x IDR <?php echo number_format($item['price'], 0, '', '.'); ?>
 										</span>
 									</div>
 
-									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$item['id']);?>">
+									<a class="header-cart-item-close cart-delete" href="<?php echo Url::to('/cart/delete/'.$item['id']); ?>">
 										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
 									</a>
 								</li>
 							<?php
-								$subtotal += $item['price'] * $item['qty'];
-								endforeach;
-							?>
+                                $subtotal += $item['price'] * $item['qty'];
+                                endforeach;
+                            ?>
 						</ul>
 
 						<div class="header-cart-total" style="text-align: center;">
-							Total: IDR <?php echo number_format($subtotal,0,'','.');?>
+							Total: IDR <?php echo number_format($subtotal, 0, '', '.'); ?>
 						</div>
 
-						<?php endif;?>
+						<?php endif; ?>
 
 						<div class="header-cart-buttons">
 							<div class="header-cart-wrapbtn" style="margin: 0 auto;">
@@ -154,12 +160,12 @@ endif;
 		<div class="btn-show-menu">
 			<!-- Header Icon mobile -->
 			<div class="header-icons-mobile" style="position: relative;">
-				<img src="<?php echo Url::to("@web/images/icons/icon-header-01.png"); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
+				<img src="<?php echo Url::to('@web/images/icons/icon-header-01.png'); ?>" class="header-icon1 js-show-login-popup" alt="ICON">
 
 				<!-- Login Popup -->
 				<div class="login-popup login-dropdown">
 					<ul>
-						<?php if ( Yii::$app->user->isGuest ) : ?>
+						<?php if (Yii::$app->user->isGuest) : ?>
 						<li>
 							<a href="<?php echo Url::to('/site/login/'); ?>">Login</a>
 						</li>
@@ -177,12 +183,12 @@ endif;
 							<a href="<?php echo Url::to('/site/purchase-history/'); ?>">Purchase History</a>
 						</li>
 						<li>
-							<?= Html::beginForm(['/site/logout'], 'post') ?>
+							<?= Html::beginForm(['/site/logout'], 'post'); ?>
                                 <?= Html::submitButton(
                                     'Logout',
                                     ['class' => 'link-logout']
-                                ) ?>
-                            <?= Html::endForm() ?> 
+                                ); ?>
+                            <?= Html::endForm(); ?> 
 						</li>
 						<?php endif; ?> 
 					</ul>
@@ -191,48 +197,48 @@ endif;
 				<span class="linedivide2"></span>
 
 				<div class="header-wrapicon2">
-					<img src="<?php echo Url::to("@web/images/icons/icon-header-02.png"); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
-					<span class="header-icons-noti"><?php echo CMS::getCountCart();?></span>
+					<img src="<?php echo Url::to('@web/images/icons/icon-header-02.png'); ?>" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<span class="header-icons-noti"><?php echo CMS::getCountCart(); ?></span>
 
 					<!-- Header cart noti -->
 					<div class="header-cart header-dropdown">
 
 						<?php 
-							$subtotal = 0; 
-							if ( $cart ) :
-						?>
+                            $subtotal = 0;
+                            if ($cart) :
+                        ?>
 						<ul class="header-cart-wrapitem">
 							<?php foreach ($cart as $key => $item) : ?>
 								<li class="header-cart-item" style="position: relative;">
 									<div class="header-cart-item-img">
-										<img src="<?php echo $item['image'];?>" alt="IMG">
+										<img src="<?php echo $item['image']; ?>" alt="IMG">
 									</div>
 
 									<div class="header-cart-item-txt">
 										<a href="#" class="header-cart-item-name">
-											<?php echo $item['name'];?>
+											<?php echo $item['name']; ?>
 										</a>
 
 										<span class="header-cart-item-info">
-											<?php echo $item['qty'];?> x IDR <?php echo number_format($item['price'],0,'','.');?>
+											<?php echo $item['qty']; ?> x IDR <?php echo number_format($item['price'], 0, '', '.'); ?>
 										</span>
 									</div>
 
-									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$item['id']);?>">
+									<a class="header-cart-item-close" href="<?php echo Url::to('/cart/delete/'.$item['id']); ?>">
 										<i class="up-mark fs-12 color1 fa fa-close" aria-hidden="true"></i>
 									</a>
 								</li>
 							<?php
-								$subtotal += $item['price'] * $item['qty'];
-								endforeach;
-							?>
+                                $subtotal += $item['price'] * $item['qty'];
+                                endforeach;
+                            ?>
 						</ul>
 
 						<div class="header-cart-total" style="text-align: center;">
-							Total: IDR <?php echo number_format($subtotal,0,'','.');?>
+							Total: IDR <?php echo number_format($subtotal, 0, '', '.'); ?>
 						</div>
 
-						<?php endif;?>
+						<?php endif; ?>
 
 						<div class="header-cart-buttons">
 							<div class="header-cart-wrapbtn" style="margin: 0 auto;">

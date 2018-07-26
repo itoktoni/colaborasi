@@ -2,7 +2,7 @@
 
 
 /**
- * Dump and die shortcut
+ * Dump and die shortcut.
  */
 if (!function_exists('vd')) {
     /**
@@ -12,59 +12,53 @@ if (!function_exists('vd')) {
      */
     function vd($variable)
     {
-        
         var_dump($variable);
         die();
     }
 }
 
-/**
+/*
  * Alias for vd()
  */
 if (!function_exists('dd')) {
-
     function dd($variable)
     {
         vd($variable);
     }
 }
 
-/**
+/*
  * Shortcut for YII::$app->request->post();
  */
 if (!function_exists('post')) {
-
     function post($variable = false, $default = false)
     {
-        if($variable){
-            return (YII::$app->request->post($variable))?YII::$app->request->post($variable):$default;
+        if ($variable) {
+            return (YII::$app->request->post($variable)) ? YII::$app->request->post($variable) : $default;
         }
-        
+
         return YII::$app->request->post();
     }
 }
 
-/**
+/*
  * Shortcut for YII::$app->request->post();
  */
 if (!function_exists('get')) {
-
     function get($variable = false, $default = false)
     {
-        if($variable){
-        return (YII::$app->request->get($variable))?YII::$app->request->get($variable):$default;
+        if ($variable) {
+            return (YII::$app->request->get($variable)) ? YII::$app->request->get($variable) : $default;
         }
-        
+
         return YII::$app->request->post();
     }
 }
 
-
-/**
+/*
  * Shortcut for curl request;
  */
 if (!function_exists('curl')) {
-
     function curl($url = false, $options = false, $override = false)
     {
         $curl = curl_init($url);
@@ -73,13 +67,13 @@ if (!function_exists('curl')) {
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30
+            CURLOPT_TIMEOUT => 30,
         ];
 
-        if($override){
+        if ($override) {
             $default_settings = $options;
-        }else{
-            foreach($options as $key => $item){
+        } else {
+            foreach ($options as $key => $item) {
                 $default_settings[$key] = $item;
             }
         }
@@ -93,16 +87,13 @@ if (!function_exists('curl')) {
     }
 }
 
-
-
-/**
+/*
  * Shortcut for YII::$app->request->post();
  */
 if (!function_exists('menu')) {
-
     function menu($context, $menu = false, $submenu = '', $menu_parameter = 'menu', $submenu_parameter = 'submenu')
     {
-        if($menu){
+        if ($menu) {
             $context->view->params[$menu_parameter] = $menu;
         }
 
@@ -110,3 +101,22 @@ if (!function_exists('menu')) {
     }
 }
 
+/*
+ * Shortcut for YII::$app->session->set_flash('success', $param);
+ */
+if (!function_exists('flash_success')) {
+    function flash_success($message = false)
+    {
+        Yii::$app->session->setFlash('success', $message);
+    }
+}
+
+/*
+ * Shortcut for YII::$app->session->set_flash('error', $param);
+ */
+if (!function_exists('flash_error')) {
+    function flash_error($message = false)
+    {
+        Yii::$app->session->setFlash('error', $message);
+    }
+}

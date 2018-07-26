@@ -1,8 +1,6 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Menu;
 use yii\bootstrap\ActiveForm;
 
 ?>
@@ -21,11 +19,10 @@ use yii\bootstrap\ActiveForm;
 				</p>
 
 				<div class="flex-m p-t-30">
-					<a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
-					<a href="#" class="fs-18 color1 p-r-20 fa fa-instagram"></a>
-					<a href="#" class="fs-18 color1 p-r-20 fa fa-pinterest-p"></a>
-					<a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
-					<a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+					<a href="https://www.facebook.com/Mitrais" target="_blank" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+					<a href="https://www.twitter.com/mitrais" target="_blank"  class="fs-18 color1 p-r-20 fa fa-twitter"></a>
+					<a href="https://www.instagram.com/mitrais" target="_blank"  class="fs-18 color1 p-r-20 fa fa-instagram"></a>
+					<a href="https://www.youtube.com/user/mitraisbali" target="_blank" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
 				</div>
 			</div>
 		</div>
@@ -70,10 +67,10 @@ use yii\bootstrap\ActiveForm;
 				Newsletter
 			</h4>
 
-			 <?php $form = ActiveForm::begin(['id' => 'contact-form','action' => Url::to(['site/subscribe']), 'options' => ['class' => 'login-form']]);?>
+			 <?php $form = ActiveForm::begin(['id' => 'contact-form', 'action' => Url::to(['site/subscribe']), 'options' => ['class' => 'login-form']]); ?>
 				<div class="effect1 w-size9">
 					<input class="s-text7 bg6 w-full p-b-5" type="text" name="email" placeholder="email@example.com">
-					<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
+					<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken(); ?>" />
 					<span class="effect1-line"></span>
 				</div>
 
@@ -83,29 +80,29 @@ use yii\bootstrap\ActiveForm;
 						Subscribe
 					</button>
 				</div>
-            <?php ActiveForm::end();?>
+            <?php ActiveForm::end(); ?>
 		</div>
 	</div>
 
 	<div class="t-center p-l-15 p-r-15">
 		<a href="#">
-			<img class="h-size2" src="<?php echo Url::to("@web/images/icons/paypal.png"); ?>" alt="IMG-PAYPAL">
+			<img class="h-size2" src="<?php echo Url::to('@web/images/icons/paypal.png'); ?>" alt="IMG-PAYPAL">
 		</a>
 
 		<a href="#">
-			<img class="h-size2" src="<?php echo Url::to("@web/images/icons/visa.png"); ?>" alt="IMG-VISA">
+			<img class="h-size2" src="<?php echo Url::to('@web/images/icons/visa.png'); ?>" alt="IMG-VISA">
 		</a>
 
 		<a href="#">
-			<img class="h-size2" src="<?php echo Url::to("@web/images/icons/mastercard.png"); ?>" alt="IMG-MASTERCARD">
+			<img class="h-size2" src="<?php echo Url::to('@web/images/icons/mastercard.png'); ?>" alt="IMG-MASTERCARD">
 		</a>
 
 		<a href="#">
-			<img class="h-size2" src="<?php echo Url::to("@web/images/icons/express.png"); ?>" alt="IMG-EXPRESS">
+			<img class="h-size2" src="<?php echo Url::to('@web/images/icons/express.png'); ?>" alt="IMG-EXPRESS">
 		</a>
 
 		<a href="#">
-			<img class="h-size2" src="<?php echo Url::to("@web/images/icons/discover.png"); ?>" alt="IMG-DISCOVER">
+			<img class="h-size2" src="<?php echo Url::to('@web/images/icons/discover.png'); ?>" alt="IMG-DISCOVER">
 		</a>
 
 		<div class="t-center s-text8 p-t-20">
@@ -120,3 +117,23 @@ use yii\bootstrap\ActiveForm;
 		<i class="fa fa-angle-double-up" aria-hidden="true"></i>
 	</span>
 </div>
+
+<?php $this->registerJs('
+$(".cart-delete").click(function(e){
+	e.preventDefault();
+	var href = $(this).attr("href")
+swal({
+      title: "Are you sure?",
+      text: "You will delete this item",
+      icon: "warning",
+      buttons: [
+        "Cancel",
+        "Yes"
+      ],
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+		  window.location.href= href;
+      } 
+	});
+});');

@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
+use backend\components\AuthController;
 
 /**
  * HeadlineController implements the CRUD actions for Headline model.

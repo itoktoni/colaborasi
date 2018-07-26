@@ -2,13 +2,11 @@
 
 namespace common\models\base;
 
-use Yii;
-
 /**
  * This is the model class for table "topup".
  *
- * @property int $id
- * @property int $member
+ * @property int    $id
+ * @property int    $member
  * @property string $amount
  * @property string $create_at
  * @property string $update_at
@@ -31,9 +29,8 @@ class Topup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['member'], 'integer'],
-            [['amount'], 'number'],
-            [['create_at', 'update_at', 'expire_at', 'status'], 'safe'],
+            [['member', 'status'], 'integer'],
+            [['create_at', 'update_at', 'expire_at', 'amount'], 'safe'],
         ];
     }
 
