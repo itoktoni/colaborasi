@@ -179,8 +179,6 @@ class ContinuepaymentController extends Controller
 
     public function actionCC()
     {
-        \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
-        // dd(post('cvc'));
 
         if (!post('cardnumber') || !post('year') || !post('month') || !post('cvc')) {
             Yii::$app->session->setFlash('error', 'Please fill credit card field first');
@@ -188,21 +186,31 @@ class ContinuepaymentController extends Controller
             return $this->redirect(['/checkout']);
         }
 
-        $token = \Stripe\Token::create(array(
-            'card' => array(
-                'number' => YII::$app->request->post('cardnumber'),
-                'exp_month' => YII::$app->request->post('month'),
-                'exp_year' => YII::$app->request->post('year'),
-                'cvc' => YII::$app->request->post('cvc'),
-            ),
-        ));
+        try{
 
-        if ($token) {
-            $token = $token->id;
-        } else {
-            Yii::$app->session->setFlash('error', 'Invalid Token');
+            \Stripe\Stripe::setApiKey(Yii::$app->params['stripe_key']);
+            $token = \Stripe\Token::create(array(
+                'card' => array(
+                    'number' => YII::$app->request->post('cardnumber'),
+                    'exp_month' => YII::$app->request->post('month'),
+                    'exp_year' => YII::$app->request->post('year'),
+                    'cvc' => YII::$app->request->post('cvc'),
+                ),
+            ));
 
+            if ($token) {
+                $token = $token->id;
+            } else {
+                Yii::$app->session->setFlash('error', 'Invalid Token');
+
+                return $this->redirect(['/checkout']);
+            }
+        }
+
+         catch (Stripe_InvalidRequestError $e) {
+            Yii::$app->session->setFlash('error', $e);
             return $this->redirect(['/checkout']);
+
         }
 
         $total_idr = 0;
@@ -296,6 +304,7 @@ class ContinuepaymentController extends Controller
         }
 
         try {
+
             $charge = \Stripe\Charge::create([
                 'amount' => $grand_total_idr.'00',
                 'currency' => 'idr',
@@ -324,6 +333,8 @@ class ContinuepaymentController extends Controller
             }
         } catch (Exception $e) {
             Yii::$app->session->setFlash('error', $e);
+            return $this->redirect(['/checkout']);
+
         }
 
         return $this->redirect(['/checkout']);
