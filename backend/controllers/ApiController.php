@@ -10,6 +10,11 @@ class ApiController extends \yii\web\Controller
 		return $this->render('index');
 	}
 
+	public function tesT(){
+
+		
+	}
+
 
 	
 	public function actionVoucher(){

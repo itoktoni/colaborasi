@@ -347,6 +347,7 @@
                     } else { // Token was created!
 
                         $('#cek_payment').val('true');
+                        $('#form-payment').submit();
                         //$('#payment').append('<input type="hidden" value="' + response.id + '" name="stripeToken">');
                     }
                 });
@@ -355,6 +356,9 @@
                 if(cek == 'false'){
                     
                     e.preventDefault(); // to stop form submitting
+                }
+                else{
+                      $('#form-payment').submit();
                 }
             });
         });
